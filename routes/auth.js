@@ -1,24 +1,23 @@
 const express = require("express");
-const bcrypt = require("bcryptjs");
+const UserModel = require("../models/userModel"); // Import the UserModel
 
 module.exports = (db) => {
   const router = express.Router();
+  const userModel = new UserModel(db);
 
   // Login Route
   router.post("/login", async (req, res) => {
     const { username, password } = req.body;
     try {
-      const user = await db.query("SELECT * FROM loyalty_card.users WHERE username = $1", [
-        username,
-      ]);
-      if (user.rows.length > 0) {
-        const validPassword = await bcrypt.compare(
+      const user = await userModel.findUserByUsername(username);
+      if (user) {
+        const validPassword = await userModel.verifyUserPassword(
           password,
-          user.rows[0].password
+          user.password
         );
         if (validPassword) {
-          req.session.userId = user.rows[0].id;
-          req.session.role = user.rows[0].role;
+          req.session.userId = user.id;
+          req.session.role = user.role;
           res.redirect(
             req.session.role === "manager" ? "/manager" : "/dashboard"
           );
@@ -38,12 +37,8 @@ module.exports = (db) => {
   router.post("/create-user", async (req, res) => {
     if (req.session.role === "manager") {
       const { username, password } = req.body;
-      const hashedPassword = await bcrypt.hash(password, 10);
       try {
-        await db.query(
-          "INSERT INTO loyalty_card.users (username, password, role) VALUES ($1, $2, $3)",
-          [username, hashedPassword, "customer"]
-        );
+        await userModel.addUser(username, password, "customer");
         res.send("User created successfully");
       } catch (err) {
         console.error(err);
