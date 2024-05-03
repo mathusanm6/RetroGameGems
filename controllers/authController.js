@@ -1,3 +1,5 @@
+const HttpStatus = require("http-status-codes");
+
 const UserModel = require("../models/userModel");
 
 class AuthController {
@@ -28,7 +30,7 @@ class AuthController {
       }
     } catch (err) {
       console.error(err);
-      res.status(500).send("Internal Server Error");
+      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Internal Server Error");
     }
   }
 
@@ -40,7 +42,7 @@ class AuthController {
         const existingUser = await this.userModel.findUserByUsername(username);
         if (existingUser) {
           // If user exists, send an error message
-          res.status(409).send("User already exists");
+          res.status(HttpStatus.StatusCodes.CONFLICT).send("User already exists");
         } else {
           // If user does not exist, proceed with creation
           await this.userModel.addUser(username, password, "customer");
@@ -48,10 +50,10 @@ class AuthController {
         }
       } catch (err) {
         console.error(err);
-        res.status(500).send("Failed to create user");
+        res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Failed to create user");
       }
     } else {
-      res.status(403).send("Unauthorized");
+      res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized");
     }
   }
 }

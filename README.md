@@ -27,7 +27,7 @@ Projet en binôme pour le cours de Programmation Web du semestre 6 en 2023-2024 
 2. Installer les dépendances
 
 ```bash
-npm install express, ejs, bycrypt, express-session connect-pg-simple pg dotenv
+npm install express, ejs, bycrypt, express-session connect-pg-simple pg dotenv http-status-codes
 ```
 
 3. Créez l'utilisateur et la base de données nécessaires pour le projet

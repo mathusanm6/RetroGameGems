@@ -1,4 +1,5 @@
 require("dotenv").config();
+const HttpStatus = require("http-status-codes");
 const express = require("express");
 const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
@@ -55,7 +56,7 @@ function isManager(req, res, next) {
   if (req.session.role === "manager") {
     next();
   } else {
-    res.status(403).send("Unauthorized");
+    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized");
   }
 }
 
