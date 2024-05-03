@@ -36,8 +36,16 @@ class AuthController {
     if (req.session.role === "manager") {
       const { username, password } = req.body;
       try {
-        await this.userModel.addUser(username, password, "customer");
-        res.send("User created successfully");
+        // First, check if the user already exists
+        const existingUser = await this.userModel.findUserByUsername(username);
+        if (existingUser) {
+          // If user exists, send an error message
+          res.status(409).send("User already exists");
+        } else {
+          // If user does not exist, proceed with creation
+          await this.userModel.addUser(username, password, "customer");
+          res.send("User created successfully");
+        }
       } catch (err) {
         console.error(err);
         res.status(500).send("Failed to create user");
