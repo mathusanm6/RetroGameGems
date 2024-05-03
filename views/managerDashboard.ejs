@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Manager Dashboard</title>
+</head>
+
+<body>
+    <h1>Create New Customer Account</h1>
+    <!-- email,
+            password,
+            last_name,
+            first_name,
+            role,
+            birth_date -->
+    <form action="/create-user" method="post">
+        <label for="email">Email</label>
+        <input type="email" name="email" required>
+
+        <label for="password">Password</label>
+        <input type="password" name="password" required>
+
+        <label for="last_name">Last Name</label>
+        <input type="text" name="last_name" required>
+
+        <label for="first_name">First Name</label>
+        <input type="text" name="first_name" required>
+
+        <label for="role">Role</label>
+        <select name="role" required>
+            <option value="client">Client</option>
+            <option value="manager">Manager</option>
+        </select>
+
+        <label for="birth_date">Birth Date</label>
+        <input type="date" name="birth_date" required>
+
+        <button type="submit">Create User</button>
+    </form>
+
+    <a href="/auth/logout">Logout</a>
+</body>
+
+</html>

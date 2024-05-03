@@ -1,47 +1,28 @@
-const { Pool } = require("pg");
 const fs = require("fs");
 const path = require("path");
 const bcrypt = require("bcryptjs");
-require("dotenv").config(); // Make sure to load environment variables
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // Using an environment variable for DB connection
-});
+const pool = require("./models/db");
 
 const sqlFilePath = path.join(__dirname, "init_db.sql");
 const sql = fs.readFileSync(sqlFilePath, { encoding: "UTF-8" });
 
-pool.connect((err, client, done) => {
-  if (err) throw err;
-
-  client.query(sql, (err, res) => {
-    done();
-    if (err) {
-      console.error("Error executing the SQL file:", err.stack);
-    } else {
-      console.log("Database has been successfully initialized");
-    }
-    pool.end(); // Close the pool
-  });
-});
-
+// Function to create admin user
 async function createAdminUser(db) {
-  const username = "admin";
+  const email = "admin@example.com";
   const password = "admin";
-  const role = "manager";
+  const firstName = "Admin";
+  const lastName = "User";
   const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
 
   try {
-    // Check if the admin user already exists
     const res = await db.query(
-      "SELECT * FROM loyalty_card.users WHERE username = $1",
-      [username]
+      "SELECT * FROM loyalty_card.managers WHERE email = $1",
+      [email]
     );
     if (res.rows.length === 0) {
-      // Insert the new admin user if not existing
       await db.query(
-        "INSERT INTO loyalty_card.users (username, password, role) VALUES ($1, $2, $3)",
-        [username, hashedPassword, role]
+        "INSERT INTO loyalty_card.managers (first_name, last_name, email, password) VALUES ($1, $2, $3, $4)",
+        [firstName, lastName, email, hashedPassword]
       );
       console.log("Admin user created successfully");
     } else {
@@ -49,7 +30,23 @@ async function createAdminUser(db) {
     }
   } catch (err) {
     console.error("Failed to create admin user:", err);
+  } finally {
+    db.end(); // Close the pool here, after all async operations are complete
   }
 }
 
-createAdminUser(pool); // Call the function to create the admin user
+// Connect to the pool and execute SQL file, then create admin user
+pool.connect((err, client, done) => {
+  if (err) throw err;
+
+  client.query(sql, async (err, res) => {
+    done(); // Release the client back to the pool
+    if (err) {
+      console.error("Error executing the SQL file:", err.stack);
+      pool.end(); // Close the pool if there is an error
+    } else {
+      console.log("Database has been successfully initialized");
+      await createAdminUser(pool); // Call the function to create the admin user after initializing the DB
+    }
+  });
+});

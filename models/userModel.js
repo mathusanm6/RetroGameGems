@@ -1,26 +1,45 @@
-const bcrypt = require("bcryptjs");
+const ClientModel = require("../models/clientModel");
+const ManagerModel = require("../models/managerModel");
 
-class UserModel {
+class userModel {
   constructor(db) {
     this.db = db;
   }
 
-  async findUserByUsername(username) {
-    const query = "SELECT * FROM loyalty_card.users WHERE username = $1";
-    const result = await this.db.query(query, [username]);
-    return result.rows[0];
+  async findUserByEmail(email, role) {
+    if (role === "client") {
+      const clientModel = new ClientModel(this.db);
+      return await clientModel.findClientByEmail(email);
+    } else if (role === "manager") {
+      const managerModel = new ManagerModel(this.db);
+      return await managerModel.findManagerByEmail(email);
+    }
   }
 
-  async addUser(username, password, role) {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const query =
-      "INSERT INTO loyalty_card.users (username, password, role) VALUES ($1, $2, $3)";
-    await this.db.query(query, [username, hashedPassword, role]);
+  async addUser(email, password, last_name, first_name, role, birth_date) {
+    if (role === "client") {
+      const clientModel = new ClientModel(this.db);
+      return await clientModel.addClient(
+        email,
+        password,
+        last_name,
+        first_name,
+        birth_date
+      );
+    } else if (role === "manager") {
+      const managerModel = new ManagerModel(this.db);
+      return await managerModel.addManager(
+        email,
+        password,
+        last_name,
+        first_name
+      );
+    }
   }
 
-  async verifyUserPassword(userPassword, hashedPassword) {
-    return bcrypt.compare(userPassword, hashedPassword);
+  async verifyPassword(userPassword, hashedPassword) {
+    return await bcrypt.compare(userPassword, hashedPassword);
   }
 }
 
-module.exports = UserModel;
+module.exports = userModel;

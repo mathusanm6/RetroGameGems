@@ -48,7 +48,7 @@ function isLoggedIn(req, res, next) {
   if (req.session.userId) {
     next();
   } else {
-    res.redirect("/login");
+    res.redirect("/auth/client-login");
   }
 }
 
@@ -61,8 +61,8 @@ function isManager(req, res, next) {
 }
 
 // Apply middleware
-app.use("/manager", isLoggedIn, isManager);
-app.use("/dashboard", isLoggedIn);
+app.use("/manager-dashboard", isLoggedIn, isManager);
+app.use("/client-dashboard", isLoggedIn);
 
 // Routes
 const indexRouter = require("./routes/index");
@@ -70,6 +70,9 @@ app.use("/", indexRouter);
 
 const authRouter = require("./routes/auth")(dbPool);
 app.use("/auth", authRouter);
+
+const dashboardRouter = require("./routes/dashboard");
+app.use(dashboardRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
