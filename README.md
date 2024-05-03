@@ -8,7 +8,7 @@
 
 ### Cadre du projet
 
-Projet en binôme pour le cours de Programmation Web 6 en 2023-2024 à l'Université Paris Cité (Campus Grands Moulins).
+Projet en binôme pour le cours de Programmation Web du semestre 6 en 2023-2024 à l'Université Paris Cité (Campus Grands Moulins).
 
 ### Objectif
 
