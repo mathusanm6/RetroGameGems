@@ -34,4 +34,4 @@ node db_setup.js
 ```bash
 npm start
 ```
-2. Ouvrir un navigateur et aller à l'adresse `http://localhost:3000`
+2. Ouvrir un navigateur et aller à l'adresse [`http://localhost:3000`](http://localhost:3000)
