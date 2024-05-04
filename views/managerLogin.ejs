@@ -14,16 +14,31 @@
     <title>Manager Login</title>
 </head>
 
-<body>
-    <h1>Manager Login</h1>
-    <form action="/auth/manager-login" method="POST">
-        <label for="email">Email</label>
-        <input type="email" name="email" required>
-        <label for="password">Password</label>
-        <input type="password" name="password" required>
-        <button type="submit">Login</button>
-    </form>
-    <a href="/auth/client-login" class="btn btn-primary">Client Login</a>
+<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="text-center mb-4">Manager Login</h1>
+                        <form action="/auth/manager-login" method="POST">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" name="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-success btn-block">Login</button>
+                        </form>
+                        <a href="/auth/client-login" class="btn btn-outline-primary btn-block mt-3">Client
+                            Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

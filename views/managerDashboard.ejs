@@ -15,41 +15,68 @@
 </head>
 
 <body>
-    <h1>Create New Customer Account</h1>
-    <form action="/create-user" method="post">
-        <label for="email">Email</label>
-        <input type="email" name="email" required>
+    <div class="container mt-5">
+        <h1>Create New Customer Account</h1>
+        <form action="/create-user" method="post" class="needs-validation" novalidate>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" class="form-control" required>
+                <div class="invalid-feedback">
+                    Please provide a valid email.
+                </div>
+            </div>
 
-        <label for="password">Password</label>
-        <input type="password" name="password" required>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" class="form-control" required>
+                <div class="invalid-feedback">
+                    Please enter a password.
+                </div>
+            </div>
 
-        <label for="last_name">Last Name</label>
-        <input type="text" name="last_name" required>
+            <div class="form-row">
+                <div class="col">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" name="last_name" class="form-control" required>
+                    <div class="invalid-feedback">
+                        Please enter a last name.
+                    </div>
+                </div>
+                <div class="col">
+                    <label for="first_name">First Name</label>
+                    <input type="text" name="first_name" class="form-control" required>
+                    <div class="invalid-feedback">
+                        Please enter a first name.
+                    </div>
+                </div>
+            </div>
 
-        <label for="first_name">First Name</label>
-        <input type="text" name="first_name" required>
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select name="role" id="roleSelect" class="form-control" required>
+                    <option value="client">Client</option>
+                    <option value="manager">Manager</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please select a role.
+                </div>
+            </div>
 
-        <label for="role">Role</label>
-        <select name="role" id="roleSelect" required>
-            <option value="client">Client</option>
-            <option value="manager">Manager</option>
-        </select>
+            <div class="form-group" id="birthdayField" style="display: inline-block;">
+                <label for="birthday">Birthday</label>
+                <input type="date" name="birthday" class="form-control">
+            </div>
 
-        <div id="birthdayField" style="display: inline-block;">
-            <label for="birthday">Birthday</label>
-            <input type="date" name="birthday">
-        </div>
-
-        <button type="submit" class="btn btn-primary">Create User</button>
-    </form>
-
-    <a href="/auth/logout">Logout</a>
+            <button type="submit" class="btn btn-primary">Create User</button>
+        </form>
+        <a href="/auth/logout" class="btn btn-link">Logout</a>
+    </div>
 
     <script>
         document.getElementById("roleSelect").addEventListener("change", function () {
             var birthdayField = document.getElementById("birthdayField");
             if (this.value === "client") {
-                birthdayField.style.display = "inline-block";
+                birthdayField.style.display = "block";
             } else {
                 birthdayField.style.display = "none";
             }
