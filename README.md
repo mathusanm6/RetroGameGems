@@ -59,6 +59,17 @@ npm start
 
 2. Ouvrir un navigateur et aller à l'adresse [`http://localhost:3000`](http://localhost:3000)
 
+### Administration
+
+Pour accéder à l'interface d'administration, il faut se connecter avec les identifiants suivants :
+
+| email                | mot de passe |
+| -------------------- | ------------ |
+| `rtheo@mail.com`     | `theo`       |
+| `smathusan@mail.com` | `mathusan`   |
+
+Pour ajouter un nouvel administrateur, il faut ajouter un enregistrement dans la table `admin` de la base de données ou utiliser le script `db_setup.js` après avoir modifié le fichier `db_setup.js` en ajoutant un nouvel administrateur dans la liste `admins`.
+
 ### Pour voir la base de données postgres
 
 ```bash

@@ -6,10 +6,10 @@ const pool = require("./models/db");
 const sqlFilePath = path.join(__dirname, "init_db.sql");
 const sql = fs.readFileSync(sqlFilePath, { encoding: "UTF-8" });
 
-const adminList = [
+const admins = [
   {
     email: "rtheo@mail.com",
-    password: "raoul",
+    password: "theo",
     firstName: "Theo",
     lastName: "Raoul",
   },
@@ -22,13 +22,13 @@ const adminList = [
 ];
 
 // Function to create admin user
-async function createAdminUser(db, adminList) {
+async function createAdminUser(db, admins) {
   try {
-    for (let i = 0; i < adminList.length; i++) {
-      const email = adminList[i].email;
-      const password = adminList[i].password;
-      const firstName = adminList[i].firstName;
-      const lastName = adminList[i].lastName;
+    for (let i = 0; i < admins.length; i++) {
+      const email = admins[i].email;
+      const password = admins[i].password;
+      const firstName = admins[i].firstName;
+      const lastName = admins[i].lastName;
       const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
 
       const res = await db.query(
@@ -64,7 +64,7 @@ pool.connect((err, client, done) => {
       pool.end(); // Close the pool if there is an error
     } else {
       console.log("Database has been successfully initialized");
-      await createAdminUser(pool, adminList);
+      await createAdminUser(pool, admins);
 
     }
   });
