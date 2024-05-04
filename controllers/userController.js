@@ -12,9 +12,7 @@ class userController {
       try {
         const existingUser = await this.userModel.findUserByEmail(email, role);
         if (existingUser) {
-          return res
-            .status(HttpStatus.StatusCodes.CONFLICT)
-            .send("User already exists");
+          return res.redirect(`/create-user?success=false&message=User already exists`);
         } else {
           await this.userModel.addUser(
             email,
@@ -24,18 +22,14 @@ class userController {
             role,
             birth_date,
           );
-          return res
-            .status(HttpStatus.StatusCodes.CREATED)
-            .send("User created successfully");
+          return res.redirect(`/create-user?success=true&message=User created successfully`);
         }
       } catch (err) {
         console.error(err);
-        return res
-          .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-          .send("Failed to create user");
+        return res.redirect(`/create-user?success=false&message=Failed to create user`);
       }
     } else {
-      return res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized");
+      return res.redirect("/");
     }
   }
 
