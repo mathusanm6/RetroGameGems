@@ -19,7 +19,7 @@ class managerModel {
   }
 
   async updateManager(managerId, managerData) {
-    const { email, first_name, last_name, password } = managerData; // Assuming password change might be requested
+    const { email, first_name, last_name, password } = managerData;
     const updates = [];
     const values = [];
   
@@ -36,7 +36,7 @@ class managerModel {
       values.push(last_name);
     }
     if (password && password.trim() !== "") {
-      const hashedPassword = await bcrypt.hash(password, 10); // Assuming bcrypt is available
+      const hashedPassword = await bcrypt.hash(password, 10);
       updates.push("password = $4");
       values.push(hashedPassword);
     }

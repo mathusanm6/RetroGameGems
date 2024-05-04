@@ -7,9 +7,7 @@ class ManagerController {
 
   async modifyManager(req, res) {
     if (
-      req.session.role === "manager" &&
-      req.session.userId === req.body.managerId
-    ) {
+      req.session.role === "manager") {
       const { email, first_name, last_name, password } = req.body;
       try {
         await this.managerModel.updateManager(req.session.userId, {

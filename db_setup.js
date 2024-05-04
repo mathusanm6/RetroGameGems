@@ -31,7 +31,7 @@ async function createAdminUser(db) {
   } catch (err) {
     console.error("Failed to create admin user:", err);
   } finally {
-    db.end(); // Close the pool here, after all async operations are complete
+    db.end(); // Close the pool after creating the admin user
   }
 }
 
@@ -46,7 +46,7 @@ pool.connect((err, client, done) => {
       pool.end(); // Close the pool if there is an error
     } else {
       console.log("Database has been successfully initialized");
-      await createAdminUser(pool); // Call the function to create the admin user after initializing the DB
+      await createAdminUser(pool);
     }
   });
 });
