@@ -59,16 +59,26 @@ npm start
 
 2. Ouvrir un navigateur et aller à l'adresse [`http://localhost:3000`](http://localhost:3000)
 
-### Administration
+### Initialisation de la base de données
 
 Pour accéder à l'interface d'administration, il faut se connecter avec les identifiants suivants :
 
-| email                | mot de passe |
-| -------------------- | ------------ |
-| `rtheo@mail.com`     | `theo`       |
-| `smathusan@mail.com` | `mathusan`   |
+| email              | password | first_name | last_name  |
+| ------------------ | -------- | ---------- | ---------- |
+| rtheo@mail.com     | theo     | Theo       | Raoul      |
+| smathusan@mail.com | mathusan | Mathusan   | Selvakumar |
 
 Pour ajouter un nouvel administrateur, il faut ajouter un enregistrement dans la table `admin` de la base de données ou utiliser le script `db_setup.js` après avoir modifié le fichier `db_setup.js` en ajoutant un nouvel administrateur dans la liste `admins`.
+
+Lors de l'initialisation de la base de données, les clients suivants sont ajoutés :
+
+| last_name | first_name | email                  | password   | points | birth_date |
+| --------- | ---------- | ---------------------- | ---------- | ------ | ---------- |
+| Doe       | John       | john.doe@mail.com      | john123    | 0      | 1990-01-01 |
+| Smith     | Jane       | jane.smith@mail.com    | jane123    | 0      | 1992-02-02 |
+| Jones     | Alice      | alice.jones@mail.com   | alice123   | 0      | 1988-03-03 |
+| Brown     | Bob        | bob.brown@mail.com     | bob123     | 0      | 1991-04-04 |
+| Davis     | Charlie    | charlie.davis@mail.com | charlie123 | 0      | 1993-05-05 |
 
 ### Pour voir la base de données postgres
 
