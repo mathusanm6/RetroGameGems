@@ -18,7 +18,7 @@ const admins = [
     password: "mathusan",
     firstName: "Mathusan",
     lastName: "Selvakumar",
-  }
+  },
 ];
 
 const clients = [
@@ -27,36 +27,36 @@ const clients = [
     password: "john123",
     firstName: "John",
     lastName: "Doe",
-    birthDate: "1990-01-01"
+    birthDate: "1990-01-01",
   },
   {
     email: "jane.smith@mail.com",
     password: "jane123",
     firstName: "Jane",
     lastName: "Smith",
-    birthDate: "1992-02-02"
+    birthDate: "1992-02-02",
   },
   {
     email: "alice.jones@mail.com",
     password: "alice123",
     firstName: "Alice",
     lastName: "Jones",
-    birthDate: "1988-03-03"
+    birthDate: "1988-03-03",
   },
   {
     email: "bob.brown@mail.com",
     password: "bob123",
     firstName: "Bob",
     lastName: "Brown",
-    birthDate: "1991-04-04"
+    birthDate: "1991-04-04",
   },
   {
     email: "charlie.davis@mail.com",
     password: "charlie123",
     firstName: "Charlie",
     lastName: "Davis",
-    birthDate: "1993-05-05"
-  }
+    birthDate: "1993-05-05",
+  },
 ];
 
 // Function to create admin user
