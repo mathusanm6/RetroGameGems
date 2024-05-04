@@ -190,4 +190,109 @@ router.post("/add-points", (req, res) => {
   }
 });
 
+// Add gift route for managers
+router.get("/add-gift", (req, res) => {
+  if (req.session.role === "manager") {
+    res.render("dashboard/manager/addGift");
+  } else {
+    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+  }
+});
+
+router.post("/add-gift", (req, res) => {
+  if (req.session.role === "manager") {
+    managerController.addGift(req, res);
+  } else {
+    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+  }
+});
+
+// Modify gift route for managers
+router.get("/modify-gift", async (req, res) => {
+  if (req.session.role === "manager") {
+    try {
+      const gifts = await managerModel.getAllGifts();
+      res.render("dashboard/manager/modifyGift", { gifts });
+    } catch (error) {
+      console.error("Error fetching gifts:", error);
+      res
+        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error fetching gifts");
+    }
+  } else {
+    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+  }
+});
+
+router.post("/modify-gift", (req, res) => {
+  if (req.session.role === "manager") {
+    managerController.modifyGift(req, res);
+  } else {
+    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+  }
+});
+
+// Get all gifts route for managers
+router.get("/get-gifts", async (req, res) => {
+  if (req.session.role === "manager") {
+    try {
+      const gifts = await managerModel.getAllGifts();
+      res.json({ gifts: gifts });
+    } catch (error) {
+      console.error("Error fetching gifts:", error);
+      res
+        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error fetching gifts");
+    }
+  } else {
+    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+  }
+});
+
+router.get("/get-gift/:giftId", async (req, res) => {
+  if (req.session.role === "manager") {
+    try {
+      const giftId = req.params.giftId;
+      const gift = await managerModel.getGiftById(giftId);
+      if (gift) {
+        res.json(gift);
+      } else {
+        res.status(HttpStatus.StatusCodes.NOT_FOUND).send("Gift not found");
+      }
+    } catch (error) {
+      console.error("Error fetching gift:", error);
+      res
+        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error fetching gift details");
+    }
+  } else {
+    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+  }
+});
+
+// Delete gift route for managers
+router.get("/delete-gift", async (req, res) => {
+  if (req.session.role === "manager") {
+    try {
+      const gifts = await managerModel.getAllGifts();
+      res.render("dashboard/manager/deleteGift", { gifts });
+    } catch (error) {
+      console.error("Error fetching gifts:", error);
+      res
+        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error fetching gifts");
+    }
+  } else {
+    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+  }
+});
+
+router.post("/delete-gift", (req, res) => {
+  if (req.session.role === "manager") {
+    managerController.deleteGift(req, res);
+  } else {
+    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+  }
+});
+
 module.exports = router;
