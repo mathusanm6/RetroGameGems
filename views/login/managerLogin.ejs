@@ -10,6 +10,12 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <title>Manager Login</title>
+
+    <style>
+        p {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 
 <body class="bg-light">
@@ -28,10 +34,10 @@
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" name="password" required>
                             </div>
-                            <button type="submit" class="btn btn-success btn-block">Login</button>
+                            <button class="btn btn-info btn-lg btn-block" type="submit">Login</button>
                         </form>
-                        <a href="/auth/client-login" class="btn btn-outline-primary btn-block mt-3">Client
-                            Login</a>
+                        <p class="small mb-2 text-center"><a class="text-muted" href="/auth/client-login">Login as
+                                client</a></p>
                     </div>
                 </div>
             </div>
