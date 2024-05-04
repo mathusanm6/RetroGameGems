@@ -1,7 +1,3 @@
--- CREATE ROLE myuser LOGIN PASSWORD 'mypassword';
--- CREATE DATABASE loyalty_card_db WITH OWNER = myuser;
--- psql -U myuser -d loyalty_card_db
--- set search_path to loyalty_card;
 -- Drop the schema if it exists
 DROP SCHEMA IF EXISTS loyalty_card CASCADE;
 

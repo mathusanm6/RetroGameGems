@@ -58,3 +58,14 @@ npm start
 ```
 
 2. Ouvrir un navigateur et aller à l'adresse [`http://localhost:3000`](http://localhost:3000)
+
+### Pour voir la base de données postgres
+
+```bash
+psql -U myuser -d loyalty_card_db
+```
+
+```sql
+set search_path to loyalty_card;
+\dt -- pour voir les tables
+```
