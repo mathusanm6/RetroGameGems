@@ -1,6 +1,5 @@
 const HttpStatus = require("http-status-codes");
 
- 
 class managerAuthController {
   constructor(managerModel) {
     this.managerModel = managerModel;

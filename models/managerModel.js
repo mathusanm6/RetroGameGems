@@ -1,6 +1,5 @@
 const bcrypt = require("bcryptjs");
 
- 
 class managerModel {
   constructor(db) {
     this.db = db;

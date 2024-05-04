@@ -1,6 +1,5 @@
 const HttpStatus = require("http-status-codes");
 
- 
 class userController {
   constructor(userModel) {
     this.userModel = userModel;

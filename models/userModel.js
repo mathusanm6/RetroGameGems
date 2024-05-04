@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const ClientModel = require("../models/clientModel");
 const ManagerModel = require("../models/managerModel");
 
- 
 class userModel {
   constructor(db) {
     this.db = db;

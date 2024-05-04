@@ -1,6 +1,5 @@
 const HttpStatus = require("http-status-codes");
 
- 
 class managerController {
   constructor(managerModel) {
     this.managerModel = managerModel;
