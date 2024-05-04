@@ -12,7 +12,9 @@ class userController {
       try {
         const existingUser = await this.userModel.findUserByEmail(email, role);
         if (existingUser) {
-          return res.redirect(`/create-user?success=false&message=User already exists`);
+          return res.redirect(
+            `/create-user?success=false&message=User already exists`,
+          );
         } else {
           await this.userModel.addUser(
             email,
@@ -22,11 +24,15 @@ class userController {
             role,
             birth_date,
           );
-          return res.redirect(`/create-user?success=true&message=User created successfully`);
+          return res.redirect(
+            `/create-user?success=true&message=User created successfully`,
+          );
         }
       } catch (err) {
         console.error(err);
-        return res.redirect(`/create-user?success=false&message=Failed to create user`);
+        return res.redirect(
+          `/create-user?success=false&message=Failed to create user`,
+        );
       }
     } else {
       res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access.");

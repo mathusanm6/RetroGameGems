@@ -16,10 +16,14 @@ class clientController {
           last_name,
           birth_date,
         });
-        return res.redirect(`/modify-client?success=true&message=Client updated successfully`);
+        return res.redirect(
+          `/modify-client?success=true&message=Client updated successfully`,
+        );
       } catch (error) {
         console.error("Error updating client:", error);
-        return res.redirect(`/modify-client?success=false&message=Failed to update client`);
+        return res.redirect(
+          `/modify-client?success=false&message=Failed to update client`,
+        );
       }
     } else {
       res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access.");
@@ -32,10 +36,14 @@ class clientController {
 
       try {
         await this.clientModel.deleteClient(clientId);
-        return res.redirect(`/delete-client?success=true&message=Client deleted successfully`);
+        return res.redirect(
+          `/delete-client?success=true&message=Client deleted successfully`,
+        );
       } catch (error) {
         console.error("Error deleting client:", error);
-        return res.redirect(`/delete-client?success=false&message=Failed to delete client`);
+        return res.redirect(
+          `/delete-client?success=false&message=Failed to delete client`,
+        );
       }
     } else {
       res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access.");
@@ -52,7 +60,16 @@ class clientController {
       try {
         await this.clientModel.addPoints(clientId, points);
         const client = await this.clientModel.getClientById(clientId);
-        res.redirect("/add-points?success=true&clientId=" + clientId + "&clientFirstName=" + client.first_name + "&clientLastName=" + client.last_name + "&points=" + points);
+        res.redirect(
+          "/add-points?success=true&clientId=" +
+            clientId +
+            "&clientFirstName=" +
+            client.first_name +
+            "&clientLastName=" +
+            client.last_name +
+            "&points=" +
+            points,
+        );
       } catch (error) {
         console.error("Error adding points:", error);
         res.redirect("/add-points?success=false");
