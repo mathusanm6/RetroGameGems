@@ -172,6 +172,23 @@ router.get("/get-points", async (req, res) => {
   }
 });
 
+router.get("/get-point/:clientId", async (req, res) => {
+  if (req.session.role === "manager") {
+    try {
+      const clientId = req.params.clientId;
+      const points = await clientModel.getPoints(clientId);
+      res.json({ points: points });
+    } catch (error) {
+      console.error("Error fetching points:", error);
+      res
+        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error fetching points");
+    }
+  } else {
+    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+  }
+});
+
 // Add points route for managers
 router.get("/add-points", async (req, res) => {
   if (req.session.role === "manager") {

@@ -55,7 +55,7 @@ class clientController {
 
       try {
         await this.clientModel.addPoints(clientId, points);
-        res.redirect("/manager-dashboard"); // Or indicate success another way
+        res.redirect("/add-points?success=true&clientId=" + clientId);
       } catch (error) {
         console.error("Error adding points:", error);
         res.status(500).send("Failed to add points to client.");
