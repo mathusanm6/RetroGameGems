@@ -12,7 +12,9 @@
 
 <body>
     <div class="container mt-5">
-        <a href="/manager-dashboard" class="btn btn-primary mb-3">Back to Manager Dashboard</a>
+        <a href="/manager-dashboard" class="btn btn-outline-primary mt-3">Back to Manager Dashboard</a>
+    </div>
+    <div class="container mt-5">
         <h1>Delete Client</h1>
         <form action="/delete-client" method="post">
             <div class="form-group">
@@ -24,12 +26,17 @@
                             <%= client.first_name %>
                                 <%= client.last_name %> - <%= client.email %>
                         </option>
-                        <% }); %>
+                        <% });html><htmllang=<head>RequiredmetatagsforBootstrap4<metacharset=<metaname=content=<linkrel=href=integrity=crossorigin=<title>DeleteClient</title></head><body><divclass=<ahref=class=>BacktoManagerDashboard</a></div><divclass=<h1>DeleteClient</h1><formaction=method=<divclass=<labelfor=>SelectaClienttoDeletehtml><htmllang=<head>RequiredmetatagsforBootstrap4<metacharset=<metaname=content=<linkrel=href=integrity=crossorigin=<title>DeleteClient</title></head><body><divclass=<ahref=class=>BacktoManagerDashboard</a></div><divclass=<h1>DeleteClient</h1><formaction=method=<divclass=<labelfor=>SelectaClienttoDeletehtml><htmllang=<head>RequiredmetatagsforBootstrap4<metacharset=<metaname=content=<linkrel=href=integrity=crossorigin=<title>DeleteClient</title></head><body><divclass=<ahref=class=>BacktoManagerDashboard</a></div><divclass=<h1>DeleteClient</h1><formaction=method=<divclass=<labelfor=>SelectaClienttoDelete %>
                 </select>
             </div>
-            <button type="submit" class="btn btn-danger">Delete Client</button>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-primary btn-block">Delete Client</button>
+                    </div>
+                </div>
+            </div>
         </form>
-        <a href="/auth/logout" class="btn btn-secondary mt-3">Logout</a>
     </div>
 </body>
 

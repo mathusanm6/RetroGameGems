@@ -2,7 +2,7 @@ const express = require("express");
 const ClientModel = require("../models/clientModel");
 const ManagerModel = require("../models/managerModel");
 const UserModel = require("../models/userModel");
-const ClientAuthController = require("../controllers/clientAuthController");
+const ClientAuthController = require("../controllers/clientAuthcontroller");
 const ManagerAuthController = require("../controllers/managerAuthController");
 const UserController = require("../controllers/userController");
 
@@ -17,12 +17,12 @@ module.exports = (db) => {
 
   // Client login route
   router.post("/client-login", (req, res) =>
-    clientAuthController.login(req, res)
+    clientAuthController.login(req, res),
   );
 
   // Manager login route
   router.post("/manager-login", (req, res) =>
-    managerAuthController.login(req, res)
+    managerAuthController.login(req, res),
   );
 
   // Logout route

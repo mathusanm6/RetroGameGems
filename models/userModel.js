@@ -1,6 +1,8 @@
+const bcrypt = require("bcrypt");
 const ClientModel = require("../models/clientModel");
 const ManagerModel = require("../models/managerModel");
 
+ 
 class userModel {
   constructor(db) {
     this.db = db;
@@ -24,7 +26,7 @@ class userModel {
         password,
         last_name,
         first_name,
-        birth_date
+        birth_date,
       );
     } else if (role === "manager") {
       const managerModel = new ManagerModel(this.db);
@@ -32,7 +34,7 @@ class userModel {
         email,
         password,
         last_name,
-        first_name
+        first_name,
       );
     }
   }

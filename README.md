@@ -1,5 +1,7 @@
 # PW6-2023-24-RS
+
 ### Sommaire
+
 1. [Cadre du projet](#cadre-du-projet)
 2. [Objectif](#objectif)
 3. [Contributeurs](#contributeurs)

@@ -17,12 +17,12 @@ async function createAdminUser(db) {
   try {
     const res = await db.query(
       "SELECT * FROM loyalty_card.managers WHERE email = $1",
-      [email]
+      [email],
     );
     if (res.rows.length === 0) {
       await db.query(
         "INSERT INTO loyalty_card.managers (first_name, last_name, email, password) VALUES ($1, $2, $3, $4)",
-        [firstName, lastName, email, hashedPassword]
+        [firstName, lastName, email, hashedPassword],
       );
       console.log("Admin user created successfully");
     } else {
@@ -39,6 +39,7 @@ async function createAdminUser(db) {
 pool.connect((err, client, done) => {
   if (err) throw err;
 
+  // eslint-disable-next-line no-unused-vars
   client.query(sql, async (err, res) => {
     done(); // Release the client back to the pool
     if (err) {

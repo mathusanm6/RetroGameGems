@@ -14,7 +14,7 @@
 
 <body>
     <div class="container mt-5">
-        <a href="/manager-dashboard" class="btn btn-primary mt-3">Back to Manager Dashboard</a>
+        <a href="/manager-dashboard" class="btn btn-outline-primary mt-3">Back to Manager Dashboard</a>
     </div>
     <div class="container mt-5">
         <h1>Modify Client</h1>
@@ -28,14 +28,20 @@
                             <%= client.first_name %>
                                 <%= client.last_name %> - <%= client.email %>
                         </option>
-                        <% }); %>
+                        <% });html><htmllang=<head>Bootstrap4Requiredmetatags<metacharset=<metaname=content=<linkrel=href=integrity=crossorigin=<title>ModifyClient</title></head><body><divclass=<ahref=class=>BacktoManagerDashboard</a></div><divclass=<h1>ModifyClient</h1><formaction=method=<divclass=<labelfor=>SelectaClienthtml><htmllang=<head>Bootstrap4Requiredmetatags<metacharset=<metaname=content=<linkrel=href=integrity=crossorigin=<title>ModifyClient</title></head><body><divclass=<ahref=class=>BacktoManagerDashboard</a></div><divclass=<h1>ModifyClient</h1><formaction=method=<divclass=<labelfor=>SelectaClienthtml><htmllang=<head>Bootstrap4Requiredmetatags<metacharset=<metaname=content=<linkrel=href=integrity=crossorigin=<title>ModifyClient</title></head><body><divclass=<ahref=class=>BacktoManagerDashboard</a></div><divclass=<h1>ModifyClient</h1><formaction=method=<divclass=<labelfor=>SelectaClient %>
                 </select>
             </div>
 
             <!-- Div to hold dynamically loaded form fields -->
             <div id="clientDataForm"></div>
 
-            <button type="submit" class="btn btn-primary">Update Client</button>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-primary btn-block">Update Client</button>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 

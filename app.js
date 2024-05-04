@@ -30,7 +30,7 @@ app.use(
     resave: true,
     saveUninitialized: true,
     cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
-  })
+  }),
 );
 
 // Set EJS as templating engine

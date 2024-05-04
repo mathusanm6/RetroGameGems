@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 
+ 
 class managerModel {
   constructor(db) {
     this.db = db;
@@ -22,7 +23,7 @@ class managerModel {
     const { email, first_name, last_name, password } = managerData;
     const updates = [];
     const values = [];
-  
+
     if (email && email.trim() !== "") {
       updates.push("email = $1");
       values.push(email);
@@ -40,16 +41,15 @@ class managerModel {
       updates.push("password = $4");
       values.push(hashedPassword);
     }
-  
+
     if (values.length === 0) {
       throw new Error("No valid fields provided for update.");
     }
-  
+
     values.push(managerId);
-    const query = `UPDATE loyalty_card.managers SET ${updates.join(", ")} WHERE id = $${values.length}`;
+    const query = `update loyalty_card.managers set ${updates.join(", ")} where id = $${values.length}`;
     await this.db.query(query, values);
   }
-  
 
   async verifyPassword(userPassword, hashedPassword) {
     return bcrypt.compare(userPassword, hashedPassword);

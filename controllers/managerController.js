@@ -1,14 +1,15 @@
 const HttpStatus = require("http-status-codes");
 
-class ManagerController {
+ 
+class managerController {
   constructor(managerModel) {
     this.managerModel = managerModel;
   }
 
   async modifyManager(req, res) {
-    if (
-      req.session.role === "manager") {
+    if (req.session.role === "manager") {
       const { email, first_name, last_name, password } = req.body;
+
       try {
         await this.managerModel.updateManager(req.session.userId, {
           email,
@@ -29,4 +30,4 @@ class ManagerController {
   }
 }
 
-module.exports = ManagerController;
+module.exports = managerController;

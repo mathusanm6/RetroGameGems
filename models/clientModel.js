@@ -58,9 +58,9 @@ class clientModel {
     }
 
     values.push(clientId);
-    const query = `UPDATE loyalty_card.clients SET ${updates.join(
-      ", "
-    )} WHERE id = $${values.length}`;
+    const query = `update loyalty_card.clients set ${updates.join(
+      ", ",
+    )} where id = $${values.length}`;
     await this.db.query(query, values);
   }
 

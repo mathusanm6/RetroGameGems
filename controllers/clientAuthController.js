@@ -7,12 +7,13 @@ class clientAuthController {
 
   async login(req, res) {
     const { email, password } = req.body;
+
     try {
       const client = await this.clientModel.findClientByEmail(email);
       if (client) {
         const validPassword = await this.clientModel.verifyUserPassword(
           password,
-          client.password
+          client.password,
         );
         if (validPassword) {
           req.session.userId = client.id;

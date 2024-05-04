@@ -1,6 +1,6 @@
 const HttpStatus = require("http-status-codes");
 
-class ClientController {
+class clientController {
   constructor(clientModel) {
     this.clientModel = clientModel;
   }
@@ -8,6 +8,7 @@ class ClientController {
   async modifyClient(req, res) {
     if (req.session.role === "manager") {
       const { clientId, email, first_name, last_name, birth_date } = req.body;
+
       try {
         await this.clientModel.updateClient(clientId, {
           email,
@@ -30,6 +31,7 @@ class ClientController {
   async deleteClient(req, res) {
     if (req.session.role === "manager") {
       const { clientId } = req.body;
+
       try {
         await this.clientModel.deleteClient(clientId);
         res.send("Client deleted successfully.");
@@ -50,6 +52,7 @@ class ClientController {
       if (!clientId || points <= 0) {
         return res.status(400).send("Invalid client or points data.");
       }
+
       try {
         await this.clientModel.addPoints(clientId, points);
         res.redirect("/manager-dashboard"); // Or indicate success another way
@@ -63,4 +66,4 @@ class ClientController {
   }
 }
 
-module.exports = ClientController;
+module.exports = clientController;

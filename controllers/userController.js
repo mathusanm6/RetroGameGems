@@ -1,5 +1,6 @@
 const HttpStatus = require("http-status-codes");
 
+ 
 class userController {
   constructor(userModel) {
     this.userModel = userModel;
@@ -22,7 +23,7 @@ class userController {
             last_name,
             first_name,
             role,
-            birth_date
+            birth_date,
           );
           return res
             .status(HttpStatus.StatusCodes.CREATED)
