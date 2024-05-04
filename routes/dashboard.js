@@ -20,7 +20,7 @@ const userController = new UserController(userModel);
 // Dashboard route for managers
 router.get("/manager-dashboard", (req, res) => {
   if (req.session.role === "manager") {
-    res.render("managerDashboard");
+    res.render("dashboard/manager/index");
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
   }
@@ -29,7 +29,7 @@ router.get("/manager-dashboard", (req, res) => {
 // Dashboard route for clients
 router.get("/client-dashboard", (req, res) => {
   if (req.session.role === "client") {
-    res.render("clientDashboard", { points: req.session.points });
+    res.render("dashboard/client/index", { points: req.session.points });
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
   }
@@ -38,7 +38,7 @@ router.get("/client-dashboard", (req, res) => {
 // Create user route for managers
 router.get("/create-user", (req, res) => {
   if (req.session.role === "manager") {
-    res.render("createUser");
+    res.render("dashboard/manager/createUser");
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
   }
@@ -56,7 +56,7 @@ router.get("/modify-client", async (req, res) => {
   if (req.session.role === "manager") {
     try {
       const clients = await clientModel.getAllClients();
-      res.render("modifyClient", { clients });
+      res.render("dashboard/manager/modifyClient", { clients });
     } catch (error) {
       console.error("Error fetching clients:", error);
       res
@@ -78,7 +78,7 @@ router.post("/modify-client", (req, res) => {
 
 router.get("/modify-manager", (req, res) => {
   if (req.session.role === "manager") {
-    res.render("modifyManager");
+    res.render("dashboard/manager/modifyManager");
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
   }
@@ -96,7 +96,7 @@ router.get("/delete-client", async (req, res) => {
   if (req.session.role === "manager") {
     try {
       const clients = await clientModel.getAllClients();
-      res.render("deleteClient", { clients });
+      res.render("dashboard/manager/deleteClient", { clients });
     } catch (error) {
       console.error("Error fetching clients:", error);
       res
@@ -176,7 +176,7 @@ router.get("/get-points", async (req, res) => {
 router.get("/add-points", async (req, res) => {
   if (req.session.role === "manager") {
     const clients = await clientModel.getAllClients();
-    res.render("addPoints", { clients });
+    res.render("dashboard/manager/addPoints", { clients });
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
   }

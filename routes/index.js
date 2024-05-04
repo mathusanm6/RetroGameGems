@@ -23,7 +23,7 @@ router.get("/auth/client-login", (req, res) => {
   } else if (req.session.userId && req.session.role === "manager") {
     res.redirect("/manager-dashboard");
   } else {
-    res.render("clientLogin");
+    res.render("login/clientLogin");
   }
 });
 
@@ -34,7 +34,7 @@ router.get("/auth/manager-login", (req, res) => {
   } else if (req.session.userId && req.session.role === "client") {
     res.redirect("/client-dashboard");
   } else {
-    res.render("managerLogin");
+    res.render("login/managerLogin");
   }
 });
 
