@@ -29,7 +29,7 @@ class userController {
         return res.redirect(`/create-user?success=false&message=Failed to create user`);
       }
     } else {
-      return res.redirect("/");
+      res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access.");
     }
   }
 

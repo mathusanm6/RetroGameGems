@@ -15,13 +15,9 @@
         <a href="/manager-dashboard" class="btn btn-outline-primary mt-3">Back to Manager Dashboard</a>
     </div>
     <div class="container mt-5">
-        <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert"
-            style="display: none;">
-            <strong>Success!</strong> Points have been successfully added.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+        
+        <%- include('partials/alerts'); %>
+
         <h1>Add Points to Client Account</h1>
         <form action="/add-points" method="post">
             <div class="form-group">
@@ -84,6 +80,9 @@
             const urlParams = new URLSearchParams(window.location.search);
             const success = urlParams.get('success');
             const param_clientId = urlParams.get('clientId');
+            const param_points = urlParams.get('points');
+            const param_first_name = urlParams.get('clientFirstName');
+            const param_last_name = urlParams.get('clientLastName');
 
             if (param_clientId) {
                 clientId.val(param_clientId);
@@ -92,6 +91,7 @@
 
             if (success === 'true') {
                 const successAlert = $('#successAlert');
+                successAlert.find('#successMessage').text('Successfully added ' + param_points + ' points to ' + param_first_name + ' ' + param_last_name + '\'s account.');
                 successAlert.show();
 
                 window.history.replaceState({}, document.title, window.location.pathname);  // Remove query params from URL
@@ -99,6 +99,17 @@
                 // Automatically hide the alert after 5 seconds
                 setTimeout(() => {
                     successAlert.hide();
+                }, 5000);
+            } else if (success === 'false') {
+                const errorAlert = $('#errorAlert');
+                errorAlert.find('#errorMessage').text('Failed to add points to client account.');
+                errorAlert.show();
+
+                window.history.replaceState({}, document.title, window.location.pathname);  // Remove query params from URL
+
+                // Automatically hide the alert after 5 seconds
+                setTimeout(() => {
+                    errorAlert.hide();
                 }, 5000);
             }
 

@@ -16,22 +16,9 @@
         <a href="/manager-dashboard" class="btn btn-outline-primary mt-3">Back to Manager Dashboard</a>
     </div>
     <div class="container mt-5">
-        <!-- Success Alert -->
-        <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert"
-            style="display: none;">
-            <strong>Success!</strong> <span id="successMessage"></span>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+        
+        <%- include('partials/alerts') %>
 
-        <!-- Error Alert -->
-        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="errorAlert" style="display: none;">
-            <strong>Error!</strong> <span id="errorMessage"></span>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
         <h1>Create New User Account</h1>
         <form action="/create-user" method="post" class="needs-validation" novalidate>
             <div class="form-group">
@@ -103,6 +90,8 @@
         integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
         crossorigin="anonymous"></script>
 
+    <script src="/alertHandler.js"></script>
+
     <script>
         $(document).ready(function () {
 
@@ -113,40 +102,6 @@
                 } else {
                     birthdayField.hide();
                 }
-            });
-
-            // Function to decode URI components for messages
-            function decodeUriComponent(input) {
-                return decodeURIComponent(input.replace(/\+/g, ' '));
-            }
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const success = urlParams.get('success');
-            const message = urlParams.get('message');
-
-            if (message) {
-                const decodedMessage = decodeUriComponent(message);
-                if (success === 'true') {
-                    $('#successMessage').text(decodedMessage);
-                    $('#successAlert').show();
-
-                    // Auto-hide after 5 seconds
-                    setTimeout(() => $('#successAlert').hide(), 5000);
-                } else {
-                    $('#errorMessage').text(decodedMessage);
-                    $('#errorAlert').show();
-
-                    // Auto-hide after 5 seconds
-                    setTimeout(() => $('#errorAlert').hide(), 5000);
-                }
-
-                // Remove query params from URL
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-
-            // Listener for close button clicks in alerts
-            $('.alert .close').click(function () {
-                $(this).parent().hide();
             });
         });
     </script>

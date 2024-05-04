@@ -16,12 +16,10 @@ class managerController {
           last_name,
           password,
         });
-        res.send("Manager credentials updated successfully.");
+        return res.redirect("/modify-manager?success=true&message=Your information updated successfully.");
       } catch (error) {
         console.error("Error updating manager:", error);
-        res
-          .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-          .send("Failed to update manager.");
+        return res.redirect("/modify-manager?success=false&message=Failed to update your information.");
       }
     } else {
       res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access.");
@@ -38,12 +36,10 @@ class managerController {
           description,
           needed_points,
         });
-        res.send("Gift added successfully.");
+        return res.redirect("/add-gift?success=true&message=Gift added successfully.");
       } catch (error) {
         console.error("Error adding gift:", error);
-        res
-          .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-          .send("Failed to add gift.");
+        return res.redirect("/add-gift?success=false&message=Failed to add gift.");
       }
     } else {
       res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access.");
@@ -60,12 +56,10 @@ class managerController {
           description,
           needed_points,
         });
-        res.send("Gift updated successfully.");
+        return res.redirect("/modify-gift?success=true&message=Gift updated successfully.");
       } catch (error) {
         console.error("Error updating gift:", error);
-        res
-          .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-          .send("Failed to update gift.");
+        return res.redirect("/modify-gift?success=false&message=Failed to update gift.");
       }
     } else {
       res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access.");
@@ -78,12 +72,10 @@ class managerController {
 
       try {
         await this.managerModel.deleteGift(giftId);
-        res.send("Gift deleted successfully.");
+        return res.redirect("/delete-gift?success=true&message=Gift deleted successfully.");
       } catch (error) {
         console.error("Error deleting gift:", error);
-        res
-          .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-          .send("Failed to delete gift.");
+        return res.redirect("/delete-gift?success=false&message=Failed to delete gift.");
       }
     } else {
       res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access.");
