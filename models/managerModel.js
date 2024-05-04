@@ -18,6 +18,39 @@ class managerModel {
     await this.db.query(query, [email, hashedPassword, first_name, last_name]);
   }
 
+  async updateManager(managerId, managerData) {
+    const { email, first_name, last_name, password } = managerData; // Assuming password change might be requested
+    const updates = [];
+    const values = [];
+  
+    if (email && email.trim() !== "") {
+      updates.push("email = $1");
+      values.push(email);
+    }
+    if (first_name && first_name.trim() !== "") {
+      updates.push("first_name = $2");
+      values.push(first_name);
+    }
+    if (last_name && last_name.trim() !== "") {
+      updates.push("last_name = $3");
+      values.push(last_name);
+    }
+    if (password && password.trim() !== "") {
+      const hashedPassword = await bcrypt.hash(password, 10); // Assuming bcrypt is available
+      updates.push("password = $4");
+      values.push(hashedPassword);
+    }
+  
+    if (values.length === 0) {
+      throw new Error("No valid fields provided for update.");
+    }
+  
+    values.push(managerId);
+    const query = `UPDATE loyalty_card.managers SET ${updates.join(", ")} WHERE id = $${values.length}`;
+    await this.db.query(query, values);
+  }
+  
+
   async verifyPassword(userPassword, hashedPassword) {
     return bcrypt.compare(userPassword, hashedPassword);
   }

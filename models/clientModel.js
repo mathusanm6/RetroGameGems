@@ -11,6 +11,12 @@ class clientModel {
     return result.rows[0];
   }
 
+  async getClientById(clientId) {
+    const query = "SELECT id, email, first_name, last_name, birth_date FROM loyalty_card.clients WHERE id = $1";
+    const result = await this.db.query(query, [clientId]);
+    return result.rows[0];
+}
+
   async addClient(email, password, last_name, first_name, birth_date) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const query =
@@ -24,8 +30,53 @@ class clientModel {
     ]);
   }
 
+  async updateClient(clientId, clientData) {
+    const { email, first_name, last_name, birth_date } = clientData;
+    const updates = [];
+    const values = [];
+
+    if (email && email.trim() !== "") {
+      updates.push("email = $1");
+      values.push(email);
+    }
+    if (first_name && first_name.trim() !== "") {
+      updates.push("first_name = $2");
+      values.push(first_name);
+    }
+    if (last_name && last_name.trim() !== "") {
+      updates.push("last_name = $3");
+      values.push(last_name);
+    }
+    if (birth_date && birth_date.trim() !== "") {
+      updates.push("birth_date = $4");
+      values.push(birth_date);
+    }
+
+    if (values.length === 0) {
+      throw new Error("No valid fields provided for update.");
+    }
+
+    values.push(clientId);
+    const query = `UPDATE loyalty_card.clients SET ${updates.join(
+      ", "
+    )} WHERE id = $${values.length}`;
+    await this.db.query(query, values);
+  }
+
   async verifyUserPassword(userPassword, hashedPassword) {
     return bcrypt.compare(userPassword, hashedPassword);
+  }
+
+  async deleteClient(clientId) {
+    const query = "DELETE FROM loyalty_card.clients WHERE id = $1";
+    await this.db.query(query, [clientId]);
+  }
+
+  async getAllClients() {
+    const query =
+      "SELECT id, email, first_name, last_name, birth_date FROM loyalty_card.clients";
+    const result = await this.db.query(query);
+    return result.rows;
   }
 
   async getPoints(clientId) {

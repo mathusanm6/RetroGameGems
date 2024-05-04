@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Modify Client</title>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <a href="/manager-dashboard" class="btn btn-primary mt-3">Back to Manager Dashboard</a>
+    </div>
+    <div class="container mt-5">
+        <h1>Modify Client</h1>
+        <form action="/modify-client" method="post">
+            <div class="form-group">
+                <label for="clientId">Select a Client:</label>
+                <select name="clientId" class="form-control" onchange="loadClientData(this.value)">
+                    <option value="">Select a Client</option>
+                    <% clients.forEach(function(client) { %>
+                        <option value="<%= client.id %>">
+                            <%= client.first_name %>
+                                <%= client.last_name %> - <%= client.email %>
+                        </option>
+                        <% }); %>
+                </select>
+            </div>
+
+            <!-- Div to hold dynamically loaded form fields -->
+            <div id="clientDataForm"></div>
+
+            <button type="submit" class="btn btn-primary">Update Client</button>
+        </form>
+        <a href="/auth/logout" class="btn btn-secondary mt-3">Logout</a>
+    </div>
+
+    <script>
+        function loadClientData(clientId) {
+            if (!clientId) {
+                document.getElementById('clientDataForm').innerHTML = '';
+                return;
+            }
+            fetch(`/get-client/${clientId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const clientDataForm = document.getElementById('clientDataForm');
+                    clientDataForm.innerHTML = `
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" name="email" value="${data.email}">
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">First Name</label>
+                            <input type="text" class="form-control" name="first_name" value="${data.first_name}">
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" class="form-control" name="last_name" value="${data.last_name}">
+                        </div>
+                        <div class="form-group">
+                            <label for="birthday">Birthday</label>
+                            <input type="date" class="form-control" name="birthday" value="${new Date(data.birth_date).toISOString().split('T')[0]}">
+                        </div>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Failed to fetch client data:', error);
+                    document.getElementById('clientDataForm').innerHTML = 'Failed to load data.';
+                });
+        }
+    </script>
+</body>
+
+</html>
