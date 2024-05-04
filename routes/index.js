@@ -11,8 +11,7 @@ router.get("/", (req, res) => {
       res.redirect("/client-dashboard");
     }
   } else {
-    // If no user is logged in, show the general login page which can redirect appropriately
-    res.redirect("/auth/client-login");
+    res.render("index");
   }
 });
 
