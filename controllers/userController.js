@@ -47,8 +47,8 @@ class userController {
           .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
           .send("Failed to log out");
       }
-      // Redirect to login page or home page after successful logout
-      res.redirect("/auth/client-login");
+      // Redirect to home page after successful logout
+      res.redirect("/");
     });
   }
 }
