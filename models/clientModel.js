@@ -27,6 +27,22 @@ class clientModel {
   async verifyUserPassword(userPassword, hashedPassword) {
     return bcrypt.compare(userPassword, hashedPassword);
   }
+
+  async getPoints(clientId) {
+    try {
+      const query = "SELECT points FROM loyalty_card.clients WHERE id = $1";
+      const result = await this.db.query(query, [clientId]);
+      if (result.rows.length > 0) {
+        return result.rows[0].points;
+      } else {
+        console.log("No client found with that ID.");
+        return null; // No client found
+      }
+    } catch (error) {
+      console.error("Error getting points:", error);
+      throw error;
+    }
+  }
 }
 
 module.exports = clientModel;

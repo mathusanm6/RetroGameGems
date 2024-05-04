@@ -1,5 +1,4 @@
 const HttpStatus = require("http-status-codes");
-const ClientModel = require("../models/clientModel");
 
 class clientAuthController {
   constructor(clientModel) {
@@ -18,6 +17,7 @@ class clientAuthController {
         if (validPassword) {
           req.session.userId = client.id;
           req.session.role = "client";
+          req.session.points = client.points;
           res.redirect("/client-dashboard");
         } else {
           res.send("Invalid Email or Password");
