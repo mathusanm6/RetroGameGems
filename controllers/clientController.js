@@ -43,6 +43,24 @@ class ClientController {
       res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access.");
     }
   }
+
+  async addPoints(req, res) {
+    if (req.session.role === "manager") {
+      const { clientId, points } = req.body;
+      if (!clientId || points <= 0) {
+        return res.status(400).send("Invalid client or points data.");
+      }
+      try {
+        await this.clientModel.addPoints(clientId, points);
+        res.redirect("/manager-dashboard"); // Or indicate success another way
+      } catch (error) {
+        console.error("Error adding points:", error);
+        res.status(500).send("Failed to add points to client.");
+      }
+    } else {
+      res.status(403).send("Unauthorized access");
+    }
+  }
 }
 
 module.exports = ClientController;

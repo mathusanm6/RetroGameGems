@@ -59,7 +59,9 @@ router.get("/modify-client", async (req, res) => {
       res.render("modifyClient", { clients });
     } catch (error) {
       console.error("Error fetching clients:", error);
-      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching clients");
+      res
+        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error fetching clients");
     }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
@@ -97,7 +99,9 @@ router.get("/delete-client", async (req, res) => {
       res.render("deleteClient", { clients });
     } catch (error) {
       console.error("Error fetching clients:", error);
-      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching clients");
+      res
+        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error fetching clients");
     }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
@@ -120,32 +124,35 @@ router.get("/get-clients", async (req, res) => {
       res.json({ clients: clients });
     } catch (error) {
       console.error("Error fetching clients:", error);
-      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching clients");
+      res
+        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error fetching clients");
     }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
   }
 });
 
-router.get('/get-client/:clientId', async (req, res) => {
+router.get("/get-client/:clientId", async (req, res) => {
   if (req.session.role === "manager") {
-      try {
-          const clientId = req.params.clientId;
-          const client = await clientModel.getClientById(clientId);
-          if (client) {
-              res.json(client);
-          } else {
-              res.status(HttpStatus.StatusCodes.NOT_FOUND).send('Client not found');
-          }
-      } catch (error) {
-          console.error("Error fetching client:", error);
-          res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching client details");
+    try {
+      const clientId = req.params.clientId;
+      const client = await clientModel.getClientById(clientId);
+      if (client) {
+        res.json(client);
+      } else {
+        res.status(HttpStatus.StatusCodes.NOT_FOUND).send("Client not found");
       }
+    } catch (error) {
+      console.error("Error fetching client:", error);
+      res
+        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error fetching client details");
+    }
   } else {
-      res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
   }
 });
-
 
 // Get points route for clients
 router.get("/get-points", async (req, res) => {
@@ -156,8 +163,28 @@ router.get("/get-points", async (req, res) => {
       res.json({ points: points });
     } catch (error) {
       console.error("Error fetching points:", error);
-      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching points");
+      res
+        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error fetching points");
     }
+  } else {
+    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+  }
+});
+
+// Add points route for managers
+router.get("/add-points", async (req, res) => {
+  if (req.session.role === "manager") {
+    const clients = await clientModel.getAllClients();
+    res.render("addPoints", { clients });
+  } else {
+    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+  }
+});
+
+router.post("/add-points", (req, res) => {
+  if (req.session.role === "manager") {
+    clientController.addPoints(req, res);
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
   }
