@@ -2,7 +2,7 @@ const express = require("express");
 const ClientModel = require("../models/clientModel");
 const ManagerModel = require("../models/managerModel");
 const UserModel = require("../models/userModel");
-const ClientAuthController = require("../controllers/clientAuthcontroller");
+const ClientAuthController = require("../controllers/clientAuthController");
 const ManagerAuthController = require("../controllers/managerAuthController");
 const UserController = require("../controllers/userController");
 
