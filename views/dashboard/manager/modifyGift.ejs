@@ -26,7 +26,7 @@
                     <option value="">Select a Gift</option>
                     <% gifts.forEach(function(gift) { %>
                         <option value="<%= gift.id %>">
-                            <%= gift.name %> - <%= gift.needed_points %> points
+                            <%= gift.name %> - <%= gift.needed_points %> points - <%= gift.quantity %> available
                         </option>
                         <% }); %>
                 </select>
@@ -77,8 +77,16 @@
                             <textarea class="form-control" name="description">${data.description}</textarea>
                         </div>
                         <div class="form-group">
+                            <label for="quantity">Quantity:</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" value="${data.quantity}" min="1"
+                                aria-describedby="quantityHelp" required>
+                            <small id="quantityHelp" class="form-text text-muted">
+                                Please enter the quantity (must be 1 or more).
+                            </small>
+                        </div>
+                        <div class="form-group">
                             <label for="needed_points">Needed Points:</label>
-                            <input type="number" class="form-control" name="needed_points" value="${data.needed_points}">
+                            <input type="number" class="form-control" name="needed_points" value="${data.needed_points}" min="0">
                         </div>
                     `;
                 })

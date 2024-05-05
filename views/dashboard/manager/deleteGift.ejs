@@ -26,7 +26,7 @@
                     <option value="">Select a Gift</option>
                     <% gifts.forEach(function(gift) { %>
                         <option value="<%= gift.id %>">
-                            <%= gift.name %> - <%= gift.needed_points %> points
+                            <%= gift.name %> - <%= gift.needed_points %> points - <%= gift.quantity %> available
                         </option>
                         <% }); %>
                 </select>

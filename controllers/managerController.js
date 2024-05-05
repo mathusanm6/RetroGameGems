@@ -32,12 +32,13 @@ class managerController {
 
   async addGift(req, res) {
     if (req.session.role === "manager") {
-      const { name, description, needed_points } = req.body;
+      const { name, description, quantity, needed_points } = req.body;
 
       try {
         await this.managerModel.addGift({
           name,
           description,
+          quantity,
           needed_points,
         });
         return res.redirect(
@@ -56,12 +57,13 @@ class managerController {
 
   async modifyGift(req, res) {
     if (req.session.role === "manager") {
-      const { giftId, name, description, needed_points } = req.body;
+      const { giftId, name, description, quantity, needed_points } = req.body;
 
       try {
         await this.managerModel.updateGift(giftId, {
           name,
           description,
+          quantity,
           needed_points,
         });
         return res.redirect(

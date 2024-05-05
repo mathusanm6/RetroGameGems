@@ -55,10 +55,10 @@ class managerModel {
   }
 
   async addGift(giftData) {
-    const { name, description, needed_points } = giftData;
+    const { name, description, quantity, needed_points } = giftData;
     const query =
-      "INSERT INTO loyalty_card.gifts (name, description, needed_points) VALUES ($1, $2, $3)";
-    await this.db.query(query, [name, description, needed_points]);
+      "INSERT INTO loyalty_card.gifts (name, description, quantity, needed_points) VALUES ($1, $2, $3, $4)";
+    await this.db.query(query, [name, description, quantity, needed_points]);
   }
 
   async getAllGifts() {
@@ -74,7 +74,7 @@ class managerModel {
   }
 
   async updateGift(giftId, giftData) {
-    const { name, description, needed_points } = giftData;
+    const { name, description, quantity, needed_points } = giftData;
     const updates = [];
     const values = [];
 
@@ -86,8 +86,12 @@ class managerModel {
       updates.push("description = $2");
       values.push(description);
     }
+    if (quantity) {
+      updates.push("quantity = $3");
+      values.push(quantity);
+    }
     if (needed_points) {
-      updates.push("needed_points = $3");
+      updates.push("needed_points = $4");
       values.push(needed_points);
     }
 
