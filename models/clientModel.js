@@ -111,6 +111,12 @@ class clientModel {
       throw error;
     }
   }
+
+  async getAvailableGifts() {
+    const query = "SELECT * FROM loyalty_card.gifts";
+    const result = await this.db.query(query);
+    return result.rows;
+  }
 }
 
 module.exports = clientModel;
