@@ -17,38 +17,40 @@
             margin-right: 0.5rem;
         }
 
-        .point-icon {
-            color: #ffc107;
+        .gift-icon {
+            color: #dc3545;
         }
 
-        /* Bootstrap yellow */
+        /* Bootstrap red */
     </style>
-    <title>Client Dashboard</title>
+    <title>Available Gifts</title>
 </head>
 
 <body>
     <div class="container mt-5">
-        <h1 class="mb-4">Client Dashboard</h1>
+        <h1 class="mb-4">Available Gifts</h1>
 
-        <!-- Points -->
-        <div class="mb-3">
-            <h3>Points Accumulated</h3>
-            <p><i class="fas fa-coins fa point-icon"></i> <%= points %> Points</p>
+        <div class="list-group">
+<% gifts.forEach(gift => { %>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"><%= gift.name %></h5>
+      <p class="card-text"><%= gift.description %></p>
+      <p class="card-text"><%= gift.needed_points %> Points</p>
+      <form action="/add-to-cart" method="post">
+        <input type="hidden" name="giftId" value="<%= gift.id %>">
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" value="1" min="1">
+        <button type="submit" class="btn btn-primary">Add to Cart</button>
+      </form>
+    </div>
+  </div>
+<% }) %>
+
         </div>
 
-        <!-- Gifts -->
-        <div class="mb-3">
-            <h3>Gifts</h3>
-            <a href="/view-gifts" class="btn btn-primary">
-                View Available Gifts
-            </a>
-            <a href="/cart" class="btn btn-primary">
-                View Shopping Cart
-            </a>
-        </div>
-
-        <a href="/logout" class="btn btn-outline-secondary mt-3">
-            <i class="fas fa-sign-out-alt fa logout-icon"></i> Logout
+        <a href="/client-dashboard" class="btn btn-outline-secondary mt-3">
+            <i class="fas fa-arrow-left fa"></i> Back to Dashboard
         </a>
     </div>
 

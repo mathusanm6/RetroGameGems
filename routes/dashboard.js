@@ -347,4 +347,19 @@ router.post("/delete-gift", (req, res) => {
   }
 });
 
+// Get all gifts route for clients
+router.get("/view-gifts", async (req, res) => {
+  if (req.session.role === "client") {
+    try {
+      const gifts = await clientModel.getAvailableGifts();
+      res.render("dashboard/client/viewGifts", { gifts });
+    } catch (error) {
+      console.error("Error fetching gifts:", error);
+      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching gifts");
+    }
+  } else {
+    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+  }
+});
+
 module.exports = router;
