@@ -348,57 +348,55 @@ router.post("/delete-gift", (req, res) => {
 });
 
 // Get all gifts route for clients
-router.get("/view-gifts", async (req, res) => {
-  if (req.session.role === "client") {
-    try {
-      // Récupérez le nombre de points accumulés par le client depuis la session
-      const clientPoints = req.session.points;
-
-      // Récupérez uniquement les cadeaux avec un prix inférieur ou égal au nombre de points accumulés par le client
-      const gifts =
-        await clientModel.getAvailableGiftsBelowPoints(clientPoints);
-
-      res.render("dashboard/client/viewGifts", { gifts });
-    } catch (error) {
-      console.error("Error fetching gifts:", error);
-      res
-        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error fetching gifts");
+router.get(
+  "/view-gifts",
+  clientAuthController.ensureAuthenticated.bind(clientAuthController),
+  async (req, res) => {
+    if (req.session.role === "client") {
+      try {
+        const clientPoints = req.session.points;
+        const gifts =
+          await clientModel.getAvailableGiftsBelowPoints(clientPoints);
+        res.render("dashboard/client/viewGifts", { gifts });
+      } catch (error) {
+        console.error("Error fetching gifts:", error);
+        res
+          .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
+          .send("Error fetching gifts");
+      }
+    } else {
+      res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
     }
-  } else {
-    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
   }
-});
+);
 
-router.use((req, res, next) => {
-  if (!req.session.panier) {
-    req.session.panier = {
-      userId: "unique_user_id",
-      items: [],
-      totalPrice: 0,
-    };
+router.get(
+  "/cart",
+  clientAuthController.ensureAuthenticated.bind(clientAuthController),
+  cartController.getCart.bind(cartController)
+);
+router.post(
+  "/add-to-cart",
+  clientAuthController.ensureAuthenticated.bind(clientAuthController),
+  cartController.addToCart.bind(cartController)
+);
+router.post(
+  "/remove-from-cart",
+  clientAuthController.ensureAuthenticated.bind(clientAuthController),
+  cartController.removeFromCart.bind(cartController)
+);
+router.post(
+  "/validate-cart",
+  clientAuthController.ensureAuthenticated.bind(clientAuthController),
+  cartController.validateCart.bind(cartController)
+);
+
+router.get(
+  "/confirmation",
+  clientAuthController.ensureAuthenticated.bind(clientAuthController),
+  (req, res) => {
+    res.render("dashboard/client/confirmation");
   }
-  next();
-});
-
-router.post("/add-to-cart", (req, res) => {
-  cartController.addToCart(req, res);
-});
-
-router.post("/update-cart-item", (req, res) => {
-  cartController.updateCartItem(req, res);
-});
-
-router.post("/remove-from-cart", (req, res) => {
-  cartController.removeFromCart(req, res);
-});
-
-router.post("/validate-cart", (req, res) => {
-  cartController.validateCart(req, res);
-});
-
-router.get("/cart", (req, res) => {
-  cartController.getCart(req, res);
-});
+);
 
 module.exports = router;
