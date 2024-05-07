@@ -353,7 +353,12 @@ router.post("/delete-gift", (req, res) => {
 router.get("/view-gifts", async (req, res) => {
   if (req.session.role === "client") {
     try {
-      const gifts = await clientModel.getAvailableGifts();
+      // Récupérez le nombre de points accumulés par le client depuis la session
+      const clientPoints = req.session.points;
+
+      // Récupérez uniquement les cadeaux avec un prix inférieur ou égal au nombre de points accumulés par le client
+      const gifts = await clientModel.getAvailableGiftsBelowPoints(clientPoints);
+
       res.render("dashboard/client/viewGifts", { gifts });
     } catch (error) {
       console.error("Error fetching gifts:", error);
