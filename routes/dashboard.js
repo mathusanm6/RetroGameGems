@@ -388,6 +388,10 @@ router.post("/remove-from-cart", (req, res) => {
   cartController.removeFromCart(req, res);
 });
 
+router.post("/validate-cart", (req, res) => {
+  cartController.validateCart(req, res);
+});
+
 router.get("/cart", (req, res) => {
   cartController.getCart(req, res);
 });

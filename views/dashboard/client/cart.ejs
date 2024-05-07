@@ -51,11 +51,15 @@
                     </form>
                 </div>
             <% }) %>
+            <!-- Form for validating the cart -->
+            <form action="/validate-cart" method="post">
+                <button type="submit" class="btn btn-success">Valider le panier</button>
+            </form>
         <% } else { %>
             <p>Your shopping cart is empty.</p>
         <% } %>
 
-        <p>Total Price: <%= totalPrice %> Points</p> <!-- Ajout de cette ligne pour afficher le prix total du panier -->
+        <p>Total Price: <%= totalPrice %> Points</p>
 
         <a href="/client-dashboard" class="btn btn-outline-secondary mt-3">
             <i class="fas fa-arrow-left fa"></i> Back to Dashboard
