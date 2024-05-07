@@ -23,12 +23,12 @@ class CartController {
       this.cart.items.push({ 
         giftId, 
         name: gift.name, 
-        price: gift.price, 
+        price: gift.needed_points, 
         quantity 
       });
 
       // Mettez à jour le prix total du panier
-      this.cart.totalPrice += gift.price * quantity;
+      this.cart.totalPrice += gift.needed_points * quantity;
 
       res.redirect("/cart"); // Redirigez vers la page du panier
     } catch (error) {
@@ -38,30 +38,39 @@ class CartController {
   }
 
   async updateCartItem(req, res) {
-    const { giftId, quantity } = req.body;
+      const { giftId, quantity } = req.body;
 
-    try {
-      // Recherchez l'article correspondant dans le panier
-      const itemToUpdate = this.cart.items.find(item => item.giftId === giftId);
+      try {
+          // Recherchez l'article correspondant dans le panier
+          const itemToUpdate = this.cart.items.find(item => item.giftId === giftId);
 
-      // Mettez à jour la quantité de l'article
-      if (itemToUpdate) {
-        const prevQuantity = itemToUpdate.quantity;
-        itemToUpdate.quantity = quantity;
+          // Vérifiez si l'article existe dans le panier
+          if (!itemToUpdate) {
+              throw new Error("Article non trouvé dans le panier");
+          }
 
-        // Mettez à jour le prix total du panier en fonction de la modification de la quantité
-        const giftPrice = 100; // Prix fictif pour l'exemple, remplacez-le par la logique réelle
-        this.cart.totalPrice += (quantity - prevQuantity) * giftPrice;
+          // Récupérez les informations sur le produit à partir de la base de données
+          const gift = await this.clientModel.getGiftById(giftId);
 
-        res.redirect("/cart"); // Redirigez vers la page du panier
-      } else {
-        res.status(HttpStatus.StatusCodes.NOT_FOUND).send("Article non trouvé dans le panier");
+          // Vérifiez si la quantité demandée est disponible
+          if (quantity > gift.quantity) {
+              throw new Error("Quantité demandée supérieure à la quantité disponible en stock.");
+          }
+
+          // Mettez à jour la quantité de l'article
+          const prevQuantity = itemToUpdate.quantity;
+          itemToUpdate.quantity = quantity;
+
+          // Mettez à jour le prix total du panier en fonction de la modification de la quantité
+          this.cart.totalPrice += (quantity - prevQuantity) * gift.price;
+
+          res.redirect("/cart"); // Redirigez vers la page du panier
+      } catch (error) {
+          console.error("Erreur lors de la mise à jour de l'article du panier :", error);
+          res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Impossible de mettre à jour l'article du panier");
       }
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour de l'article du panier :", error);
-      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Impossible de mettre à jour l'article du panier");
-    }
   }
+
 
   async removeFromCart(req, res) {
     const { giftId } = req.body;
@@ -89,9 +98,16 @@ class CartController {
   }
 
   async getCart(req, res) {
-    // Récupérez les articles et le prix total du panier pour les passer à la vue
-    res.render("dashboard/client/cart", { items: this.cart.items, totalPrice: this.cart.totalPrice });
+      // Calcul du prix total du panier
+      let totalPrice = 0;
+      this.cart.items.forEach(item => {
+          totalPrice += item.price * item.quantity;
+      });
+
+      // Récupérez les articles et le prix total du panier pour les passer à la vue
+      res.render("dashboard/client/cart", { items: this.cart.items, totalPrice: totalPrice });
   }
+
 }
 
 module.exports = CartController;

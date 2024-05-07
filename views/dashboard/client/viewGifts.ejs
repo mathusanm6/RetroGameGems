@@ -31,21 +31,22 @@
         <h1 class="mb-4">Available Gifts</h1>
 
         <div class="list-group">
-<% gifts.forEach(gift => { %>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title"><%= gift.name %></h5>
-      <p class="card-text"><%= gift.description %></p>
-      <p class="card-text"><%= gift.needed_points %> Points</p>
-      <form action="/add-to-cart" method="post">
-        <input type="hidden" name="giftId" value="<%= gift.id %>">
-        <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" value="1" min="1">
-        <button type="submit" class="btn btn-primary">Add to Cart</button>
-      </form>
-    </div>
-  </div>
-<% }) %>
+            <% gifts.forEach(gift => { %>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><%= gift.name %></h5>
+                    <p class="card-text"><%= gift.description %></p>
+                    <p class="card-text"><%= gift.needed_points %> Points</p>
+                    <p class="card-text">Available Quantity: <%= gift.quantity %></p> <!-- Add this line -->
+                    <form action="/add-to-cart" method="post">
+                        <input type="hidden" name="giftId" value="<%= gift.id %>">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" value="1" min="1">
+                        <button type="submit" class="btn btn-primary">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+            <% }) %>
 
         </div>
 
