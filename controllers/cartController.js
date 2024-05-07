@@ -1,7 +1,11 @@
+const bcrypt = require("bcryptjs");
+const ClientModel = require("../models/clientModel");
 const HttpStatus = require("http-status-codes");
+const pool = require("../models/db");
 
 class CartController {
   constructor() {
+    this.clientModel = new ClientModel(pool); // Créez une instance de clientModel
     this.cart = {
       items: [],
       totalPrice: 0
@@ -12,20 +16,19 @@ class CartController {
     const { giftId, quantity } = req.body;
 
     try {
-      // Vérifiez si l'article est déjà dans le panier
-      const existingItem = this.cart.items.find(item => item.giftId === giftId);
+      // Récupérez les informations sur le produit à partir de la base de données ou d'une autre source
+      const gift = await this.clientModel.getGiftById(giftId); // Utilisez l'instance de clientModel
 
-      // Si l'article existe déjà, mettez à jour sa quantité
-      if (existingItem) {
-        existingItem.quantity += quantity;
-      } else {
-        // Sinon, ajoutez un nouvel article au panier
-        this.cart.items.push({ giftId, quantity });
-      }
+      // Ajoutez les informations sur le produit au panier
+      this.cart.items.push({ 
+        giftId, 
+        name: gift.name, 
+        price: gift.price, 
+        quantity 
+      });
 
       // Mettez à jour le prix total du panier
-      const giftPrice = 100; // Prix fictif pour l'exemple, remplacez-le par la logique réelle
-      this.cart.totalPrice += giftPrice * quantity;
+      this.cart.totalPrice += gift.price * quantity;
 
       res.redirect("/cart"); // Redirigez vers la page du panier
     } catch (error) {
