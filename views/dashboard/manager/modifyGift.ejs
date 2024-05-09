@@ -8,6 +8,22 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Modify Gift</title>
+    <style>
+        .img-preview {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            width: 100%;
+            height: auto;
+        }
+
+        .img-preview img {
+            max-width: 100%;
+            transition: transform 0.5s ease-in-out;
+            transform: scale(0);
+        }
+    </style>
 </head>
 
 <body>
@@ -18,36 +34,35 @@
 
         <%- include('partials/alerts'); %>
 
-        <h1>Modify Gift</h1>
-        <form action="/modify-gift" method="post">
-            <div class="form-group">
-                <label for="giftId">Select a Gift:</label>
-                <select name="giftId" id="giftId" class="form-control" onchange="loadGiftData(this.value)">
-                    <option value="">Select a Gift</option>
-                    <% gifts.forEach(function(gift) { %>
-                        <option value="<%= gift.id %>">
-                            <%= gift.name %> - <%= gift.needed_points %> points - <%= gift.quantity %> available
-                        </option>
-                        <% }); %>
-                </select>
-            </div>
+            <h1>Modify Gift</h1>
+            <form action="/modify-gift" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="giftId">Select a Gift:</label>
+                    <select name="giftId" id="giftId" class="form-control" onchange="loadGiftData(this.value)">
+                        <option value="">Select a Gift</option>
+                        <% gifts.forEach(function(gift) { %>
+                            <option value="<%= gift.id %>">
+                                <%= gift.name %> - <%= gift.needed_points %> points - <%= gift.quantity %> available
+                            </option>
+                            <% }); %>
+                    </select>
+                </div>
 
-            <!-- Div to hold dynamically loaded form fields -->
-            <div id="giftDataForm"></div>
+                <!-- Div to hold dynamically loaded form fields -->
+                <div id="giftDataForm"></div>
 
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-2">
-                        <button type="submit" class="btn btn-primary btn-block">Update Gift</button>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-primary btn-block">Update Gift</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"
         integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
         crossorigin="anonymous"></script>
@@ -67,6 +82,15 @@
                 .then(response => response.json())
                 .then(data => {
                     const giftDataForm = document.getElementById('giftDataForm');
+                    let imagePreviewHtml = `
+                        <div class="form-group">
+                            <label for="image">Upload Image:</label>
+                            <input type="file" class="form-control-file" id="image" name="image" accept="image/*" onchange="previewImage();">
+                            <div class="img-preview mt-2">
+                                <img src="${data.image ? 'data:image/jpeg;base64,' + data.image : ''}" alt="Image Preview" class="img-fluid" id="imagePreview">
+                            </div>
+                        </div>`;
+
                     giftDataForm.innerHTML = `
                         <div class="form-group">
                             <label for="name">Gift Name:</label>
@@ -76,6 +100,7 @@
                             <label for="description">Description:</label>
                             <textarea class="form-control" name="description">${data.description}</textarea>
                         </div>
+                        ${imagePreviewHtml}
                         <div class="form-group">
                             <label for="quantity">Quantity:</label>
                             <input type="number" class="form-control" id="quantity" name="quantity" value="${data.quantity}" min="1"
@@ -89,11 +114,49 @@
                             <input type="number" class="form-control" name="needed_points" value="${data.needed_points}" min="0">
                         </div>
                     `;
+
+                    // Initialize visibility of image preview based on existing image
+                    if (data.image) {
+                        animateImagePreview();
+                    }
                 })
                 .catch(error => {
                     console.error('Failed to fetch gift data:', error);
                     document.getElementById('giftDataForm').innerHTML = 'Failed to load data.';
                 });
+        }
+
+        function previewImage() {
+            const file = document.getElementById('image').files[0];
+            const previewImg = $('#imagePreview');
+            const img_preview_image = $('.img-preview img');
+
+            if (file) {
+                // Remove the transition to instantly scale down the image
+                img_preview_image.css('transition', 'none');
+                previewImg.css('transform', 'scale(0)'); // Instantly scale the image down
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImg.attr('src', e.target.result);
+
+                    // Re-apply the transition after setting the new image source
+                    img_preview_image.css('transition', 'transform 0.5s ease-in-out');
+
+                    // Use a slight delay to ensure the new transition style is applied
+                    setTimeout(() => {
+                        animateImagePreview();
+                    }, 10);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function animateImagePreview() {
+            const previewImg = $('#imagePreview');
+            setTimeout(() => {
+                previewImg.css('transform', 'scale(1)'); // Animate to full size
+            }, 10);
         }
     </script>
 </body>
