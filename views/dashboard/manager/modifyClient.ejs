@@ -24,7 +24,7 @@
             <form action="/modify-client" method="post">
                 <div class="form-group">
                     <label for="clientId">Select a Client:</label>
-                    <select name="clientId" class="form-control" onchange="loadClientData(this.value)">
+                    <select id="clientId" name="clientId" class="form-control" onchange="loadClientData(this.value)">
                         <option value="">Select a Client</option>
                         <% clients.forEach(function(client) { %>
                             <option value="<%= client.id %>">
@@ -86,19 +86,19 @@
                     clientDataForm.innerHTML = `
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" name="email" value="${data.email}">
-                    </div>
-                    <div class="form-group">
-                        <label for="first_name">First Name</label>
-                        <input type="text" class="form-control" name="first_name" value="${data.first_name}">
+                        <input type="email" id="email" class="form-control" name="email" value="${data.email}" autocomplete="email" required>
                     </div>
                     <div class="form-group">
                         <label for="last_name">Last Name</label>
-                        <input type="text" class="form-control" name="last_name" value="${data.last_name}">
+                        <input type="text" id="last_name" class="form-control" name="last_name" value="${data.last_name}" autocomplete="family_name" required>
                     </div>
                     <div class="form-group">
-                        <label for="birthday">Birthday</label>
-                        <input type="date" class="form-control" name="birthday" id="birth_date" value="${new Date(data.birth_date).toISOString().split('T')[0]}" min="1899-01-01" max="">
+                        <label for="first_name">First Name</label>
+                        <input type="text" id="first_name" class="form-control" name="first_name" value="${data.first_name}" autocomplete="given-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="birth_date">Birthday</label>
+                        <input type="date" id="birth_date" class="form-control" name="birthday" value="${new Date(data.birth_date).toISOString().split('T')[0]}" min="1899-01-01" max="" autocomplete="bday" required>
                     </div>
                 `;
                     setMaxDate(); // Now callable because it's in the same module

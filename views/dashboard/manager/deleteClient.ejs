@@ -22,7 +22,7 @@
         <form action="/delete-client" method="post">
             <div class="form-group">
                 <label for="clientId">Select a Client to Delete:</label>
-                <select name="clientId" class="form-control">
+                <select id="clientId" name="clientId" class="form-control">
                     <option value="">Select a Client</option>
                     <% clients.forEach(function(client) { %>
                         <option value="<%= client.id %>">

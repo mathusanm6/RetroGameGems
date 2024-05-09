@@ -20,10 +20,10 @@
         <%- include('partials/alerts') %>
 
             <h1>Create New User Account</h1>
-            <form action="/create-user" method="post" class="needs-validation" novalidate>
+            <form action="/create-user" method="post">
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" name="email" class="form-control" required>
+                    <input type="email" id="email" name="email" class="form-control" autocomplete="email" required>
                     <div class="invalid-feedback">
                         Please provide a valid email.
                     </div>
@@ -31,7 +31,7 @@
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" name="password" class="form-control" required>
+                    <input type="password" id="password" name="password" class="form-control" required>
                     <div class="invalid-feedback">
                         Please enter a password.
                     </div>
@@ -40,14 +40,14 @@
                 <div class="form-row">
                     <div class="col">
                         <label for="last_name">Last Name</label>
-                        <input type="text" name="last_name" class="form-control" required>
+                        <input type="text" id="last_name" name="last_name" class="form-control" autocomplete="family-name" required>
                         <div class="invalid-feedback">
                             Please enter a last name.
                         </div>
                     </div>
                     <div class="col">
                         <label for="first_name">First Name</label>
-                        <input type="text" name="first_name" class="form-control" required>
+                        <input type="text" id="first_name" name="first_name" class="form-control" autocomplete="given-name" required>
                         <div class="invalid-feedback">
                             Please enter a first name.
                         </div>
@@ -55,8 +55,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="role">Role</label>
-                    <select name="role" id="roleSelect" class="form-control" required>
+                    <label for="roleSelect">Role</label>
+                    <select name="roleSelect" id="roleSelect" class="form-control" required>
                         <option value="client">Client</option>
                         <option value="manager">Manager</option>
                     </select>
@@ -67,8 +67,8 @@
 
                 <div class="form-group" id="birthdayField" style="display: inline-block;">
                     <label for="birth_date">Birthday</label>
-                    <input type="date" name="birth_date" class="form-control" id="birth_date" min="1899-01-01"
-                        max="2023-05-09">
+                    <input type="date" id="birth_date" name="birth_date" class="form-control" min="1899-01-01"
+                        max="2023-05-09" autocomplete="bday" required>
                 </div>
 
                 <div class="container">
