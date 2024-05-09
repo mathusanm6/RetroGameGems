@@ -1,9 +1,6 @@
 const bcrypt = require("bcryptjs");
 const ClientModel = require("../models/clientModel");
 const HttpStatus = require("http-status-codes");
-const bcrypt = require("bcryptjs");
-const ClientModel = require("../models/clientModel");
-const HttpStatus = require("http-status-codes");
 const pool = require("../models/db");
 
 class CartController {
