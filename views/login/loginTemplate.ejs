@@ -31,7 +31,7 @@
                                     </span>!</h3>
 
                                 <!-- Sign In Form -->
-                                <form action="/auth/<%= formAction %>" method="POST">
+                                <form action="/<%= formAction %>" method="POST">
                                     <div class="form-floating mb-3">
                                         <input type="email" class="form-control" id="floatingInput" name="email"
                                             placeholder="name@example.com" autocomplete="email" required>
@@ -47,7 +47,7 @@
                                         <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2"
                                             type="submit">Sign in</button>
                                         <div class="text-center">
-                                            <a class="small text-muted" href="/auth/<%= alternateLoginPath %>">
+                                            <a class="small text-muted" href="/<%= alternateLoginPath %>">
                                                 <%= alternateLoginText %>
                                             </a>
                                         </div>

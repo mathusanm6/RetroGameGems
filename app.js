@@ -48,7 +48,7 @@ function isLoggedIn(req, res, next) {
   if (req.session.userId) {
     next();
   } else {
-    res.redirect("/auth/client-login");
+    res.redirect("/client-login");
   }
 }
 
@@ -69,7 +69,7 @@ const indexRouter = require("./routes/index");
 app.use("/", indexRouter);
 
 const authRouter = require("./routes/auth")(dbPool);
-app.use("/auth", authRouter);
+app.use(authRouter);
 
 const dashboardRouter = require("./routes/dashboard");
 app.use(dashboardRouter);
