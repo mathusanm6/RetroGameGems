@@ -16,73 +16,73 @@
         <a href="/manager-dashboard" class="btn btn-outline-primary mt-3">Back to Manager Dashboard</a>
     </div>
     <div class="container mt-5">
-        
+
         <%- include('partials/alerts') %>
 
-        <h1>Create New User Account</h1>
-        <form action="/create-user" method="post" class="needs-validation" novalidate>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" name="email" class="form-control" required>
-                <div class="invalid-feedback">
-                    Please provide a valid email.
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" name="password" class="form-control" required>
-                <div class="invalid-feedback">
-                    Please enter a password.
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="col">
-                    <label for="last_name">Last Name</label>
-                    <input type="text" name="last_name" class="form-control" required>
+            <h1>Create New User Account</h1>
+            <form action="/create-user" method="post" class="needs-validation" novalidate>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" class="form-control" required>
                     <div class="invalid-feedback">
-                        Please enter a last name.
+                        Please provide a valid email.
                     </div>
                 </div>
-                <div class="col">
-                    <label for="first_name">First Name</label>
-                    <input type="text" name="first_name" class="form-control" required>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" class="form-control" required>
                     <div class="invalid-feedback">
-                        Please enter a first name.
+                        Please enter a password.
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="role">Role</label>
-                <select name="role" id="roleSelect" class="form-control" required>
-                    <option value="client">Client</option>
-                    <option value="manager">Manager</option>
-                </select>
-                <div class="invalid-feedback">
-                    Please select a role.
-                </div>
-            </div>
-
-            <div class="form-group" id="birthdayField" style="display: inline-block;">
-                <label for="birth_date">Birthday</label>
-                <input type="date" name="birth_date" class="form-control">
-            </div>
-
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-2">
-                        <button type="submit" class="btn btn-primary btn-block">Create User</button>
+                <div class="form-row">
+                    <div class="col">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" name="last_name" class="form-control" required>
+                        <div class="invalid-feedback">
+                            Please enter a last name.
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="first_name">First Name</label>
+                        <input type="text" name="first_name" class="form-control" required>
+                        <div class="invalid-feedback">
+                            Please enter a first name.
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
+
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <select name="role" id="roleSelect" class="form-control" required>
+                        <option value="client">Client</option>
+                        <option value="manager">Manager</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please select a role.
+                    </div>
+                </div>
+
+                <div class="form-group" id="birthdayField" style="display: inline-block;">
+                    <label for="birth_date">Birthday</label>
+                    <input type="date" name="birth_date" class="form-control" id="birth_date" min="1899-01-01"
+                        max="2023-05-09">
+                </div>
+
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-primary btn-block">Create User</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"
         integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
         crossorigin="anonymous"></script>
@@ -92,9 +92,10 @@
 
     <script src="/alertHandler.js"></script>
 
-    <script>
-        $(document).ready(function () {
+    <script type="module">
+        import { todayInHTMLFormat } from './utils/dateManager.js';
 
+        $(document).ready(function () {
             $('#roleSelect').change(function () {
                 const birthdayField = $('#birthdayField');
                 if ($(this).val() === 'client') {
@@ -103,8 +104,11 @@
                     birthdayField.hide();
                 }
             });
+
+            document.getElementById("birth_date").setAttribute("max", todayInHTMLFormat());
         });
     </script>
+
 </body>
 
 </html>

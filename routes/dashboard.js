@@ -4,7 +4,7 @@ const router = express.Router();
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 
-const { resizeAndConvertImage } = require("../utils/imageManager");
+const { resizeAndConvertImage } = require("../public/utils/imageManager");
 
 const ClientModel = require("../models/clientModel");
 const ManagerModel = require("../models/managerModel");
