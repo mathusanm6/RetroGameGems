@@ -24,7 +24,7 @@
             <form action="/modify-client" method="post">
                 <div class="form-group">
                     <label for="clientId">Select a Client:</label>
-                    <select name="clientId" class="form-control" onchange="loadClientData(this.value)">
+                    <select id="clientId" name="clientId" class="form-control" onchange="loadClientData(this.value)">
                         <option value="">Select a Client</option>
                         <% clients.forEach(function(client) { %>
                             <option value="<%= client.id %>">
@@ -48,9 +48,8 @@
             </form>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"
         integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
         crossorigin="anonymous"></script>
@@ -60,7 +59,16 @@
 
     <script src="/alertHandler.js"></script>
 
-    <script>
+    <script type="module">
+        import { todayInHTMLFormat } from './utils/dateManager.js';
+
+        function setMaxDate() {
+            const birthDateInput = document.getElementById('birth_date');
+            if (birthDateInput) {
+                birthDateInput.setAttribute("max", todayInHTMLFormat());
+            }
+        }
+
         function loadClientData(clientId) {
             if (!clientId) {
                 document.getElementById('clientDataForm').innerHTML = '';
@@ -76,30 +84,34 @@
                 .then(data => {
                     const clientDataForm = document.getElementById('clientDataForm');
                     clientDataForm.innerHTML = `
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" name="email" value="${data.email}">
-                        </div>
-                        <div class="form-group">
-                            <label for="first_name">First Name</label>
-                            <input type="text" class="form-control" name="first_name" value="${data.first_name}">
-                        </div>
-                        <div class="form-group">
-                            <label for="last_name">Last Name</label>
-                            <input type="text" class="form-control" name="last_name" value="${data.last_name}">
-                        </div>
-                        <div class="form-group">
-                            <label for="birthday">Birthday</label>
-                            <input type="date" class="form-control" name="birthday" value="${new Date(data.birth_date).toISOString().split('T')[0]}">
-                        </div>
-                    `;
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control" name="email" value="${data.email}" autocomplete="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" id="last_name" class="form-control" name="last_name" value="${data.last_name}" autocomplete="family_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" id="first_name" class="form-control" name="first_name" value="${data.first_name}" autocomplete="given-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="birth_date">Birthday</label>
+                        <input type="date" id="birth_date" class="form-control" name="birthday" value="${new Date(data.birth_date).toISOString().split('T')[0]}" min="1899-01-01" max="" autocomplete="bday" required>
+                    </div>
+                `;
+                    setMaxDate(); // Now callable because it's in the same module
                 })
                 .catch(error => {
                     console.error('Failed to fetch client data:', error);
                     document.getElementById('clientDataForm').innerHTML = 'Failed to load data.';
                 });
         }
+
+        window.loadClientData = loadClientData; // Expose to global scope if needed elsewhere
     </script>
+
 </body>
 
 </html>

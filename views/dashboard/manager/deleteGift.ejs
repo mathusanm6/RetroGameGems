@@ -22,7 +22,7 @@
         <form action="/delete-gift" method="post">
             <div class="form-group">
                 <label for="giftId">Select a Gift to Delete:</label>
-                <select name="giftId" class="form-control">
+                <select id="giftId" name="giftId" class="form-control">
                     <option value="">Select a Gift</option>
                     <% gifts.forEach(function(gift) { %>
                         <option value="<%= gift.id %>">
