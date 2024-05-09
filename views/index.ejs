@@ -5,42 +5,63 @@
     <!-- Required meta tags for Bootstrap 4 -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-    <title>Loyalty Card Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="css/index.css" rel="stylesheet">
+    <link rel="preload" href="/images/bg-image-index.jpg" as="image">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
+
     <style>
-        body {
-            padding-top: 40px;
-            background-color: #f8f9fa;
-        }
-
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgb(0 0 0 / 10%);
-        }
-
-        h1 {
-            font-family: Lobster, cursive;
-            margin-bottom: 25px;
-        }
-
-        .btn-custom {
-            margin: 10px;
-            font-size: 18px;
-            padding: 10px 25px;
+        .title {
+            font-family: 'Jersey 10', cursive;
+            font-size: 6rem;
+            color: rgb(50, 5, 45);
+            text-shadow: 2px 2px 4px rgb(255, 255, 255, 0.9);
         }
     </style>
+
+    <title>RetroGameGems</title>
 </head>
 
-<body>
-    <div class="container text-center">
-        <h1>Welcome to the Loyalty Card Portal</h1>
-        <a href="/auth/client-login" class="btn btn-info btn-lg btn-custom">Client Login</a>
-        <a href="/auth/manager-login" class="btn btn-danger btn-lg btn-custom">Manager Login</a>
+<body class="bg-light">
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="bg-image"></div>
+        <div class="card shadow-lg p-4 rounded">
+            <img src="images/retro-game-gems-logo.jpg" alt="RetroGameGems Logo" class="logo mb-3">
+            <h1 class="display-4 text-center title">RetroGameGems</h1>
+            <p class="lead text-center">Step back in time and rediscover the gems of retro gaming. Join us, whether
+                you're a Chrononaut client journeying through game history, or a Chief manager orchestrating the
+                adventure!</p>
+            <div class="login-buttons text-center">
+                <button onclick="window.location.href='/auth/manager-login';" class="btn btn-primary btn-lg me-2">Chief
+                    Login</button>
+                <button onclick="window.location.href='/auth/client-login';" class="btn btn-success btn-lg">Chrononaut
+                    Login</button>
+            </div>
+        </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginButtons = document.querySelectorAll('.btn-login');
+
+            loginButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    button.classList.add('active');
+                    setTimeout(() => {
+                        button.classList.remove('active');
+                    }, 800);
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>
