@@ -64,15 +64,31 @@ function isManager(req, res, next) {
 app.use("/manager-dashboard", isLoggedIn, isManager);
 app.use("/client-dashboard", isLoggedIn);
 
-// Routes
+// Index route
 const indexRouter = require("./routes/index");
 app.use("/", indexRouter);
 
+// Auth routes
 const authRouter = require("./routes/auth")(dbPool);
 app.use(authRouter);
 
+// Dashboard routes
 const dashboardRouter = require("./routes/dashboard");
 app.use(dashboardRouter);
+
+// Redirect to login page if no route is matched unless user is logged in
+// This should be the last route
+app.get("*", (req, res) => {
+  if (req.session.userId) {
+    if (req.session.role === "manager") {
+      res.redirect("/manager-dashboard");
+    } else if (req.session.role === "client") {
+      res.redirect("/client-dashboard");
+    }
+  } else {
+    res.redirect("/");
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

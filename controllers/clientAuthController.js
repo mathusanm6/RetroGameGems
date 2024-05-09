@@ -21,10 +21,10 @@ class clientAuthController {
           req.session.points = client.points;
           res.redirect("/client-dashboard");
         } else {
-          res.send("Invalid Email or Password");
+          res.redirect("/client-login?success=false&message=Invalid Email or Password");
         }
       } else {
-        res.send("Invalid Email or Password");
+        res.redirect("/client-login?success=false&message=Invalid Email or Password");
       }
     } catch (err) {
       console.error(err);
