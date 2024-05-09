@@ -87,7 +87,7 @@
                             <label for="image">Upload Image:</label>
                             <input type="file" class="form-control-file" id="image" name="image" accept="image/*" onchange="previewImage();">
                             <div class="img-preview mt-2">
-                                <img src="${data.image ? 'data:image/jpeg;base64,' + data.image : ''}" alt="Image Preview" class="img-fluid" id="imagePreview">
+                                <img src="${data.image ? 'data:image/jpeg;base64,' + data.image : ''}" alt="Image Preview" class="img-fluid" id="imagePreview" draggable="false">
                             </div>
                         </div>`;
 

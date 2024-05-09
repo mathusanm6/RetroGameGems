@@ -28,22 +28,22 @@
   background-image: url("/images/bg-image-index.jpg");
   background-size: cover;
   background-position: center;
-  filter: blur(3px) grayscale(70%);
+  filter: blur(1px) grayscale(20%);
 }
 
 .card {
-  background-color: rgb(152, 237, 214, 0.6);
+  background-color: rgba(0, 123, 255, 0.1);
   backdrop-filter: blur(10px);
 }
 
 .lead {
   font-size: 1.2rem;
-  background-color: rgba(46, 95, 92, 0.8);
+  background-color: rgb(50, 5, 45, 0.6);
   padding: 30px;
   border-radius: 10px;
   color: rgb(255, 255, 255, 0.9);
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+  box-shadow: 2px 2px 4px rgba(49, 49, 49, 0.5);
+  filter: drop-shadow(2px 2px 4px rgba(38, 38, 38, 0.5));
 }
 
 .btn-login {
