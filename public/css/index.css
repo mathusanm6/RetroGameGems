@@ -1,0 +1,78 @@
+.logo {
+  width: 200px;
+  margin: 20px auto 10px;
+  padding: 10px;
+  border: 10px solid rgb(50, 5, 45);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  border-radius: 50%; /* Gives the logo a circular shape */
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  background-color: rgba(246, 234, 207, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo:hover {
+  transform: scale(1.1); /* Slightly enlarges the logo on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+}
+
+.bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/images/bg-image-index.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(1px) grayscale(20%);
+}
+
+.card {
+  background-color: rgba(0, 123, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.lead {
+  font-size: 1.2rem;
+  background-color: rgb(50, 5, 45, 0.6);
+  padding: 30px;
+  border-radius: 10px;
+  color: rgb(255, 255, 255, 0.9);
+  box-shadow: 2px 2px 4px rgba(49, 49, 49, 0.5);
+  filter: drop-shadow(2px 2px 4px rgba(38, 38, 38, 0.5));
+}
+
+.btn-login {
+  font-size: 1.1rem;
+  letter-spacing: 0.12rem;
+  padding: 0.8rem 1.2rem;
+  border: none;
+  background-color: #6a11cb; /* Solid color by default */
+  color: white;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background-image 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 50px;
+}
+
+.btn-login.active,
+.btn-login:hover,
+.btn-login:focus {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  background-image: linear-gradient(to right, #2575fc 0%, #6a11cb 100%);
+}
+
+.btn-primary {
+  background-color: #009ffd;
+}
+
+.btn-success {
+  background-color: #00b09b;
+}
