@@ -1,0 +1,51 @@
+body {
+  background-color: #98edd6;
+}
+
+.login {
+  min-height: 100vh;
+}
+
+.bg-image-client {
+  background-image: url("/images/bg-image-client.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(2px);
+}
+
+.bg-image-manager {
+  background-image: url("/images/bg-image-manager.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(2px);
+}
+
+.login-heading {
+  font-weight: 300;
+}
+
+.btn-login {
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  padding: 0.75rem 1rem;
+}
+
+.login {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.login-heading .highlight,
+.login-heading strong {
+  font-weight: bold;
+  color: rgb(35, 148, 133);
+}
+
+.login-heading .highlight {
+  font-size: 1.25em;
+  padding: 0 5px;
+  background-color: rgba(0, 123, 255, 0.1);
+  border-radius: 4px;
+}
