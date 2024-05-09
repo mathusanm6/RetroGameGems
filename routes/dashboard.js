@@ -1,6 +1,11 @@
 const HttpStatus = require("http-status-codes");
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() });
+
+const { resizeAndConvertImage } = require("../utils/imageManager");
+
 const ClientModel = require("../models/clientModel");
 const ManagerModel = require("../models/managerModel");
 const UserModel = require("../models/userModel");
@@ -216,9 +221,27 @@ router.get("/add-gift", (req, res) => {
   }
 });
 
-router.post("/add-gift", (req, res) => {
+router.post("/add-gift", upload.single("image"), async (req, res) => {
   if (req.session.role === "manager") {
-    managerController.addGift(req, res);
+    const { name, description, quantity, needed_points } = req.body;
+    try {
+      let imageBuffer = null;
+      if (req.file) {
+        imageBuffer = await resizeAndConvertImage(req.file.buffer);
+      } else {
+      }
+      await managerModel.addGift({
+        name,
+        description,
+        image: imageBuffer,
+        quantity,
+        needed_points,
+      });
+      res.redirect("/add-gift?success=true&message=Gift added successfully.");
+    } catch (error) {
+      console.error("Error handling the image upload:", error);
+      return res.status(400).send("Failed to process image.");
+    }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
   }
@@ -241,7 +264,7 @@ router.get("/modify-gift", async (req, res) => {
   }
 });
 
-router.post("/modify-gift", (req, res) => {
+router.post("/modify-gift", upload.single("image"), (req, res) => {
   if (req.session.role === "manager") {
     managerController.modifyGift(req, res);
   } else {
@@ -254,6 +277,14 @@ router.get("/get-gifts", async (req, res) => {
   if (req.session.role === "manager") {
     try {
       const gifts = await managerModel.getAllGifts();
+
+      // Convert bytea image data to Base64 for each gift that has an image
+      gifts.forEach((gift) => {
+        if (gift.image) {
+          gift.image = Buffer.from(gift.image).toString("base64");
+        }
+      });
+
       res.json({ gifts: gifts });
     } catch (error) {
       console.error("Error fetching gifts:", error);
@@ -272,6 +303,10 @@ router.get("/get-gift/:giftId", async (req, res) => {
       const giftId = req.params.giftId;
       const gift = await managerModel.getGiftById(giftId);
       if (gift) {
+        // Convert bytea image data to Base64 if image exists
+        if (gift.image) {
+          gift.image = Buffer.from(gift.image).toString("base64");
+        }
         res.json(gift);
       } else {
         res.status(HttpStatus.StatusCodes.NOT_FOUND).send("Gift not found");

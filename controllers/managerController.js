@@ -33,11 +33,13 @@ class managerController {
   async addGift(req, res) {
     if (req.session.role === "manager") {
       const { name, description, quantity, needed_points } = req.body;
+      const image = req.file ? req.file.filename : null;
 
       try {
         await this.managerModel.addGift({
           name,
           description,
+          image,
           quantity,
           needed_points,
         });
@@ -58,11 +60,16 @@ class managerController {
   async modifyGift(req, res) {
     if (req.session.role === "manager") {
       const { giftId, name, description, quantity, needed_points } = req.body;
+      let image = null;
+      if (req.file) {
+        image = req.file.buffer;
+      }
 
       try {
         await this.managerModel.updateGift(giftId, {
           name,
           description,
+          image,
           quantity,
           needed_points,
         });

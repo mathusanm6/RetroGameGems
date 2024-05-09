@@ -25,6 +25,7 @@ CREATE TABLE
         id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         description TEXT NOT NULL,
+        image BYTEA,
         quantity INTEGER NOT NULL,
         needed_points INTEGER NOT NULL
     );
