@@ -19,6 +19,34 @@
             /* 8px right margin */
         }
 
+        .highlight {
+            padding: 0 5px;
+            background-color: rgba(0, 123, 255, 0.1);
+            border-radius: 4px;
+            font-weight: bold;
+            color: rgb(35, 148, 133);
+            display: inline-block;
+        }
+
+        .highlight:hover {
+            background-color: rgba(0, 123, 255, 0.2);
+            animation: jiggle 0.5s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes jiggle {
+
+            0%,
+            100% {
+                transform: translateX(-2px);
+            }
+
+            50% {
+                transform: translateX(2px);
+            }
+        }
+
+
         .user-icon {
             color: #007bff;
         }
@@ -40,25 +68,25 @@
 
         /* Bootstrap yellow */
     </style>
-    <title>Manager Dashboard</title>
+    <title>Chief's Dashboard</title>
 </head>
 
 <body>
     <div class="container mt-5">
-        <h1 class="mb-4">Manager Dashboard</h1>
+        <h1 class="mb-4"><span class="highlight">Chief</span>'s Dashboard</h1>
 
         <!-- User Management -->
         <div class="mb-3">
-            <h3>User Management</h3>
+            <h3>Chrononaut / Chief Management</h3>
             <div class="list-group">
                 <a href="/create-user" class="list-group-item list-group-item-action">
-                    <i class="fas fa-user-plus fa user-icon"></i> Create Client or Manager
+                    <i class="fas fa-user-plus fa user-icon"></i> Create Chrononaut / Chief
                 </a>
                 <a href="/modify-client" class="list-group-item list-group-item-action">
-                    <i class="fas fa-user-edit fa user-icon"></i> Modify Client
+                    <i class="fas fa-user-edit fa user-icon"></i> Modify Chrononaut
                 </a>
                 <a href="/delete-client" class="list-group-item list-group-item-action">
-                    <i class="fas fa-user-times fa user-icon"></i> Delete Client
+                    <i class="fas fa-user-times fa user-icon"></i> Delete Chrononaut
                 </a>
             </div>
         </div>
@@ -67,7 +95,7 @@
         <div class="mb-3">
             <h3>Points Management</h3>
             <a href="/add-points" class="list-group-item list-group-item-action">
-                <i class="fas fa-coins fa point-icon"></i> Add Points to Client
+                <i class="fas fa-coins fa point-icon"></i> Add Points to Chrononaut
             </a>
         </div>
 
@@ -75,13 +103,13 @@
         <div class="mb-3">
             <h3>Gift Management</h3>
             <a href="/add-gift" class="list-group-item list-group-item-action">
-                <i class="fas fa-gift fa gift-icon"></i> Add Gift
+                <i class="fas fa-gift fa gift-icon"></i> Add Retro Gift
             </a>
             <a href="/modify-gift" class="list-group-item list-group-item-action">
-                <i class="fas fa-edit fa gift-icon"></i> Modify Gift
+                <i class="fas fa-edit fa gift-icon"></i> Modify Retro Gift
             </a>
             <a href="/delete-gift" class="list-group-item list-group-item-action">
-                <i class="fas fa-trash fa gift-icon"></i> Delete Gift
+                <i class="fas fa-trash fa gift-icon"></i> Delete Retro Gift
             </a>
         </div>
 
