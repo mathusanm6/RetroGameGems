@@ -1,10 +1,22 @@
 const fs = require("fs");
 const path = require("path");
 const bcrypt = require("bcryptjs");
+const csv = require("csv-parser");
+const sharp = require("sharp");
+
 const pool = require("./models/db");
 
 const sqlFilePath = path.join(__dirname, "init_db.sql");
 const sql = fs.readFileSync(sqlFilePath, { encoding: "UTF-8" });
+
+// Function to resize and convert image
+const resizeAndConvertImage = async (buffer) => {
+  return sharp(buffer)
+    .resize(null, 300) // Resize image to 300px height while maintaining aspect ratio
+    .toFormat("jpeg") // Convert image to JPEG
+    .jpeg({ quality: 90 }) // Set JPEG quality to 90%
+    .toBuffer(); // Return buffer
+};
 
 const admins = [
   {
@@ -71,12 +83,12 @@ async function createAdminUser(db, admins) {
 
       const res = await db.query(
         "SELECT * FROM loyalty_card.managers WHERE email = $1",
-        [email],
+        [email]
       );
       if (res.rows.length === 0) {
         await db.query(
           "INSERT INTO loyalty_card.managers (first_name, last_name, email, password) VALUES ($1, $2, $3, $4)",
-          [firstName, lastName, email, hashedPassword],
+          [firstName, lastName, email, hashedPassword]
         );
         console.log("Admin user created:", email);
       } else {
@@ -97,12 +109,12 @@ async function createClientUser(db, clients) {
 
       const res = await db.query(
         "SELECT * FROM loyalty_card.clients WHERE email = $1",
-        [email],
+        [email]
       );
       if (res.rows.length === 0) {
         await db.query(
           "INSERT INTO loyalty_card.clients (first_name, last_name, email, password, birth_date) VALUES ($1, $2, $3, $4, $5)",
-          [firstName, lastName, email, hashedPassword, birthDate],
+          [firstName, lastName, email, hashedPassword, birthDate]
         );
         console.log("Client user created:", email);
       } else {
@@ -114,11 +126,62 @@ async function createClientUser(db, clients) {
   }
 }
 
+const loadGifts = () => {
+  return new Promise((resolve, reject) => {
+    const giftsCsvPath = path.join(__dirname, "Gifts_Data.csv");
+    const promises = [];
+    fs.createReadStream(giftsCsvPath)
+      .pipe(csv())
+      .on("data", (row) => {
+        const promise = processGift(row);
+        promises.push(promise);
+      })
+      .on("end", () => {
+        Promise.all(promises)
+          .then(() => {
+            console.log("Finished processing all gifts.");
+            resolve();
+          })
+          .catch(reject);
+      });
+  });
+};
+
+const processGift = async (row) => {
+  const { name, description, quantity, needed_points } = row;
+  const imageName = `${name.replace("+", "").replace(":", "").replace(/\s+/g, "_").toLowerCase()}.jpeg`;
+  const imagePath = path.join(
+    __dirname,
+    "resources",
+    "images",
+    "gifts",
+    imageName
+  );
+
+  try {
+    const imageBuffer = fs.readFileSync(imagePath);
+    const resizedImage = await resizeAndConvertImage(imageBuffer);
+    const res = await pool.query(
+      "SELECT * FROM loyalty_card.gifts WHERE name = $1",
+      [name]
+    );
+    if (res.rows.length === 0) {
+      await pool.query(
+        "INSERT INTO loyalty_card.gifts (name, description, image, quantity, needed_points) VALUES ($1, $2, $3, $4, $5)",
+        [name, description, resizedImage, quantity, needed_points]
+      );
+      console.log("Gift added to database:", name);
+    } else {
+      console.log("Gift already exists in the database:", name);
+    }
+  } catch (err) {
+    console.error("Error processing gift:", name, err);
+  }
+};
+
 // Connect to the pool and execute SQL file, then create admin user
 pool.connect((err, client, done) => {
   if (err) throw err;
-
-  // eslint-disable-next-line no-unused-vars
   client.query(sql, async (err, res) => {
     done(); // Release the client back to the pool
     if (err) {
@@ -128,7 +191,9 @@ pool.connect((err, client, done) => {
       console.log("Database has been successfully initialized");
       await createAdminUser(pool, admins);
       await createClientUser(pool, clients);
-      pool.end(); // Close the pool
+      await loadGifts()
+        .then(() => pool.end()) // Close the pool after all tasks are completed
+        .catch(console.error);
     }
   });
 });
