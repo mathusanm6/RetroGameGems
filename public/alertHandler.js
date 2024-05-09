@@ -12,7 +12,7 @@ $(document).ready(function () {
 
   if (message) {
     const decodedMessage = decodeUriComponent(message);
-    const alertType = success === "true" ? "success" : "danger";
+    const alertType = success === "true" ? "success" : "error";
     const alertId = `#${alertType}Alert`;
     const messageId = `#${alertType}Message`;
 
