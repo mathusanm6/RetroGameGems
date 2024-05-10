@@ -10,23 +10,23 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
 
-    <title>Modify Client</title>
+    <title>Modify Chrononaut</title>
 </head>
 
 <body>
     <div class="container mt-5">
-        <a href="/manager-dashboard" class="btn btn-outline-primary mt-3">Back to Manager Dashboard</a>
+        <a href="/manager-dashboard" class="btn btn-outline-primary mt-3">Back to Chief's Dashboard</a>
     </div>
     <div class="container mt-5">
 
         <%- include('../../partials/alerts') %>
 
-            <h1>Modify Client</h1>
+            <h1>Modify Chrononaut</h1>
             <form action="/modify-client" method="post">
                 <div class="mb-3">
-                    <label for="clientId" class="form-label">Select a Client:</label>
+                    <label for="clientId" class="form-label">Select a Chrononaut:</label>
                     <select id="clientId" name="clientId" class="form-select" onchange="loadClientData(this.value)">
-                        <option value="">Select a Client</option>
+                        <option value="">Select a Chrononaut</option>
                         <% clients.forEach(function(client) { %>
                             <option value="<%= client.id %>">
                                 <%= client.first_name %>
@@ -42,7 +42,7 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-2">
-                            <button type="submit" class="btn btn-primary btn-block">Update Client</button>
+                            <button type="submit" class="btn btn-primary btn-block">Update Chrononaut</button>
                         </div>
                     </div>
                 </div>

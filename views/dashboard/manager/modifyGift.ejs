@@ -5,9 +5,9 @@
     <!-- Bootstrap 4 Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Modify Gift</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Modify Retro Gift</title>
     <style>
         .img-preview {
             display: flex;
@@ -28,18 +28,18 @@
 
 <body>
     <div class="container mt-5">
-        <a href="/manager-dashboard" class="btn btn-outline-primary mt-3">Back to Manager Dashboard</a>
+        <a href="/manager-dashboard" class="btn btn-outline-primary mt-3">Back to Chief's Dashboard</a>
     </div>
     <div class="container mt-5">
 
         <%- include('../../partials/alerts'); %>
 
-            <h1>Modify Gift</h1>
+            <h1>Modify Retro Gift</h1>
             <form action="/modify-gift" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="giftId">Select a Gift:</label>
-                    <select name="giftId" id="giftId" class="form-control" onchange="loadGiftData(this.value)">
-                        <option value="">Select a Gift</option>
+                <div class="mb-3">
+                    <label for="giftId" class="form-label">Select a Retro Gift:</label>
+                    <select name="giftId" id="giftId" class="form-select" onchange="loadGiftData(this.value)">
+                        <option value="">Select a Retro Gift</option>
                         <% gifts.forEach(function(gift) { %>
                             <option value="<%= gift.id %>">
                                 <%= gift.name %> - <%= gift.needed_points %> points - <%= gift.quantity %> available
@@ -51,24 +51,22 @@
                 <!-- Div to hold dynamically loaded form fields -->
                 <div id="giftDataForm"></div>
 
-                <div class="container">
+                <div class="container" style="padding-bottom: 40px;">
                     <div class="row justify-content-center">
                         <div class="col-2">
-                            <button type="submit" class="btn btn-primary btn-block" style="padding-bottom: 50px;">Update Gift</button>
+                            <button type="submit" class="btn btn-primary btn-block">Update
+                                Retro Gift</button>
                         </div>
                     </div>
                 </div>
             </form>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.js"
-        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"
-        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js"
-        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
     <script src="/alertHandler.js"></script>
 
@@ -84,34 +82,33 @@
                     const giftDataForm = document.getElementById('giftDataForm');
                     let imagePreviewHtml = `
                         <div class="form-group">
-                            <label for="image">Upload Image:</label>
-                            <input type="file" class="form-control-file" id="image" name="image" accept="image/*" onchange="previewImage();">
+                            <label for="image" class="form-label">Upload Image:</label>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*" onchange="previewImage();">
                             <div class="img-preview mt-2">
                                 <img src="${data.image ? 'data:image/jpeg;base64,' + data.image : ''}" alt="Image Preview" class="img-fluid" id="imagePreview" draggable="false">
                             </div>
                         </div>`;
 
                     giftDataForm.innerHTML = `
-                        <div class="form-group">
+                        <div class="form-floating mb-3">
+                            <input type="text" id="name" class="form-control" name="name" placeholder="Gift Name" value="${data.name}" autocomplete="off">
                             <label for="name">Gift Name:</label>
-                            <input type="text" id="name" class="form-control" name="name" value="${data.name}" autocomplete="off">
                         </div>
-                        <div class="form-group">
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" id="description" name="description" placeholder="Description" style="height: 100px;">${data.description}</textarea>
                             <label for="description">Description:</label>
-                            <textarea class="form-control" id="description" name="description">${data.description}</textarea>
                         </div>
                         ${imagePreviewHtml}
-                        <div class="form-group">
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Quantity" value="${data.quantity}" min="1" aria-describedby="quantityHelp" required>
                             <label for="quantity">Quantity:</label>
-                            <input type="number" class="form-control" id="quantity" name="quantity" value="${data.quantity}" min="1"
-                                aria-describedby="quantityHelp" required>
                             <small id="quantityHelp" class="form-text text-muted">
                                 Please enter the quantity (must be 1 or more).
                             </small>
                         </div>
-                        <div class="form-group">
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="needed_points" name="needed_points" placeholder="Needed Points" value="${data.needed_points}" min="0">
                             <label for="needed_points">Needed Points:</label>
-                            <input type="number" class="form-control" id="needed_points" name="needed_points" value="${data.needed_points}" min="0">
                         </div>
                     `;
 

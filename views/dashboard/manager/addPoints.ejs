@@ -12,17 +12,18 @@
 
 <body>
     <div class="container mt-5">
-        <a href="/manager-dashboard" class="btn btn-outline-primary mt-3">Back to Manager Dashboard</a>
+        <a href="/manager-dashboard" class="btn btn-outline-primary mt-3">Back to Chief's Dashboard</a>
     </div>
     <div class="container mt-5">
 
         <%- include('../../partials/alerts'); %>
 
-            <h1>Add Points to Client Account</h1>
+            <h1>Add Points to Chrononaut Account</h1>
             <form action="/add-points" method="post">
                 <div class="mb-3">
+                    <label for="clientId" class="form-label">Select a Chrononaut:</label>
                     <select name="clientId" id="clientId" class="form-select">
-                        <option value="">Select a Client</option>
+                        <option value="">Select a Chrononaut</option>
                         <% clients.forEach(function(client) { %>
                             <option value="<%= client.id %>">
                                 <%= client.first_name %>

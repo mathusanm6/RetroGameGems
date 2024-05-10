@@ -8,29 +8,31 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title>Create a New Chrononaut Or Chief</title>
+    <title>Enroll a New Chrononaut Or Chief</title>
 </head>
 
 <body>
     <div class="container mt-5">
-        <a href="/manager-dashboard" class="btn btn-outline-primary mt-3">Back to Manager Dashboard</a>
+        <a href="/manager-dashboard" class="btn btn-outline-primary mt-3">Back to Chief's Dashboard</a>
     </div>
     <div class="container mt-5">
 
         <%- include('../../partials/alerts') %>
 
-            <h1>Create a New Chrononaut Or Chief</h1>
+            <h1>Enroll a New Crew Member</h1>
             <form action="/create-user" method="post">
                 <div class="form-floating mb-3">
-                    <input type="email" id="email" name="email" class="form-control" placeholder="name@example.com" autocomplete="email" required>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="name@example.com"
+                        autocomplete="email" required>
                     <label for="email">Email</label>
                     <div class="invalid-feedback">
                         Please provide a valid email.
                     </div>
                 </div>
-                
+
                 <div class="form-floating mb-3">
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+                        required>
                     <label for="password">Password</label>
                     <div class="invalid-feedback">
                         Please enter a password.
@@ -61,7 +63,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <select name="role" id="roleSelect" class="form-control" required>
+                    <label for="roleSelect" class="form-label">Select a Role:</label>
+                    <select name="role" id="roleSelect" class="form-control" onchange="updateButtonLabel()" required>
                         <option value="client">Chrononaut</option>
                         <option value="manager">Chief</option>
                     </select>
@@ -79,7 +82,7 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-2">
-                            <button type="submit" class="btn btn-primary btn-block">Create User</button>
+                            <button type="submit" id="roleButton" class="btn btn-primary btn-block">Enroll a Chrononaut</button>
                         </div>
                     </div>
                 </div>
@@ -109,6 +112,18 @@
 
             document.getElementById("birth_date").setAttribute("max", todayInHTMLFormat());
         });
+    </script>
+
+    <script>
+        function updateButtonLabel() {
+            var roleSelect = document.getElementById('roleSelect');
+            var button = document.getElementById('roleButton');
+            if (roleSelect.value === 'client') {
+                button.innerHTML = 'Enroll a Chrononaut';
+            } else if (roleSelect.value === 'manager') {
+                button.innerHTML = 'Enroll a Chief';
+            }
+        }
     </script>
 
 </body>
