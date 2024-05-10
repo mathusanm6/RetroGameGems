@@ -18,7 +18,7 @@ class managerAuthController {
         if (validPassword) {
           req.session.userId = manager.id;
           req.session.role = "manager";
-          res.redirect("/dashboard/manager/index");
+          res.redirect("/manager-dashboard");
         } else {
           res.redirect("/manager-login?success=false&message=Invalid Email or Password")
         }

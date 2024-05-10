@@ -29,9 +29,9 @@ module.exports = (db) => {
 router.get("/client-login", (req, res) => {
   // Directly render the client login page
   if (req.session.userId && req.session.role === "client") {
-    res.redirect("dashboard/client/index");
+    res.redirect("/client-dashboard");
   } else if (req.session.userId && req.session.role === "manager") {
-    res.redirect("dashboard/manager/index");
+    res.redirect("/manager-dashboard");
   } else {
     res.render("login/loginTemplate", {
       loginType: 'Chrononaut',
@@ -46,9 +46,9 @@ router.get("/client-login", (req, res) => {
 router.get("/manager-login", (req, res) => {
   // Directly render the manager login page
   if (req.session.userId && req.session.role === "manager") {
-    res.redirect("dashboard/manager/index");
+    res.redirect("/manager-dashboard");
   } else if (req.session.userId && req.session.role === "client") {
-    res.redirect("dashboard/client/index");
+    res.redirect("/client-dashboard");
   } else {
     res.render("login/loginTemplate", {
       loginType: 'Chief',

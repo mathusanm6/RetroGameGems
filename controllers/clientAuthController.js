@@ -19,7 +19,7 @@ class clientAuthController {
           req.session.userId = client.id;
           req.session.role = "client";
           req.session.points = client.points;
-          res.redirect("/dashboard/client/index");
+          res.redirect("/client-dashboard");
         } else {
           res.redirect("/client-login?success=false&message=Invalid Email or Password");
         }
