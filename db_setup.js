@@ -39,6 +39,7 @@ const clients = [
     password: "john123",
     firstName: "John",
     lastName: "Doe",
+    points: 1210,
     birthDate: "1990-01-01",
   },
   {
@@ -46,6 +47,7 @@ const clients = [
     password: "jane123",
     firstName: "Jane",
     lastName: "Smith",
+    points: 750,
     birthDate: "1992-02-02",
   },
   {
@@ -53,6 +55,7 @@ const clients = [
     password: "alice123",
     firstName: "Alice",
     lastName: "Jones",
+    points: 500,
     birthDate: "1988-03-03",
   },
   {
@@ -60,6 +63,7 @@ const clients = [
     password: "bob123",
     firstName: "Bob",
     lastName: "Brown",
+    points: 3140,
     birthDate: "1991-04-04",
   },
   {
@@ -67,6 +71,7 @@ const clients = [
     password: "charlie123",
     firstName: "Charlie",
     lastName: "Davis",
+    points: 1050,
     birthDate: "1993-05-05",
   },
 ];
@@ -104,7 +109,7 @@ async function createAdminUser(db, admins) {
 async function createClientUser(db, clients) {
   try {
     for (let i = 0; i < clients.length; i++) {
-      const { email, password, firstName, lastName, birthDate } = clients[i];
+      const { email, password, firstName, lastName, points, birthDate } = clients[i];
       const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
 
       const res = await db.query(
@@ -113,8 +118,8 @@ async function createClientUser(db, clients) {
       );
       if (res.rows.length === 0) {
         await db.query(
-          "INSERT INTO loyalty_card.clients (first_name, last_name, email, password, birth_date) VALUES ($1, $2, $3, $4, $5)",
-          [firstName, lastName, email, hashedPassword, birthDate]
+          "INSERT INTO loyalty_card.clients (first_name, last_name, email, password, points, birth_date) VALUES ($1, $2, $3, $4, $5, $6)",
+          [firstName, lastName, email, hashedPassword, points, birthDate]
         );
         console.log("Client user created:", email);
       } else {
