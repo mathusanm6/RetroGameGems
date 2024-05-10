@@ -18,7 +18,15 @@ class managerAuthController {
         if (validPassword) {
           req.session.userId = manager.id;
           req.session.role = "manager";
-          res.redirect("/manager-dashboard");
+          req.session.save((err) => {
+            if (err) {
+              console.error(err);
+              res
+                .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
+                .send("Internal Server Error");
+            }
+            res.redirect("/manager-dashboard");
+          });
         } else {
           res.redirect("/manager-login?success=false&message=Invalid Email or Password")
         }

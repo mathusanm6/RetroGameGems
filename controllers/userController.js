@@ -47,9 +47,16 @@ class userController {
           .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
           .send("Failed to log out");
       }
-      // Redirect to home page after successful logout
-      res.redirect("/");
     });
+
+    // If the session is not destroyed, send an error message
+    if (req.session) {
+      return res
+        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Failed to log out");
+    }
+
+    res.redirect("/");
   }
 }
 

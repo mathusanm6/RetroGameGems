@@ -29,7 +29,7 @@ router.get("/manager-dashboard", (req, res) => {
   if (req.session.role === "manager") {
     res.render("dashboard/manager/index");
   } else {
-    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+    res.redirect("/manager-login");
   }
 });
 
@@ -38,7 +38,7 @@ router.get("/client-dashboard", (req, res) => {
   if (req.session.role === "client") {
     res.render("dashboard/client/index", { points: req.session.points });
   } else {
-    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+    res.redirect("/client-login");
   }
 });
 

@@ -3,12 +3,12 @@
 
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    
-        <link rel="stylesheet" href="/css/loginStyles.css">
-        <title>
-            <%= loginType %> Login
-        </title>
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/css/loginStyles.css">
+    <title>
+        <%= loginType %> Login
+    </title>
 </head>
 
 <body>
@@ -40,9 +40,10 @@
                                         </div>
                                         <div class="d-grid">
                                             <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2"
-                                                type="submit">Sign in</button>
+                                                type="submit" autofocus>Sign in</button>
                                             <div class="text-center">
-                                                <a class="small text-muted" href="/<%=alternateLoginPath%>">
+                                                <a class="small text-muted" href="/<%=alternateLoginPath%>"
+                                                    tabindex="-1">
                                                     <%= alternateLoginText %>
                                                 </a>
                                             </div>
@@ -65,7 +66,25 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 
-        <script src="/alertHandler.js"></script>
+    <script src="/alertHandler.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginForm = document.querySelector('.btn-login');
+
+            loginForm.addEventListener('keypress', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    this.click();
+                }
+            });
+
+            const link = document.querySelector('.small');
+            link.addEventListener('focus', function (event) {
+                loginForm.focus();
+            });
+        });
+    </script>
 </body>
 
 </html>
