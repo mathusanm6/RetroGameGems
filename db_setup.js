@@ -88,12 +88,12 @@ async function createAdminUser(db, admins) {
 
       const res = await db.query(
         "SELECT * FROM loyalty_card.managers WHERE email = $1",
-        [email]
+        [email],
       );
       if (res.rows.length === 0) {
         await db.query(
           "INSERT INTO loyalty_card.managers (first_name, last_name, email, password) VALUES ($1, $2, $3, $4)",
-          [firstName, lastName, email, hashedPassword]
+          [firstName, lastName, email, hashedPassword],
         );
         console.log("Admin user created:", email);
       } else {
@@ -109,17 +109,18 @@ async function createAdminUser(db, admins) {
 async function createClientUser(db, clients) {
   try {
     for (let i = 0; i < clients.length; i++) {
-      const { email, password, firstName, lastName, points, birthDate } = clients[i];
+      const { email, password, firstName, lastName, points, birthDate } =
+        clients[i];
       const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
 
       const res = await db.query(
         "SELECT * FROM loyalty_card.clients WHERE email = $1",
-        [email]
+        [email],
       );
       if (res.rows.length === 0) {
         await db.query(
           "INSERT INTO loyalty_card.clients (first_name, last_name, email, password, points, birth_date) VALUES ($1, $2, $3, $4, $5, $6)",
-          [firstName, lastName, email, hashedPassword, points, birthDate]
+          [firstName, lastName, email, hashedPassword, points, birthDate],
         );
         console.log("Client user created:", email);
       } else {
@@ -160,7 +161,7 @@ const processGift = async (row) => {
     "resources",
     "images",
     "gifts",
-    imageName
+    imageName,
   );
 
   try {
@@ -168,12 +169,12 @@ const processGift = async (row) => {
     const resizedImage = await resizeAndConvertImage(imageBuffer);
     const res = await pool.query(
       "SELECT * FROM loyalty_card.gifts WHERE name = $1",
-      [name]
+      [name],
     );
     if (res.rows.length === 0) {
       await pool.query(
         "INSERT INTO loyalty_card.gifts (name, description, image, quantity, needed_points) VALUES ($1, $2, $3, $4, $5)",
-        [name, description, resizedImage, quantity, needed_points]
+        [name, description, resizedImage, quantity, needed_points],
       );
       console.log("Gift added to database:", name);
     } else {
@@ -187,7 +188,7 @@ const processGift = async (row) => {
 // Connect to the pool and execute SQL file, then create admin user
 pool.connect((err, client, done) => {
   if (err) throw err;
-  client.query(sql, async (err, res) => {
+  client.query(sql, async (err) => {
     done(); // Release the client back to the pool
     if (err) {
       console.error("Error executing the SQL file:", err.stack);

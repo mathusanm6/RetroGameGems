@@ -23,7 +23,6 @@ const managerController = new ManagerController(managerModel);
 const userController = new UserController(userModel);
 const cartController = new CartController();
 
-
 // Dashboard route for managers
 router.get("/manager-dashboard", (req, res) => {
   if (req.session.role === "manager") {
@@ -230,7 +229,6 @@ router.post("/add-gift", upload.single("image"), async (req, res) => {
       let imageBuffer = null;
       if (req.file) {
         imageBuffer = await resizeAndConvertImage(req.file.buffer);
-      } else {
       }
       await managerModel.addGift({
         name,
@@ -357,25 +355,27 @@ router.get("/view-gifts", async (req, res) => {
       const clientPoints = req.session.points;
 
       // Récupérez uniquement les cadeaux avec un prix inférieur ou égal au nombre de points accumulés par le client
-      const gifts = await clientModel.getAvailableGiftsBelowPoints(clientPoints);
+      const gifts =
+        await clientModel.getAvailableGiftsBelowPoints(clientPoints);
 
       res.render("dashboard/client/viewGifts", { gifts });
     } catch (error) {
       console.error("Error fetching gifts:", error);
-      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching gifts");
+      res
+        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error fetching gifts");
     }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
   }
 });
 
-
 router.use((req, res, next) => {
   if (!req.session.panier) {
     req.session.panier = {
       userId: "unique_user_id",
       items: [],
-      totalPrice: 0
+      totalPrice: 0,
     };
   }
   next();
@@ -400,6 +400,5 @@ router.post("/validate-cart", (req, res) => {
 router.get("/cart", (req, res) => {
   cartController.getCart(req, res);
 });
-
 
 module.exports = router;

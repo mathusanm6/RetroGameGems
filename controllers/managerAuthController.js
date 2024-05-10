@@ -28,10 +28,14 @@ class managerAuthController {
             res.redirect("/manager-dashboard");
           });
         } else {
-          res.redirect("/manager-login?success=false&message=Invalid Email or Password")
+          res.redirect(
+            "/manager-login?success=false&message=Invalid Email or Password",
+          );
         }
       } else {
-        res.redirect("/manager-login?success=false&message=Invalid Email or Password")
+        res.redirect(
+          "/manager-login?success=false&message=Invalid Email or Password",
+        );
       }
     } catch (err) {
       console.error(err);

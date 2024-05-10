@@ -29,10 +29,14 @@ class clientAuthController {
             res.redirect("/client-dashboard");
           });
         } else {
-          res.redirect("/client-login?success=false&message=Invalid Email or Password");
+          res.redirect(
+            "/client-login?success=false&message=Invalid Email or Password",
+          );
         }
       } else {
-        res.redirect("/client-login?success=false&message=Invalid Email or Password");
+        res.redirect(
+          "/client-login?success=false&message=Invalid Email or Password",
+        );
       }
     } catch (err) {
       console.error(err);

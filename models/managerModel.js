@@ -58,7 +58,13 @@ class managerModel {
     const { name, description, image, quantity, needed_points } = giftData;
     const query =
       "INSERT INTO loyalty_card.gifts (name, description, image, quantity, needed_points) VALUES ($1, $2, $3, $4, $5)";
-    await this.db.query(query, [name, description, image, quantity, needed_points]);
+    await this.db.query(query, [
+      name,
+      description,
+      image,
+      quantity,
+      needed_points,
+    ]);
   }
 
   async getAllGifts() {

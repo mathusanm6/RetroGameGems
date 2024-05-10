@@ -26,35 +26,36 @@ module.exports = (db) => {
   );
 
   // Specific login routes for client and manager
-router.get("/client-login", (req, res) => {
-  // Directly render the client login page
-  if (req.session.role === "client") {
-    res.redirect("/client-dashboard");
-  } else {
-    res.render("login/loginTemplate", {
-      loginType: 'Chrononaut',
-      formAction: 'client-login',
-      backgroundImageClass: 'bg-image-client',
-      alternateLoginPath: 'manager-login',
-      alternateLoginText: 'Wait, more than a chrononaut? Get on board as a chief!'
-    });
-  }
-});
+  router.get("/client-login", (req, res) => {
+    // Directly render the client login page
+    if (req.session.role === "client") {
+      res.redirect("/client-dashboard");
+    } else {
+      res.render("login/loginTemplate", {
+        loginType: "Chrononaut",
+        formAction: "client-login",
+        backgroundImageClass: "bg-image-client",
+        alternateLoginPath: "manager-login",
+        alternateLoginText:
+          "Wait, more than a chrononaut? Get on board as a chief!",
+      });
+    }
+  });
 
-router.get("/manager-login", (req, res) => {
-  // Directly render the manager login page
-  if (req.session.role === "manager") {
-    res.redirect("/manager-dashboard");
-  } else {
-    res.render("login/loginTemplate", {
-      loginType: 'Chief',
-      formAction: 'manager-login',
-      backgroundImageClass: 'bg-image-manager',
-      alternateLoginPath: 'client-login',
-      alternateLoginText: 'Not a chief? Get on board as a chrononaut!'
-    });
-  }
-});
+  router.get("/manager-login", (req, res) => {
+    // Directly render the manager login page
+    if (req.session.role === "manager") {
+      res.redirect("/manager-dashboard");
+    } else {
+      res.render("login/loginTemplate", {
+        loginType: "Chief",
+        formAction: "manager-login",
+        backgroundImageClass: "bg-image-manager",
+        alternateLoginPath: "client-login",
+        alternateLoginText: "Not a chief? Get on board as a chrononaut!",
+      });
+    }
+  });
 
   // Logout route
   router.get("/logout", (req, res) => userController.logout(req, res));
