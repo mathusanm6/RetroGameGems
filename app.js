@@ -43,27 +43,6 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Middleware for route protection
-function isLoggedIn(req, res, next) {
-  if (req.session.userId) {
-    next();
-  } else {
-    res.redirect("/client-login");
-  }
-}
-
-function isManager(req, res, next) {
-  if (req.session.role === "manager") {
-    next();
-  } else {
-    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized");
-  }
-}
-
-// Apply middleware
-app.use("/manager-dashboard", isLoggedIn, isManager);
-app.use("/client-dashboard", isLoggedIn);
-
 // Index route
 const indexRouter = require("./routes/index");
 app.use("/", indexRouter);
