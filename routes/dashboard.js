@@ -13,6 +13,7 @@ const ClientController = require("../controllers/clientController");
 const ManagerController = require("../controllers/managerController");
 const UserController = require("../controllers/userController");
 const CartController = require("../controllers/cartController");
+const ClientAuthController = require("../controllers/clientAuthController");
 const pool = require("../models/db");
 
 const clientModel = new ClientModel(pool);
@@ -22,6 +23,7 @@ const clientController = new ClientController(clientModel);
 const managerController = new ManagerController(managerModel);
 const userController = new UserController(userModel);
 const cartController = new CartController();
+const clientAuthController = new ClientAuthController(clientModel);
 
 // Dashboard route for managers
 router.get("/manager-dashboard", (req, res) => {
@@ -33,7 +35,7 @@ router.get("/manager-dashboard", (req, res) => {
 });
 
 // Dashboard route for clients
-router.get("/client-dashboard", (req, res) => {
+router.get("/client-dashboard", clientAuthController.ensureAuthenticated.bind(clientAuthController), (req, res) => {
   if (req.session.role === "client") {
     res.render("dashboard/client/index", { points: req.session.points });
   } else {
@@ -41,7 +43,7 @@ router.get("/client-dashboard", (req, res) => {
   }
 });
 
-// Create user route for managers
+// Créer un utilisateur (client ou gérante)
 router.get("/create-user", (req, res) => {
   if (req.session.role === "manager") {
     res.render("dashboard/manager/createUser");
@@ -65,9 +67,7 @@ router.get("/modify-client", async (req, res) => {
       res.render("dashboard/manager/modifyClient", { clients });
     } catch (error) {
       console.error("Error fetching clients:", error);
-      res
-        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error fetching clients");
+      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching clients");
     }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
@@ -105,9 +105,7 @@ router.get("/delete-client", async (req, res) => {
       res.render("dashboard/manager/deleteClient", { clients });
     } catch (error) {
       console.error("Error fetching clients:", error);
-      res
-        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error fetching clients");
+      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching clients");
     }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
@@ -130,9 +128,7 @@ router.get("/get-clients", async (req, res) => {
       res.json({ clients: clients });
     } catch (error) {
       console.error("Error fetching clients:", error);
-      res
-        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error fetching clients");
+      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching clients");
     }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
@@ -151,9 +147,7 @@ router.get("/get-client/:clientId", async (req, res) => {
       }
     } catch (error) {
       console.error("Error fetching client:", error);
-      res
-        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error fetching client details");
+      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching client details");
     }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
@@ -169,9 +163,7 @@ router.get("/get-points", async (req, res) => {
       res.json({ points: points });
     } catch (error) {
       console.error("Error fetching points:", error);
-      res
-        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error fetching points");
+      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching points");
     }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
@@ -186,9 +178,7 @@ router.get("/get-point/:clientId", async (req, res) => {
       res.json({ points: points });
     } catch (error) {
       console.error("Error fetching points:", error);
-      res
-        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error fetching points");
+      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching points");
     }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
@@ -255,9 +245,7 @@ router.get("/modify-gift", async (req, res) => {
       res.render("dashboard/manager/modifyGift", { gifts });
     } catch (error) {
       console.error("Error fetching gifts:", error);
-      res
-        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error fetching gifts");
+      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching gifts");
     }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
@@ -288,9 +276,7 @@ router.get("/get-gifts", async (req, res) => {
       res.json({ gifts: gifts });
     } catch (error) {
       console.error("Error fetching gifts:", error);
-      res
-        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error fetching gifts");
+      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching gifts");
     }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
@@ -313,9 +299,7 @@ router.get("/get-gift/:giftId", async (req, res) => {
       }
     } catch (error) {
       console.error("Error fetching gift:", error);
-      res
-        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error fetching gift details");
+      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching gift details");
     }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
@@ -330,9 +314,7 @@ router.get("/delete-gift", async (req, res) => {
       res.render("dashboard/manager/deleteGift", { gifts });
     } catch (error) {
       console.error("Error fetching gifts:", error);
-      res
-        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error fetching gifts");
+      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching gifts");
     }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
@@ -348,55 +330,31 @@ router.post("/delete-gift", (req, res) => {
 });
 
 // Get all gifts route for clients
-router.get(
-  "/view-gifts",
-  clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  async (req, res) => {
-    if (req.session.role === "client") {
-      try {
-        const clientPoints = req.session.points;
-        const gifts =
-          await clientModel.getAvailableGiftsBelowPoints(clientPoints);
-        res.render("dashboard/client/viewGifts", { gifts });
-      } catch (error) {
-        console.error("Error fetching gifts:", error);
-        res
-          .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-          .send("Error fetching gifts");
-      }
-    } else {
-      res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+router.get("/view-gifts", clientAuthController.ensureAuthenticated.bind(clientAuthController), async (req, res) => {
+  if (req.session.role === "client") {
+    try {
+      const clientPoints = req.session.points;
+      const gifts = await clientModel.getAvailableGiftsBelowPoints(clientPoints);
+      res.render("dashboard/client/viewGifts", { gifts });
+    } catch (error) {
+      console.error("Error fetching gifts:", error);
+      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching gifts");
     }
+  } else {
+    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
   }
-);
+});
 
-router.get(
-  "/cart",
-  clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.getCart.bind(cartController)
-);
-router.post(
-  "/add-to-cart",
-  clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.addToCart.bind(cartController)
-);
-router.post(
-  "/remove-from-cart",
-  clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.removeFromCart.bind(cartController)
-);
-router.post(
-  "/validate-cart",
-  clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.validateCart.bind(cartController)
-);
 
-router.get(
-  "/confirmation",
-  clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  (req, res) => {
-    res.render("dashboard/client/confirmation");
-  }
-);
+router.get("/cart", clientAuthController.ensureAuthenticated.bind(clientAuthController), cartController.getCart.bind(cartController));
+router.post("/add-to-cart", clientAuthController.ensureAuthenticated.bind(clientAuthController), cartController.addToCart.bind(cartController));
+router.post("/remove-from-cart", clientAuthController.ensureAuthenticated.bind(clientAuthController), cartController.removeFromCart.bind(cartController));
+router.post("/validate-cart", clientAuthController.ensureAuthenticated.bind(clientAuthController), cartController.validateCart.bind(cartController));
+
+router.get("/confirmation", clientAuthController.ensureAuthenticated.bind(clientAuthController), (req, res) => {
+  res.render("dashboard/client/confirmation");
+});
 
 module.exports = router;
+
+

@@ -1,8 +1,9 @@
 const bcrypt = require("bcryptjs");
+const pool = require("./db");
 
 class clientModel {
   constructor(db) {
-    this.db = db;
+    this.db = db || pool;
   }
 
   async findClientByEmail(email) {
@@ -13,7 +14,7 @@ class clientModel {
 
   async getClientById(clientId) {
     const query =
-      "SELECT id, email, first_name, last_name, birth_date FROM loyalty_card.clients WHERE id = $1";
+      "SELECT id, email, first_name, last_name, points, birth_date FROM loyalty_card.clients WHERE id = $1";
     const result = await this.db.query(query, [clientId]);
     return result.rows[0];
   }
@@ -58,9 +59,7 @@ class clientModel {
     }
 
     values.push(clientId);
-    const query = `update loyalty_card.clients set ${updates.join(
-      ", ",
-    )} where id = $${values.length}`;
+    const query = `UPDATE loyalty_card.clients SET ${updates.join(", ")} WHERE id = $${values.length}`;
     await this.db.query(query, values);
   }
 
@@ -68,9 +67,20 @@ class clientModel {
     return bcrypt.compare(userPassword, hashedPassword);
   }
 
-  async deleteClient(clientId) {
-    const query = "DELETE FROM loyalty_card.clients WHERE id = $1";
-    await this.db.query(query, [clientId]);
+  async deleteClient(req, res) {
+    const { clientId } = req.body;
+
+    try {
+      await this.clientModel.deleteClient(clientId);
+      res.redirect(
+        "/delete-client?success=true&message=Client deleted successfully."
+      );
+    } catch (error) {
+      console.error("Error deleting client:", error);
+      res.redirect(
+        "/delete-client?success=false&message=Failed to delete client."
+      );
+    }
   }
 
   async getAllClients() {
@@ -88,7 +98,7 @@ class clientModel {
         return result.rows[0].points;
       } else {
         console.log("No client found with that ID.");
-        return null; // No client found
+        return null;
       }
     } catch (error) {
       console.error("Error getting points:", error);
@@ -102,7 +112,7 @@ class clientModel {
     try {
       const result = await this.db.query(query, [pointsToAdd, clientId]);
       if (result.rows.length > 0) {
-        return result.rows[0].points; // Optionally return the new points total
+        return result.rows[0].points;
       } else {
         throw new Error("Client not found.");
       }
@@ -111,6 +121,7 @@ class clientModel {
       throw error;
     }
   }
+
   async getAvailableGiftsBelowPoints(clientPoints) {
     try {
       const query =
@@ -119,7 +130,7 @@ class clientModel {
       return rows;
     } catch (error) {
       throw new Error(
-        `Error fetching available gifts below client points: ${error}`,
+        `Error fetching available gifts below client points: ${error}`
       );
     }
   }
@@ -130,25 +141,49 @@ class clientModel {
     return result.rows;
   }
 
-  async getProductById(productId) {
-    const query = "SELECT * FROM loyalty_card.gifts WHERE id = $1";
-    const result = await this.db.query(query, [productId]);
-    return result.rows[0];
-  }
-
   async getGiftById(giftId) {
     try {
       const query = "SELECT * FROM loyalty_card.gifts WHERE id = $1";
       const result = await this.db.query(query, [giftId]);
       if (result.rows.length > 0) {
         const gift = result.rows[0];
-        const availableQuantity = gift.quantity; // Utilisez la colonne quantity pour obtenir le nombre disponible
+        const availableQuantity = gift.quantity;
         return { ...gift, availableQuantity };
       } else {
         throw new Error("Gift not found.");
       }
     } catch (error) {
       console.error("Error getting gift by ID:", error);
+      throw error;
+    }
+  }
+
+  async addPoints(clientId, pointsToAdd) {
+    const query =
+      "UPDATE loyalty_card.clients SET points = points + $1 WHERE id = $2 RETURNING points;";
+    try {
+      const result = await this.db.query(query, [pointsToAdd, clientId]);
+      if (result.rows.length > 0) {
+        return result.rows[0].points;
+      } else {
+        throw new Error("Client not found.");
+      }
+    } catch (error) {
+      console.error("Error updating client points:", error);
+      throw error;
+    }
+  }
+
+  async reduceGiftQuantity(giftId, quantity) {
+    const query =
+      "UPDATE loyalty_card.gifts SET quantity = quantity - $1 WHERE id = $2 AND quantity >= $1 RETURNING *;";
+    try {
+      const result = await this.db.query(query, [quantity, giftId]);
+      if (result.rows.length === 0) {
+        throw new Error("Insufficient quantity or gift not found.");
+      }
+    } catch (error) {
+      console.error("Error reducing gift quantity:", error);
       throw error;
     }
   }
