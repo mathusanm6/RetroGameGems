@@ -12,7 +12,7 @@ const UserModel = require("../models/userModel");
 const ClientController = require("../controllers/clientController");
 const ManagerController = require("../controllers/managerController");
 const UserController = require("../controllers/userController");
-
+const CartController = require("../controllers/cartController");
 const pool = require("../models/db");
 
 const clientModel = new ClientModel(pool);
@@ -21,6 +21,8 @@ const userModel = new UserModel(pool);
 const clientController = new ClientController(clientModel);
 const managerController = new ManagerController(managerModel);
 const userController = new UserController(userModel);
+const cartController = new CartController();
+
 
 // Dashboard route for managers
 router.get("/manager-dashboard", (req, res) => {
@@ -346,5 +348,58 @@ router.post("/delete-gift", (req, res) => {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
   }
 });
+
+// Get all gifts route for clients
+router.get("/view-gifts", async (req, res) => {
+  if (req.session.role === "client") {
+    try {
+      // Récupérez le nombre de points accumulés par le client depuis la session
+      const clientPoints = req.session.points;
+
+      // Récupérez uniquement les cadeaux avec un prix inférieur ou égal au nombre de points accumulés par le client
+      const gifts = await clientModel.getAvailableGiftsBelowPoints(clientPoints);
+
+      res.render("dashboard/client/viewGifts", { gifts });
+    } catch (error) {
+      console.error("Error fetching gifts:", error);
+      res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send("Error fetching gifts");
+    }
+  } else {
+    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
+  }
+});
+
+
+router.use((req, res, next) => {
+  if (!req.session.panier) {
+    req.session.panier = {
+      userId: "unique_user_id",
+      items: [],
+      totalPrice: 0
+    };
+  }
+  next();
+});
+
+router.post("/add-to-cart", (req, res) => {
+  cartController.addToCart(req, res);
+});
+
+router.post("/update-cart-item", (req, res) => {
+  cartController.updateCartItem(req, res);
+});
+
+router.post("/remove-from-cart", (req, res) => {
+  cartController.removeFromCart(req, res);
+});
+
+router.post("/validate-cart", (req, res) => {
+  cartController.validateCart(req, res);
+});
+
+router.get("/cart", (req, res) => {
+  cartController.getCart(req, res);
+});
+
 
 module.exports = router;
