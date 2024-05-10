@@ -28,49 +28,45 @@
 
 <body>
     <div class="container mt-5">
-        <h1 class="mb-4">Available Gifts</h1>
+        <h1 class="mb-4"><i class="fas fa-gift gift-icon"></i> Available Gifts</h1>
 
-        <div class="container mt-5">
-            <h1 class="mb-4"><i class="fas fa-gift gift-icon"></i> Available Gifts</h1>
-
-            <div class="row">
-                <% gifts.forEach(gift=> { %>
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <%= gift.name %>
-                                </h5>
-                                <p class="card-text">
-                                    <%= gift.description %>
-                                </p>
-                                <p class="card-text">
-                                    <%= gift.needed_points %> Points
-                                </p>
-                                <p class="card-text">Available Quantity: <%= gift.quantity %>
-                                </p>
-                                <form action="/add-to-cart" method="post">
-                                    <input type="hidden" name="giftId" value="<%= gift.id %>">
-                                    <label for="quantity">Quantité :</label>
-                                    <input type="number" id="quantity" name="quantity" value="1" min="1"
-                                        class="form-control mb-2">
-                                    <button type="submit" class="btn btn-primary">Ajouter au Panier</button>
-                                </form>
-                            </div>
+        <div class="row">
+            <% gifts.forEach(gift=> { %>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%= gift.name %>
+                            </h5>
+                            <p class="card-text">
+                                <%= gift.description %>
+                            </p>
+                            <p class="card-text">
+                                <%= gift.needed_points %> Points
+                            </p>
+                            <p class="card-text">Available Quantity: <%= gift.quantity %>
+                            </p>
+                            <form action="/add-to-cart" method="post">
+                                <input type="hidden" name="giftId" value="<%= gift.id %>">
+                                <label for="quantity">Quantité :</label>
+                                <input type="number" id="quantity" name="quantity" value="1" min="1"
+                                    class="form-control mb-2">
+                                <button type="submit" class="btn btn-primary">Ajouter au Panier</button>
+                            </form>
                         </div>
                     </div>
-                    <% }) %>
-            </div>
-
-            <a href="/client-dashboard" class="btn btn-outline-secondary mt-3">
-                <i class="fas fa-arrow-left fa"></i> Retour au Tableau de Bord
-            </a>
+                </div>
+                <% }) %>
         </div>
 
+        <a href="/client-dashboard" class="btn btn-outline-secondary mt-3">
+            <i class="fas fa-arrow-left fa"></i> Retour au Tableau de Bord
+        </a>
+    </div>
 
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>

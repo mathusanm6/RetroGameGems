@@ -17,52 +17,63 @@
             margin-right: 0.5rem;
         }
 
-        .cart-item {
-            border: 1px solid #dee2e6;
-            border-radius: .25rem;
-            margin-bottom: 10px;
-            padding: 10px;
+        .cart-icon {
+            color: #007bff;
         }
+
+        .point-icon {
+            color: #ffc107;
+        }
+
+        .gift-icon {
+            color: #dc3545;
+        }
+
+        /* Bootstrap red */
     </style>
     <title>Shopping Cart</title>
 </head>
 
 <body>
     <div class="container mt-5">
-        <h1 class="mb-4">Shopping Cart</h1>
-
+        <h1 class="mb-4"><i class="fas fa-shopping-cart cart-icon"></i> Shopping Cart</h1>
         <% if (items.length > 0) { %>
-            <% items.forEach(item => { %>
-                <div class="cart-item">
-                    <h5><%= item.name %></h5>
-                    <p>Price: <%= item.price %> Points</p>
-                    <p>Quantity: <%= item.quantity %></p>
-                    <!-- Form for updating quantity -->
-                    <form action="/update-cart-item" method="post">
-                        <input type="hidden" name="giftId" value="<%= item.giftId %>">
-                        <label for="quantity">Quantity:</label>
-                        <input type="number" id="quantity" name="quantity" value="<%= item.quantity %>" min="1">
-                        <button type="submit" class="btn btn-primary">Update Quantity</button>
-                    </form>
-                    <!-- Form for removing item -->
-                    <form action="/remove-from-cart" method="post">
-                        <input type="hidden" name="giftId" value="<%= item.giftId %>">
-                        <button type="submit" class="btn btn-danger">Remove Item</button>
-                    </form>
-                </div>
-            <% }) %>
-            <!-- Form for validating the cart -->
-            <form action="/validate-cart" method="post">
-                <button type="submit" class="btn btn-success">Valider le panier</button>
-            </form>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Article</th>
+                    <th>Quantité</th>
+                    <th>Prix</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% items.forEach(item => { %>
+                <tr>
+                    <td><%= item.name %></td>
+                    <td><%= item.quantity %></td>
+                    <td><%= item.price %> points</td>
+                    <td><%= item.price * item.quantity %> points</td>
+                    <td>
+                        <form action="/remove-from-cart" method="post">
+                            <input type="hidden" name="giftId" value="<%= item.giftId %>">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Retirer</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <h2>Total : <%= totalPrice %> points</h2>
+        <form action="/validate-cart" method="post">
+            <button type="submit" class="btn btn-primary mt-3">Confirmer le Panier</button>
+        </form>
         <% } else { %>
-            <p>Your shopping cart is empty.</p>
+        <p>Votre panier est vide.</p>
         <% } %>
-
-        <p>Total Price: <%= totalPrice %> Points</p>
-
-        <a href="/client-dashboard" class="btn btn-outline-secondary mt-3">
-            <i class="fas fa-arrow-left fa"></i> Back to Dashboard
+        <a href="/view-gifts" class="btn btn-outline-secondary mt-3">
+            <i class="fas fa-arrow-left fa"></i> Retour aux Cadeaux
         </a>
     </div>
 
@@ -72,3 +83,4 @@
 </body>
 
 </html>
+
