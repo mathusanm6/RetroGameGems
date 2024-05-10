@@ -4,7 +4,7 @@
 <head>
     <!-- Required meta tags for Bootstrap 5 -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Add Gift</title>
@@ -22,6 +22,7 @@
         .img-preview img {
             max-width: 100%;
             transition: transform 0.5s ease-in-out;
+            transform: scale(0);
         }
     </style>
 </head>
@@ -81,26 +82,43 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script src="/alertHandler.js"></script>
 
     <script>
         function previewImage() {
             const file = document.getElementById('image').files[0];
-            const previewImg = document.getElementById('imagePreview');
+            const previewImg = $('#imagePreview');
+            const img_preview_image = $('.img-preview img');
 
             if (file) {
-                previewImg.style.transition = 'none'; // Remove the transition to instantly scale down the image
-                previewImg.style.transform = 'scale(0)'; // Instantly scale the image down
+                // Remove the transition to instantly scale down the image
+                img_preview_image.css('transition', 'none');
+                previewImg.css('transform', 'scale(0)'); // Instantly scale the image down
 
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    previewImg.src = e.target.result;
-                    previewImg.style.transition = 'transform 0.5s ease-in-out'; // Re-apply the transition after setting the new image source
+                    previewImg.attr('src', e.target.result);
+
+                    // Re-apply the transition after setting the new image source
+                    img_preview_image.css('transition', 'transform 0.5s ease-in-out');
+
+                    // Use a slight delay to ensure the new transition style is applied
                     setTimeout(() => {
-                        previewImg.style.transform = 'scale(1)'; // Animate to full size
+                        animateImagePreview();
                     }, 10);
                 };
                 reader.readAsDataURL(file);
             }
+        }
+
+        function animateImagePreview() {
+            const previewImg = $('#imagePreview');
+            setTimeout(() => {
+                previewImg.css('transform', 'scale(1)'); // Animate to full size
+            }, 10);
         }
     </script>
 
