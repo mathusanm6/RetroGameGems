@@ -20,15 +20,15 @@ $(document).ready(function () {
     $(alertId).show();
 
     // Auto-hide after 5 seconds
-    setTimeout(() => $(alertId).hide(), 5000);
+    setTimeout(() => $(alertId).alert("close"), 5000); // Adjusted to use '.alert('close')'
 
     // Remove query params from URL
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 
   // Listener for close button clicks in alerts
-  $(".alert .close").click(function () {
-    $(this).parent().hide();
+  $(".alert .btn-close").click(function () {
+    $(this).parent().parent().hide(); // Adjusted the DOM traversal due to the added btn-close class
   });
 });
 
