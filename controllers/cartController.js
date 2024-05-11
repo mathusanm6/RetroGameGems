@@ -19,7 +19,7 @@ class CartController {
     try {
       const gift = await this.giftModel.getGiftById(giftId);
       const itemInCart = req.session.cart.items.find(
-        (item) => item.giftId === giftId
+        (item) => item.giftId === giftId,
       );
 
       if (itemInCart) {
@@ -53,7 +53,7 @@ class CartController {
 
     try {
       const itemIndex = req.session.cart.items.findIndex(
-        (item) => item.giftId === giftId
+        (item) => item.giftId === giftId,
       );
 
       if (itemIndex !== -1) {
@@ -65,7 +65,7 @@ class CartController {
     } catch (error) {
       console.error(
         "Erreur lors de la suppression de l'article du panier :",
-        error
+        error,
       );
       res
         .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)

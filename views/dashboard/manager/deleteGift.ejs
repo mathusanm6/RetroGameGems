@@ -5,8 +5,8 @@
     <!-- Required meta tags for Bootstrap 4 -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     <title>Delete Gift</title>
@@ -15,18 +15,17 @@
 <body>
     <div class="container mt-5">
         <a href="/manager-dashboard" class="btn btn-outline-secondary mt-3">
-            <i class="fas fa-arrow-left fa" style="padding-right: 10px;"></i> Back to Dashboard
+            <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
         </a>
     </div>
     <div class="container mt-5">
-
         <%- include('../../partials/alerts'); %>
 
             <h1>Delete Retro Gift</h1>
             <form action="/delete-gift" method="post">
-                <div class="form-group">
-                    <label for="giftId">Select a Retro Gift to Delete:</label>
-                    <select id="giftId" name="giftId" class="form-control">
+                <div class="mb-3">
+                    <label for="giftId" class="form-label">Select a Retro Gift to Delete:</label>
+                    <select id="giftId" name="giftId" class="form-select">
                         <option value="">Select a Retro Gift</option>
                         <% gifts.forEach(function(gift) { %>
                             <option value="<%= gift.id %>">
@@ -38,8 +37,8 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-auto">
-                            <button type="submit" class="btn btn-danger btn-block">
-                                <i class="fas fa-trash fa gift-icon" style="padding-right: 10px;"></i> Delete Retro Gift
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash me-2"></i> Delete Retro Gift
                             </button>
                         </div>
                     </div>

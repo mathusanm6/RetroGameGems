@@ -73,12 +73,12 @@ class clientModel {
     try {
       await this.clientModel.deleteClient(clientId);
       res.redirect(
-        "/delete-client?success=true&message=Client deleted successfully."
+        "/delete-client?success=true&message=Client deleted successfully.",
       );
     } catch (error) {
       console.error("Error deleting client:", error);
       res.redirect(
-        "/delete-client?success=false&message=Failed to delete client."
+        "/delete-client?success=false&message=Failed to delete client.",
       );
     }
   }
@@ -106,22 +106,6 @@ class clientModel {
     }
   }
 
-  async addPoints(clientId, pointsToAdd) {
-    const query =
-      "UPDATE loyalty_card.clients SET points = points + $1 WHERE id = $2 RETURNING points;";
-    try {
-      const result = await this.db.query(query, [pointsToAdd, clientId]);
-      if (result.rows.length > 0) {
-        return result.rows[0].points;
-      } else {
-        throw new Error("Client not found.");
-      }
-    } catch (error) {
-      console.error("Error updating client points:", error);
-      throw error;
-    }
-  }
-
   async getAvailableGiftsBelowPoints(clientPoints) {
     try {
       const query =
@@ -130,7 +114,7 @@ class clientModel {
       return rows;
     } catch (error) {
       throw new Error(
-        `Error fetching available gifts below client points: ${error}`
+        `Error fetching available gifts below client points: ${error}`,
       );
     }
   }
@@ -206,8 +190,7 @@ class clientModel {
 
   async todayIsClientBirthday(clientId) {
     try {
-      const query =
-        "SELECT birth_date FROM loyalty_card.clients WHERE id = $1";
+      const query = "SELECT birth_date FROM loyalty_card.clients WHERE id = $1";
       const result = await this.db.query(query, [clientId]);
       if (result.rows.length > 0) {
         const birthDate = result.rows[0].birth_date;
@@ -233,7 +216,10 @@ class clientModel {
       const result = await this.db.query(query, [clientId]);
       return result.rows.length > 0;
     } catch (error) {
-      console.error("Error checking if birthday gift is already claimed:", error);
+      console.error(
+        "Error checking if birthday gift is already claimed:",
+        error,
+      );
       throw error;
     }
   }

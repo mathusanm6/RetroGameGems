@@ -28,13 +28,21 @@ class GiftModel {
   }
 
   async addGift(name, description, quantity, needed_points) {
-    const query = "INSERT INTO loyalty_card.gifts (name, description, quantity, needed_points) VALUES ($1, $2, $3, $4)";
+    const query =
+      "INSERT INTO loyalty_card.gifts (name, description, quantity, needed_points) VALUES ($1, $2, $3, $4)";
     await this.db.query(query, [name, description, quantity, needed_points]);
   }
 
   async updateGift(giftId, name, description, quantity, needed_points) {
-    const query = "UPDATE loyalty_card.gifts SET name = $1, description = $2, quantity = $3, needed_points = $4 WHERE id = $5";
-    await this.db.query(query, [name, description, quantity, needed_points, giftId]);
+    const query =
+      "UPDATE loyalty_card.gifts SET name = $1, description = $2, quantity = $3, needed_points = $4 WHERE id = $5";
+    await this.db.query(query, [
+      name,
+      description,
+      quantity,
+      needed_points,
+      giftId,
+    ]);
   }
 
   async deleteGift(giftId) {
@@ -49,7 +57,8 @@ class GiftModel {
   }
 
   async reduceGiftQuantity(giftId, quantity) {
-    const query = "UPDATE loyalty_card.gifts SET quantity = quantity - $1 WHERE id = $2 AND quantity >= $1 RETURNING *;";
+    const query =
+      "UPDATE loyalty_card.gifts SET quantity = quantity - $1 WHERE id = $2 AND quantity >= $1 RETURNING *;";
     try {
       const result = await this.db.query(query, [quantity, giftId]);
       if (result.rows.length === 0) {

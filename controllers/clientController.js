@@ -32,13 +32,16 @@ class clientController {
 
   async deleteClient(req, res) {
     const { clientId } = req.body;
-
     try {
       await this.clientModel.deleteClient(clientId);
-      res.redirect("/delete-client?success=true&message=Client deleted successfully.");
+      res.redirect(
+        "/delete-client?success=true&message=Client deleted successfully.",
+      );
     } catch (error) {
       console.error("Error deleting client:", error);
-      res.redirect("/delete-client?success=false&message=Failed to delete client.");
+      res.redirect(
+        "/delete-client?success=false&message=Failed to delete client.",
+      );
     }
   }
 

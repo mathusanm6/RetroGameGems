@@ -26,6 +26,7 @@ const transactionModel = new TransactionModel(pool);
 const managerController = new ManagerController(managerModel);
 const userController = new UserController(userModel);
 const cartController = new CartController();
+const clientController = new ClientController(clientModel);
 const clientAuthController = new ClientAuthController(clientModel);
 
 function combineGiftsAndTransactions(gifts, transactions) {
@@ -62,18 +63,18 @@ router.get(
 
     try {
       const isBirthday = await clientModel.todayIsClientBirthday(
-        req.session.userId
+        req.session.userId,
       );
       await handleBirthday(req, isBirthday);
       const transactions = await transactionModel.getTransactionsByClientId(
-        req.session.userId
+        req.session.userId,
       );
       const all_gifts = await giftModel.getAllGiftsByIDS(
-        transactions.map((t) => t.gift_id)
+        transactions.map((t) => t.gift_id),
       );
       const all_gift_transaction = combineGiftsAndTransactions(
         all_gifts,
-        transactions
+        transactions,
       );
       prepareGiftImages(all_gifts);
       renderDashboard(req, res, all_gift_transaction);
@@ -83,14 +84,14 @@ router.get(
         .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error handling client dashboard");
     }
-  }
+  },
 );
 
 async function handleBirthday(req, isBirthday) {
   if (!isBirthday) return;
 
   const alreadyClaimed = await clientModel.isBirthdayGiftAlreadyClaimed(
-    req.session.userId
+    req.session.userId,
   );
   if (alreadyClaimed) return;
 
@@ -445,28 +446,28 @@ router.get(
     } else {
       res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
     }
-  }
+  },
 );
 
 router.get(
   "/cart",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.getCart.bind(cartController)
+  cartController.getCart.bind(cartController),
 );
 router.post(
   "/add-to-cart",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.addToCart.bind(cartController)
+  cartController.addToCart.bind(cartController),
 );
 router.post(
   "/remove-from-cart",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.removeFromCart.bind(cartController)
+  cartController.removeFromCart.bind(cartController),
 );
 router.post(
   "/validate-cart",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.validateCart.bind(cartController)
+  cartController.validateCart.bind(cartController),
 );
 
 router.get(
@@ -474,7 +475,7 @@ router.get(
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
   (req, res) => {
     res.render("dashboard/client/confirmation");
-  }
+  },
 );
 
 module.exports = router;
