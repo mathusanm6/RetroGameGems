@@ -18,6 +18,9 @@ const resizeAndConvertImage = async (buffer) => {
     .toBuffer(); // Return buffer
 };
 
+// Today's date
+const today = new Date().toISOString().split("T")[0];
+
 const admins = [
   {
     email: "rtheo@mail.com",
@@ -40,7 +43,7 @@ const clients = [
     firstName: "John",
     lastName: "Doe",
     points: 1210,
-    birthDate: "1990-05-11",
+    birthDate: today,
   },
   {
     email: "jane.smith@mail.com",
@@ -48,7 +51,7 @@ const clients = [
     firstName: "Jane",
     lastName: "Smith",
     points: 750,
-    birthDate: "1992-05-11",
+    birthDate: today,
   },
   {
     email: "alice.jones@mail.com",
@@ -56,7 +59,7 @@ const clients = [
     firstName: "Alice",
     lastName: "Jones",
     points: 500,
-    birthDate: "1988-05-11",
+    birthDate: today,
   },
   {
     email: "bob.brown@mail.com",
@@ -64,7 +67,7 @@ const clients = [
     firstName: "Bob",
     lastName: "Brown",
     points: 3140,
-    birthDate: "1991-05-11",
+    birthDate: today,
   },
   {
     email: "charlie.davis@mail.com",

@@ -167,7 +167,7 @@
         <h1 class="mb-4"><span class="highlight">Chrononaut</span>'s
             Dashboard</h1>
 
-        <% if (birthdayGift) { %>
+        <% if (birthdayDetails && birthdayDetails.birthdayGift) { %>
             <div class="alert alert-success birthday-alert alert-dismissible fade show" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -175,14 +175,15 @@
                 <h4 class="alert-heading">Happy Birthday!</h4>
                 <p>You've received 500 bonus points!</p>
                 <hr>
-                <h5>Special Gift: <%= giftName %>
+                <h5>Special Gift: <%= birthdayDetails.giftName %>
                 </h5>
                 <p>
-                    <%= giftDescription %>
+                    <%= birthdayDetails.giftDescription %>
                 </p>
-                <img src="data:image/png;base64,<%= giftImage %>" class="img-fluid" alt="Birthday Gift">
+                <img src="data:image/png;base64,<%= birthdayDetails.giftImage %>" class="img-fluid" alt="Birthday Gift">
             </div>
             <% } %>
+
 
 
                 <!-- Points -->
@@ -225,7 +226,7 @@
                                 <div class="col-md-4 mb-3">
                                     <div class="card h-100">
                                         <img src="data:image/jpeg;base64,<%= transaction.gift.image %>"
-                                            class="card-img-top" alt="<%= transaction.gift.name %>">
+                                            class="card-img-top" alt="<%= transaction.gift.name %>" draggable="false">
                                         <div class="card-body">
                                             <h5 class="card-title">
                                                 <%= transaction.gift.name %>

@@ -17,6 +17,7 @@ const UserController = require("../controllers/userController");
 const CartController = require("../controllers/cartController");
 const ClientAuthController = require("../controllers/clientAuthController");
 const pool = require("../models/db");
+const session = require("express-session");
 
 const clientModel = new ClientModel(pool);
 const managerModel = new ManagerModel(pool);
@@ -53,6 +54,7 @@ router.get("/manager-dashboard", (req, res) => {
   }
 });
 
+// Dashboard route for clients
 router.get(
   "/client-dashboard",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
@@ -60,23 +62,20 @@ router.get(
     if (req.session.role !== "client") {
       return res.redirect("/client-login");
     }
-
     try {
-      const isBirthday = await clientModel.todayIsClientBirthday(
-        req.session.userId,
-      );
-      await handleBirthday(req, isBirthday);
+      await handleBirthday(req);
+
       const transactions = await transactionModel.getTransactionsByClientId(
-        req.session.userId,
+        req.session.userId
       );
       const all_gifts = await giftModel.getAllGiftsByIDS(
-        transactions.map((t) => t.gift_id),
-      );
-      const all_gift_transaction = combineGiftsAndTransactions(
-        all_gifts,
-        transactions,
+        transactions.map((t) => t.gift_id)
       );
       prepareGiftImages(all_gifts);
+      const all_gift_transaction = combineGiftsAndTransactions(
+        all_gifts,
+        transactions
+      );
       renderDashboard(req, res, all_gift_transaction);
     } catch (error) {
       console.error("Error handling client dashboard:", error);
@@ -84,21 +83,39 @@ router.get(
         .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error handling client dashboard");
     }
-  },
+  }
 );
 
-async function handleBirthday(req, isBirthday) {
+async function handleBirthday(req) {
+  // Check if the birthday has already been processed during this session
+  if (req.session.birthdayProcessed) {
+    return;
+  }
+
+  const isBirthday = await clientModel.todayIsClientBirthday(
+    req.session.userId
+  );
   if (!isBirthday) return;
 
   const alreadyClaimed = await clientModel.isBirthdayGiftAlreadyClaimed(
-    req.session.userId,
+    req.session.userId
   );
   if (alreadyClaimed) return;
 
   const points = await clientModel.addPoints(req.session.userId, 500);
-  req.session.points = points;
   const gift = await giftModel.getRandomGift();
   await transactionModel.addTransaction(req.session.userId, gift.id, true);
+
+  req.session.points = points;
+  req.session.birthdayGift = {
+    claimed: true,
+    name: gift.name,
+    description: gift.description,
+    image: Buffer.from(gift.image).toString("base64"),
+  };
+
+  // Set a flag to indicate that the birthday has been processed
+  req.session.birthdayProcessed = true;
 }
 
 function prepareGiftImages(gifts) {
@@ -110,17 +127,30 @@ function prepareGiftImages(gifts) {
 }
 
 function renderDashboard(req, res, all_gift_transaction) {
+  // Initialize birthdayDetails as an empty object or null
+  let birthdayDetails = {};
+
+  // Only populate birthdayDetails if the birthday has not been acknowledged yet
+  if (!req.session.birthdayAcknowledged && req.session.birthdayGift?.claimed) {
+    birthdayDetails = {
+      birthdayGift: true,
+      giftName: req.session.birthdayGift.name,
+      giftDescription: req.session.birthdayGift.description,
+      giftImage: req.session.birthdayGift.image,
+    };
+
+    // Set the session flag to true after displaying the birthday gift for the first time
+    req.session.birthdayAcknowledged = true;
+  }
+
   res.render("dashboard/client/index", {
     points: req.session.points,
-    birthdayGift: req.session.birthdayGift,
-    giftName: req.session.gift?.name,
-    giftDescription: req.session.gift?.description,
-    giftImage: req.session.gift?.image,
-    all_gift_transaction,
+    birthdayDetails: birthdayDetails,
+    all_gift_transaction: all_gift_transaction,
   });
 }
 
-// Créer un utilisateur (client ou gérante)
+// Create user route for managers
 router.get("/create-user", (req, res) => {
   if (req.session.role === "manager") {
     res.render("dashboard/manager/createUser");
@@ -446,28 +476,28 @@ router.get(
     } else {
       res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
     }
-  },
+  }
 );
 
 router.get(
   "/cart",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.getCart.bind(cartController),
+  cartController.getCart.bind(cartController)
 );
 router.post(
   "/add-to-cart",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.addToCart.bind(cartController),
+  cartController.addToCart.bind(cartController)
 );
 router.post(
   "/remove-from-cart",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.removeFromCart.bind(cartController),
+  cartController.removeFromCart.bind(cartController)
 );
 router.post(
   "/validate-cart",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.validateCart.bind(cartController),
+  cartController.validateCart.bind(cartController)
 );
 
 router.get(
@@ -475,7 +505,7 @@ router.get(
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
   (req, res) => {
     res.render("dashboard/client/confirmation");
-  },
+  }
 );
 
 module.exports = router;
