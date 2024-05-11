@@ -1,44 +1,39 @@
 const ClientModel = require("../models/clientModel");
+const GiftModel = require("../models/giftModel");
 const HttpStatus = require("http-status-codes");
 const pool = require("../models/db");
 
 class CartController {
   constructor() {
     this.clientModel = new ClientModel(pool);
-    this.cart = {
-      items: [],
-      totalPrice: 0,
-    };
+    this.giftModel = new GiftModel(pool);
   }
 
   async addToCart(req, res) {
     const { giftId, quantity } = req.body;
 
+    if (!req.session.cart) {
+      req.session.cart = { items: [], totalPrice: 0 };
+    }
+
     try {
-      const gift = await this.clientModel.getGiftById(giftId);
+      const gift = await this.giftModel.getGiftById(giftId);
+      const itemInCart = req.session.cart.items.find(
+        (item) => item.giftId === giftId
+      );
 
-      let totalPointsInCart = 0;
-      this.cart.items.forEach((item) => {
-        totalPointsInCart += item.price * item.quantity;
-      });
-
-      if (
-        totalPointsInCart + gift.needed_points * quantity >
-        req.session.points
-      ) {
-        throw new Error(
-          "Vous n'avez pas suffisamment de points pour acheter tous les articles.",
-        );
+      if (itemInCart) {
+        itemInCart.quantity += parseInt(quantity);
+      } else {
+        req.session.cart.items.push({
+          giftId,
+          name: gift.name,
+          price: gift.needed_points,
+          quantity: parseInt(quantity),
+        });
       }
 
-      this.cart.items.push({
-        giftId,
-        name: gift.name,
-        price: gift.needed_points,
-        quantity,
-      });
-
-      this.cart.totalPrice += gift.needed_points * quantity;
+      req.session.cart.totalPrice += gift.needed_points * quantity;
 
       res.redirect("/cart");
     } catch (error) {
@@ -49,71 +44,28 @@ class CartController {
     }
   }
 
-  async updateCartItem(req, res) {
-    const { giftId, quantity } = req.body;
-
-    try {
-      const itemToUpdate = this.cart.items.find(
-        (item) => item.giftId === giftId,
-      );
-
-      if (!itemToUpdate) {
-        throw new Error("Article non trouvé dans le panier");
-      }
-
-      const gift = await this.clientModel.getGiftById(giftId);
-
-      if (quantity > gift.quantity) {
-        throw new Error(
-          "Quantité demandée supérieure à la quantité disponible en stock.",
-        );
-      }
-
-      const updatedTotalPrice =
-        this.cart.totalPrice + (quantity - itemToUpdate.quantity) * gift.price;
-
-      if (updatedTotalPrice <= req.session.points) {
-        itemToUpdate.quantity = quantity;
-        this.cart.totalPrice = updatedTotalPrice;
-        res.redirect("/cart");
-      } else {
-        throw new Error(
-          "La somme totale des points dans le panier dépasse votre nombre de points disponibles.",
-        );
-      }
-    } catch (error) {
-      console.error(
-        "Erreur lors de la mise à jour de l'article du panier :",
-        error,
-      );
-      res
-        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Impossible de mettre à jour l'article du panier");
-    }
-  }
-
   async removeFromCart(req, res) {
     const { giftId } = req.body;
 
+    if (!req.session.cart) {
+      req.session.cart = { items: [], totalPrice: 0 };
+    }
+
     try {
-      const itemIndex = this.cart.items.findIndex(
-        (item) => item.giftId === giftId,
+      const itemIndex = req.session.cart.items.findIndex(
+        (item) => item.giftId === giftId
       );
 
       if (itemIndex !== -1) {
-        const removedItem = this.cart.items.splice(itemIndex, 1)[0];
-        const giftPrice = 100;
-        this.cart.totalPrice -= giftPrice * removedItem.quantity;
-        res.redirect("/cart");
-      } else {
-        res
-          .status(HttpStatus.StatusCodes.NOT_FOUND)
-          .send("Article non trouvé dans le panier");
+        const removedItem = req.session.cart.items.splice(itemIndex, 1)[0];
+        req.session.cart.totalPrice -= removedItem.price * removedItem.quantity;
       }
+
+      res.redirect("/cart");
     } catch (error) {
       console.error(
         "Erreur lors de la suppression de l'article du panier :",
-        error,
+        error
       );
       res
         .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
@@ -122,21 +74,48 @@ class CartController {
   }
 
   async validateCart(req, res) {
+    if (!req.session.cart) {
+      req.session.cart = { items: [], totalPrice: 0 };
+    }
+
+    if (
+      !req.session.userId ||
+      !req.session.points ||
+      req.session.role !== "client"
+    ) {
+      console.error("Unauthorized access. Missing required session data.");
+      return res
+        .status(HttpStatus.StatusCodes.UNAUTHORIZED)
+        .send("Unauthorized access.");
+    }
+
     try {
-      let totalPrice = 0;
-      this.cart.items.forEach((item) => {
-        totalPrice += item.price * item.quantity;
-      });
+      const clientId = req.session.userId;
+      const totalPrice = req.session.cart.totalPrice;
 
       if (totalPrice > req.session.points) {
         throw new Error(
-          "Vous n'avez pas suffisamment de points pour acheter tous les articles dans votre panier.",
+          "Vous n'avez pas suffisamment de points pour acheter tous les articles dans votre panier."
         );
       }
 
-      const clientId = req.session.clientId;
+      // Déduire les points du client
       await this.clientModel.deductPoints(clientId, totalPrice);
-      this.cart = { items: [], totalPrice: 0 };
+      req.session.points -= totalPrice;
+
+      // Réduire la quantité des articles dans la base de données
+      for (const item of req.session.cart.items) {
+        await this.giftModel.reduceGiftQuantity(item.giftId, item.quantity);
+      }
+
+      // Ajouter une transaction pour chaque article
+      for (const item of req.session.cart.items) {
+        await this.addTransaction(clientId, item.giftId);
+      }
+
+      // Vider le panier
+      req.session.cart = { items: [], totalPrice: 0 };
+
       res.redirect("/confirmation");
     } catch (error) {
       console.error("Erreur lors de la validation du panier :", error);
@@ -146,15 +125,25 @@ class CartController {
     }
   }
 
+  async addTransaction(clientId, giftId) {
+    const query =
+      "INSERT INTO loyalty_card.transactions (client_id, gift_id, transaction_date) VALUES ($1, $2, CURRENT_DATE)";
+    try {
+      await pool.query(query, [clientId, giftId]);
+    } catch (error) {
+      console.error("Erreur lors de l'ajout de la transaction :", error);
+      throw error;
+    }
+  }
+
   async getCart(req, res) {
-    let totalPrice = 0;
-    this.cart.items.forEach((item) => {
-      totalPrice += item.price * item.quantity;
-    });
+    if (!req.session.cart) {
+      req.session.cart = { items: [], totalPrice: 0 };
+    }
 
     res.render("dashboard/client/cart", {
-      items: this.cart.items,
-      totalPrice: totalPrice,
+      items: req.session.cart.items,
+      totalPrice: req.session.cart.totalPrice,
     });
   }
 }

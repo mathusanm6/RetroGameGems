@@ -31,22 +31,14 @@ class clientController {
   }
 
   async deleteClient(req, res) {
-    if (req.session.role === "manager") {
-      const { clientId } = req.body;
+    const { clientId } = req.body;
 
-      try {
-        await this.clientModel.deleteClient(clientId);
-        return res.redirect(
-          `/delete-client?success=true&message=Client deleted successfully`,
-        );
-      } catch (error) {
-        console.error("Error deleting client:", error);
-        return res.redirect(
-          `/delete-client?success=false&message=Failed to delete client`,
-        );
-      }
-    } else {
-      res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access.");
+    try {
+      await this.clientModel.deleteClient(clientId);
+      res.redirect("/delete-client?success=true&message=Client deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting client:", error);
+      res.redirect("/delete-client?success=false&message=Failed to delete client.");
     }
   }
 
