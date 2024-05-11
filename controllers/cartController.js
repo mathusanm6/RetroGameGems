@@ -94,9 +94,7 @@ class CartController {
       const totalPrice = req.session.cart.totalPrice;
 
       if (totalPrice > req.session.points) {
-        throw new Error(
-          "Vous n'avez pas suffisamment de points pour acheter tous les articles dans votre panier."
-        );
+        return res.redirect("/cart?success=false&message=Not enough points");
       }
 
       // Déduire les points du client
