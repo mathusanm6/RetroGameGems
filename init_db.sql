@@ -35,6 +35,7 @@ CREATE TABLE
         id SERIAL PRIMARY KEY,
         client_id INTEGER REFERENCES clients (id),
         gift_id INTEGER REFERENCES gifts (id),
+        is_birthday_gift BOOLEAN NOT NULL,
         transaction_date DATE NOT NULL
     );
 
