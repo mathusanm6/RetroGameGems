@@ -5,6 +5,32 @@ class clientController {
     this.clientModel = clientModel;
   }
 
+  async changePassword(req, res) {
+    const { oldPassword, newPassword } = req.body;
+    const clientId = req.session.userId;
+
+    try {
+      const currentPassword = await this.clientModel.getHashedPassword(clientId);
+      const validPassword = await this.clientModel.verifyUserPassword(
+        oldPassword,
+        currentPassword,
+      );
+      if (validPassword) {
+        await this.clientModel.changePassword(clientId, newPassword);
+        res.redirect(
+          "/change-password?success=true&message=Password changed successfully",
+        );
+      } else {
+        res.redirect(
+          "/change-password?success=false&message=Invalid old password",
+        );
+      }
+    } catch (error) {
+      console.error("Error changing password:", error);
+      res.redirect("/change-password?success=false&message=Failed to change password");
+    }
+  }
+
   async modifyClient(req, res) {
     if (req.session.role === "manager") {
       const { clientId, email, first_name, last_name, birth_date } = req.body;

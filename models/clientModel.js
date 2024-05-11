@@ -32,6 +32,12 @@ class clientModel {
     ]);
   }
 
+  async changePassword(clientId, newPassword) {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const query = "UPDATE loyalty_card.clients SET password = $1 WHERE id = $2";
+    await this.db.query(query, [hashedPassword, clientId]);
+  }
+
   async updateClient(clientId, clientData) {
     const { email, first_name, last_name, birth_date } = clientData;
     const updates = [];
@@ -64,7 +70,17 @@ class clientModel {
   }
 
   async verifyUserPassword(userPassword, hashedPassword) {
+    if (!userPassword || !hashedPassword) {
+      console.error("Invalid arguments passed to verifyUserPassword");
+      return Promise.reject(new Error("Invalid arguments"));
+    }
     return bcrypt.compare(userPassword, hashedPassword);
+  }
+
+  async getHashedPassword(clientId) {
+    const query = "SELECT password FROM loyalty_card.clients WHERE id = $1";
+    const result = await this.db.query(query, [clientId]);
+    return result.rows[0].password;
   }
 
   async deleteClient(clientId) {
@@ -103,7 +119,7 @@ class clientModel {
       return rows;
     } catch (error) {
       throw new Error(
-        `Error fetching available gifts below client points: ${error}`,
+        `Error fetching available gifts below client points: ${error}`
       );
     }
   }
@@ -207,7 +223,7 @@ class clientModel {
     } catch (error) {
       console.error(
         "Error checking if birthday gift is already claimed:",
-        error,
+        error
       );
       throw error;
     }

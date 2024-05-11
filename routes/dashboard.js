@@ -519,4 +519,19 @@ router.get(
   },
 );
 
+// Change password route for clients
+router.get(
+  "/change-password",
+  clientAuthController.ensureAuthenticated.bind(clientAuthController),
+  (req, res) => {
+    res.render("dashboard/client/changePassword");
+  },
+);
+
+router.post(
+  "/change-password",
+  clientAuthController.ensureAuthenticated.bind(clientAuthController),
+  clientController.changePassword.bind(clientController),
+);
+
 module.exports = router;

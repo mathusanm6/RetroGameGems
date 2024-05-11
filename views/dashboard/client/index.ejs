@@ -209,6 +209,10 @@
             background: rgba(250, 250, 250, 0.8);
             font-size: 0.85em;
         }
+
+        .change-password {
+            background-color: #fff;
+        }
     </style>
     <title>Client's Dashboard</title>
 </head>
@@ -234,6 +238,9 @@
                 <p class="card-text"><i class="fas fa-envelope"></i>Email: <strong><%= email %></strong></p>
                 <p class="card-text"><i class="fas fa-user"></i>First Name: <strong><%= first_name %></strong></p>
                 <p class="card-text"><i class="fas fa-user-tag"></i>Last Name: <strong><%= last_name %></strong></p>
+            </div>
+            <div class="card-footer change-password">
+                <a href="/change-password" class="btn btn-outline-danger">Change Password</a>
             </div>
         </div>
 
