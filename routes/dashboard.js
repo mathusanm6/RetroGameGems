@@ -62,6 +62,9 @@ router.get(
     if (req.session.role !== "client") {
       return res.redirect("/client-login");
     }
+
+    req.session.points = await clientModel.getPoints(req.session.userId);
+
     try {
       await handleBirthday(req);
 
