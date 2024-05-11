@@ -17,38 +17,105 @@
             margin-right: 0.5rem;
         }
 
+        .highlight {
+            padding: 0 5px;
+            background-color: rgba(0, 123, 255, 0.1);
+            border-radius: 4px;
+            font-weight: bold;
+            color: rgb(35, 148, 133);
+            display: inline-block;
+        }
+
+        .highlight:hover {
+            background-color: rgba(0, 123, 255, 0.2);
+            animation: jiggle 0.5s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes jiggle {
+
+            0%,
+            100% {
+                transform: translateX(-2px);
+            }
+
+            50% {
+                transform: translateX(2px);
+            }
+        }
+
         .point-icon {
             color: #ffc107;
         }
 
-        /* Bootstrap yellow */
+        .points {
+            font-size: 1.5rem;
+            color: #ffc107;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .points:hover {
+            transform: scale(1.1);
+        }
+
+        .animate-points {
+            animation: pop-in 0.5s ease-out forwards;
+        }
+
+        @keyframes pop-in {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
     </style>
-    <title>Client Dashboard</title>
+    <title>Client's Dashboard</title>
 </head>
 
 <body>
     <div class="container mt-5">
-        <h1 class="mb-4">Client Dashboard</h1>
+        <h1 class="mb-4"><span class="highlight">Client</span>'s
+            Dashboard</h1>
 
         <!-- Points -->
-        <div class="mb-3">
-            <h3>Points Accumulated</h3>
-            <p><i class="fas fa-coins fa point-icon"></i> <%= points %> Points</p>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h3 class="card-title">Points Accumulated</h3>
+                <p class="card-text animate-points"><i class="fas fa-coins me-2 text-warning"></i>
+                    <span class="points">
+                        <%= points %>
+                    </span> Points
+                </p>
+            </div>
         </div>
 
         <!-- Gifts -->
-        <div class="mb-3">
-            <h3>Gifts</h3>
-            <a href="/view-gifts" class="btn btn-primary">
-                View Available Gifts
-            </a>
-            <a href="/cart" class="btn btn-primary">
-                View Shopping Cart
-            </a>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h3 class="card-title">Gifts</h3>
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <a href="/view-gifts" class="btn btn-primary w-100">
+                            <i class="fas fa-gift me-2" style="padding-right: 10px;"></i>View Available Gifts
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="/cart" class="btn btn-primary w-100">
+                            <i class="fas fa-shopping-cart me-2" style="padding-right: 10px;"></i>View Shopping Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <a href="/logout" class="btn btn-outline-secondary mt-3">
-            <i class="fas fa-sign-out-alt fa logout-icon"></i> Logout
+            <i class="fas fa-sign-out-alt me-2" style="padding-right: 5px;"></i> Logout
         </a>
     </div>
 

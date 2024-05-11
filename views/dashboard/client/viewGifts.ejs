@@ -9,59 +9,87 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        h3 {
-            font-size: large;
-        }
-
-        .fa {
-            margin-right: 0.5rem;
-        }
-
         .gift-icon {
             color: #dc3545;
         }
 
-        /* Bootstrap red */
+        .card-title,
+        .points,
+        .quantity {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .btn-primary {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        .btn-primary:hover {
+            background-color: #004085;
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
     </style>
     <title>Available Gifts</title>
 </head>
 
 <body>
     <div class="container mt-5">
+        <a href="/client-dashboard" class="btn btn-outline-secondary mt-3">
+            <i class="fas fa-arrow-left" style="padding-right: 10px;"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <div class="container mt-5">
         <h1 class="mb-4"><i class="fas fa-gift gift-icon"></i> Available Gifts</h1>
 
         <div class="row">
             <% gifts.forEach(gift=> { %>
                 <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card h-100">
+                        <img src="data:image/jpeg;base64,<%= gift.image.toString('base64') %>" class="card-img-top"
+                            alt="<%= gift.name %>">
+                        <div class="card-body d-flex flex-column">
                             <h5 class="card-title">
                                 <%= gift.name %>
                             </h5>
                             <p class="card-text">
                                 <%= gift.description %>
                             </p>
-                            <p class="card-text">
-                                <%= gift.needed_points %> Points
-                            </p>
-                            <p class="card-text">Available Quantity: <%= gift.quantity %>
-                            </p>
-                            <form action="/add-to-cart" method="post">
+                            <p class="card-text points">Points Needed: <strong>
+                                    <%= gift.needed_points %>
+                                </strong></p>
+                            <p class="card-text quantity">Available Quantity: <strong>
+                                    <%= gift.quantity %>
+                                </strong></p>
+                            <form action="/add-to-cart" method="post" class="mt-auto">
                                 <input type="hidden" name="giftId" value="<%= gift.id %>">
-                                <label for="quantity">Quantité :</label>
-                                <input type="number" id="quantity" name="quantity" value="1" min="1"
-                                    class="form-control mb-2">
-                                <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                <div class="form-group mb-2">
+                                    <label for="quantity<%= gift.id %>">Quantity:</label>
+                                    <input type="number" id="quantity<%= gift.id %>" name="quantity" value="1" min="1"
+                                        class="form-control">
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
                             </form>
                         </div>
                     </div>
                 </div>
                 <% }) %>
         </div>
-
-        <a href="/client-dashboard" class="btn btn-outline-secondary mt-3">
-            <i class="fas fa-arrow-left fa"></i> Back to Dashboard
-        </a>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
