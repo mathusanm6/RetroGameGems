@@ -76,10 +76,10 @@
                     </div>
                 </div>
 
-                <div class="form-group" id="birthdayField" style="display: inline-block;">
+                <div class="form-group" id="birthdayField" style="display: none;">
                     <label for="birth_date">Birthday</label>
                     <input type="date" id="birth_date" name="birth_date" class="form-control" min="1899-01-01"
-                        max="2023-05-09" autocomplete="bday" required>
+                        max="2023-05-09" autocomplete="bday">
                 </div>
 
                 <div class="container">
@@ -124,12 +124,21 @@
         function updateButtonLabel() {
             var roleSelect = document.getElementById('roleSelect');
             var button = document.getElementById('roleButton');
+            var birthdayField = document.getElementById('birthdayField');
+            var birthDateInput = document.getElementById('birth_date');
+
             if (roleSelect.value === 'client') {
                 button.innerHTML = 'Enroll a Chrononaut';
+                birthdayField.style.display = 'inline-block';
+                birthDateInput.required = true;
             } else if (roleSelect.value === 'manager') {
                 button.innerHTML = 'Enroll a Chief';
+                birthdayField.style.display = 'none';
+                birthDateInput.required = false;
             }
         }
+
+        document.addEventListener('DOMContentLoaded', updateButtonLabel);
     </script>
 
 </body>
