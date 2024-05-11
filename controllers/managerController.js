@@ -63,6 +63,9 @@ class managerController {
       let image = null;
       if (req.file) {
         image = req.file.buffer;
+      } else {
+        const gift = await this.managerModel.getGiftById(giftId);
+        image = gift.image;
       }
 
       try {
