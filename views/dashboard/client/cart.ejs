@@ -67,14 +67,21 @@
         </table>
         <h2>Total : <%= totalPrice %> points</h2>
         <form action="/validate-cart" method="post">
-            <button type="submit" class="btn btn-primary mt-3">Confirmer le Panier</button>
+            <button type="submit" class="btn btn-primary mt-3">Confirm Your Cart</button>
         </form>
         <% } else { %>
-        <p>Votre panier est vide.</p>
+        <p>Your cart is empty.</p>
         <% } %>
-        <a href="/view-gifts" class="btn btn-outline-secondary mt-3">
-            <i class="fas fa-arrow-left fa"></i> Retour aux Cadeaux
-        </a>
+        <div>
+            <a href="/view-gifts" class="btn btn-outline-secondary mt-3">
+                <i class="fas fa-gift fa"></i> Go to Gifts
+            </a>
+        </div>
+        <div>
+            <a href="/client-dashboard" class="btn btn-outline-secondary mt-3">
+                <i class="fas fa-arrow-left fa"></i> Back to Dashboard
+            </a>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
