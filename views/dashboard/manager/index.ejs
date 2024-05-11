@@ -46,11 +46,6 @@
             }
         }
 
-
-        .user-icon {
-            color: #007bff;
-        }
-
         .point-icon {
             color: #ffc107;
         }
@@ -62,6 +57,24 @@
         .credential-icon {
             color: #28a745;
         }
+
+        .user-icon {
+            margin-right: 10px;
+            color: #17a2b8;
+        }
+
+        .card-header {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .card-title {
+            color: #17a2b8;
+        }
+
+        .card-text i {
+            vertical-align: middle;
+        }
     </style>
     <title>Chief's Dashboard</title>
 </head>
@@ -72,9 +85,37 @@
             <i class="fas fa-sign-out-alt me-2" style="padding-right: 5px;"></i> Logout
         </a>
     </div>
-    
+
     <div class="container mt-5">
         <h1 class="mb-4"><span class="highlight">Chief</span>'s Dashboard</h1>
+
+        <!-- Manager Details -->
+        <div class="mb-4">
+            <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                    Welcome, <strong>
+                        <%= first_name %>
+                            <%= last_name %>
+                    </strong>
+                </div>
+                <div class="card-body bg-light">
+                    <h5 class="card-title">Contact Information</h5>
+                    <p class="card-text"><i class="fas fa-envelope-open-text user-icon"></i> Email: <strong>
+                            <%= email %>
+                        </strong></p>
+                    <p class="card-text"><i class="fas fa-user user-icon"></i> First Name: <strong>
+                            <%= first_name %>
+                        </strong></p>
+                    <p class="card-text"><i class="fas fa-user-tag user-icon"></i> Last Name: <strong>
+                            <%= last_name %>
+                        </strong></p>
+                </div>
+                <div class="card-footer">
+                    <a href="/modify-manager" class="btn btn-outline-info">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+
 
         <!-- User Management -->
         <div class="mb-3">
@@ -111,14 +152,6 @@
             </a>
             <a href="/delete-gift" class="list-group-item list-group-item-action">
                 <i class="fas fa-trash fa gift-icon"></i> Delete Retro Gift
-            </a>
-        </div>
-
-        <!-- Credential Management -->
-        <div class="mb-3">
-            <h3>Credential Management</h3>
-            <a href="/modify-manager" class="list-group-item list-group-item-action">
-                <i class="fas fa-user-cog fa credential-icon"></i> Modify Own Credentials
             </a>
         </div>
     </div>

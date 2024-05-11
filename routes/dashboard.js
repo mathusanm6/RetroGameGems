@@ -17,7 +17,6 @@ const UserController = require("../controllers/userController");
 const CartController = require("../controllers/cartController");
 const ClientAuthController = require("../controllers/clientAuthController");
 const pool = require("../models/db");
-const session = require("express-session");
 
 const clientModel = new ClientModel(pool);
 const managerModel = new ManagerModel(pool);
@@ -48,7 +47,13 @@ function combineGiftsAndTransactions(gifts, transactions) {
 // Dashboard route for managers
 router.get("/manager-dashboard", (req, res) => {
   if (req.session.role === "manager") {
-    res.render("dashboard/manager/index");
+    managerModel.findManagerById(req.session.userId).then((manager) => {
+      res.render("dashboard/manager/index", {
+        email: manager.email,
+        first_name: manager.first_name,
+        last_name: manager.last_name,
+      });
+    });
   } else {
     res.redirect("/manager-login");
   }
@@ -64,29 +69,29 @@ router.get(
     }
 
     req.session.points = await clientModel.getPoints(req.session.userId);
-
+    const client = await clientModel.getClientById(req.session.userId);
     try {
       await handleBirthday(req);
 
       const transactions = await transactionModel.getTransactionsByClientId(
-        req.session.userId
+        req.session.userId,
       );
       const all_gifts = await giftModel.getAllGiftsByIDS(
-        transactions.map((t) => t.gift_id)
+        transactions.map((t) => t.gift_id),
       );
       prepareGiftImages(all_gifts);
       const all_gift_transaction = combineGiftsAndTransactions(
         all_gifts,
-        transactions
+        transactions,
       );
-      renderDashboard(req, res, all_gift_transaction);
+      renderDashboard(req, res, all_gift_transaction, client);
     } catch (error) {
       console.error("Error handling client dashboard:", error);
       res
         .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error handling client dashboard");
     }
-  }
+  },
 );
 
 async function handleBirthday(req) {
@@ -96,12 +101,12 @@ async function handleBirthday(req) {
   }
 
   const isBirthday = await clientModel.todayIsClientBirthday(
-    req.session.userId
+    req.session.userId,
   );
   if (!isBirthday) return;
 
   const alreadyClaimed = await clientModel.isBirthdayGiftAlreadyClaimed(
-    req.session.userId
+    req.session.userId,
   );
   if (alreadyClaimed) return;
 
@@ -129,7 +134,7 @@ function prepareGiftImages(gifts) {
   });
 }
 
-function renderDashboard(req, res, all_gift_transaction) {
+function renderDashboard(req, res, all_gift_transaction, client) {
   // Initialize birthdayDetails as an empty object or null
   let birthdayDetails = {};
 
@@ -150,6 +155,9 @@ function renderDashboard(req, res, all_gift_transaction) {
     points: req.session.points,
     birthdayDetails: birthdayDetails,
     all_gift_transaction: all_gift_transaction,
+    first_name: client.first_name,
+    last_name: client.last_name,
+    email: client.email,
   });
 }
 
@@ -479,28 +487,28 @@ router.get(
     } else {
       res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
     }
-  }
+  },
 );
 
 router.get(
   "/cart",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.getCart.bind(cartController)
+  cartController.getCart.bind(cartController),
 );
 router.post(
   "/add-to-cart",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.addToCart.bind(cartController)
+  cartController.addToCart.bind(cartController),
 );
 router.post(
   "/remove-from-cart",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.removeFromCart.bind(cartController)
+  cartController.removeFromCart.bind(cartController),
 );
 router.post(
   "/validate-cart",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.validateCart.bind(cartController)
+  cartController.validateCart.bind(cartController),
 );
 
 router.get(
@@ -508,7 +516,7 @@ router.get(
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
   (req, res) => {
     res.render("dashboard/client/confirmation");
-  }
+  },
 );
 
 module.exports = router;

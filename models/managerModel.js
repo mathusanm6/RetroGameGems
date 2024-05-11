@@ -5,6 +5,12 @@ class managerModel {
     this.db = db;
   }
 
+  async findManagerById(managerId) {
+    const query = "SELECT * FROM loyalty_card.managers WHERE id = $1";
+    const result = await this.db.query(query, [managerId]);
+    return result.rows[0];
+  }
+
   async findManagerByEmail(email) {
     const query = "SELECT * FROM loyalty_card.managers WHERE email = $1";
     const result = await this.db.query(query, [email]);
