@@ -203,6 +203,40 @@ class clientModel {
       throw error;
     }
   }
+
+  async todayIsClientBirthday(clientId) {
+    try {
+      const query =
+        "SELECT birth_date FROM loyalty_card.clients WHERE id = $1";
+      const result = await this.db.query(query, [clientId]);
+      if (result.rows.length > 0) {
+        const birthDate = result.rows[0].birth_date;
+        const today = new Date();
+        const birthMonth = birthDate.getMonth();
+        const birthDay = birthDate.getDate();
+        const todayMonth = today.getMonth();
+        const todayDay = today.getDate();
+        return birthMonth === todayMonth && birthDay === todayDay;
+      } else {
+        throw new Error("Client not found.");
+      }
+    } catch (error) {
+      console.error("Error checking if today is client's birthday:", error);
+      throw error;
+    }
+  }
+
+  async isBirthdayGiftAlreadyClaimed(clientId) {
+    try {
+      const query =
+        "SELECT * FROM loyalty_card.transactions WHERE client_id = $1 AND is_birthday_gift = TRUE AND transaction_date = CURRENT_DATE";
+      const result = await this.db.query(query, [clientId]);
+      return result.rows.length > 0;
+    } catch (error) {
+      console.error("Error checking if birthday gift is already claimed:", error);
+      throw error;
+    }
+  }
 }
 
 module.exports = clientModel;

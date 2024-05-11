@@ -9,6 +9,18 @@ class GiftModel {
     return result.rows[0];
   }
 
+  async getAllGiftsByIDS(giftIds) {
+    const query = `SELECT * FROM loyalty_card.gifts WHERE id IN (${giftIds.join(",")})`;
+    const result = await this.db.query(query);
+    return result.rows;
+  }
+
+  async getRandomGift() {
+    const query = "SELECT * FROM loyalty_card.gifts ORDER BY random() LIMIT 1";
+    const result = await this.db.query(query);
+    return result.rows[0];
+  }
+
   async getAllGifts() {
     const query = "SELECT * FROM loyalty_card.gifts";
     const result = await this.db.query(query);

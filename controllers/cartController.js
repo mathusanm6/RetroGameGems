@@ -125,7 +125,7 @@ class CartController {
 
   async addTransaction(clientId, giftId) {
     const query =
-      "INSERT INTO loyalty_card.transactions (client_id, gift_id, transaction_date) VALUES ($1, $2, CURRENT_DATE)";
+      "INSERT INTO loyalty_card.transactions (client_id, gift_id, is_birthday_gift, transaction_date) VALUES ($1, $2, false, CURRENT_DATE)";
     try {
       await pool.query(query, [clientId, giftId]);
     } catch (error) {
