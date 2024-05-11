@@ -6,9 +6,13 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <link rel="stylesheet" href="/css/loginStyles.css">
-    <title>
-        <%= loginType %> Login
-    </title>
+    <% if (loginType==='Chief' ) { %>
+        <link rel="preload" href="/images/bg-image-manager.webp" as="image" type="image/webp" <% } else { %>
+        <link rel="preload" href="/images/bg-image-client.webp" as="image" type="image/webp">
+        <% } %>
+            <title>
+                <%= loginType %> Login
+            </title>
 </head>
 
 <body>

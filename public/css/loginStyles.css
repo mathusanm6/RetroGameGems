@@ -7,14 +7,14 @@ body {
 }
 
 .bg-image-client {
-  background-image: url("/images/bg-image-client.jpg");
+  background-image: url("/images/bg-image-client.webp");
   background-size: cover;
   background-position: center;
   filter: blur(2px);
 }
 
 .bg-image-manager {
-  background-image: url("/images/bg-image-manager.jpg");
+  background-image: url("/images/bg-image-manager.webp");
   background-size: cover;
   background-position: center;
   filter: blur(2px);
