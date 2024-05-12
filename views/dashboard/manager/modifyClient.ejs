@@ -101,7 +101,7 @@
                             <label for="first_name">First Name</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="date" id="birth_date" class="form-control" name="birthday" placeholder="Birthday" value="${new Date(data.birth_date).toISOString().split('T')[0]}" min="1899-01-01" autocomplete="bday" required>
+                            <input type="date" id="birth_date" class="form-control" name="birthday" placeholder="Birthday" value="${new Date(new Date(data.birth_date).getTime() - new Date(data.birth_date).getTimezoneOffset() * 60000).toISOString().split('T')[0]}" min="1899-01-01" autocomplete="bday" required>
                             <label for="birth_date">Birthday</label>
                         </div>
                     `;
