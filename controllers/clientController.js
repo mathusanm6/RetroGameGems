@@ -36,14 +36,21 @@ class clientController {
 
   async modifyClient(req, res) {
     if (req.session.role === "manager") {
-      const { clientId, email, first_name, last_name, birth_date } = req.body;
-
+      const { clientId, email, first_name, last_name, birthday } = req.body;
       try {
+        if (!clientId) {
+          throw new Error("No client ID provided");
+        }
+
+        if (!email || !first_name || !last_name || !birthday) {
+          throw new Error("Missing required fields");
+        }
+
         await this.clientModel.updateClient(clientId, {
           email,
           first_name,
           last_name,
-          birth_date,
+          birthday,
         });
         return res.redirect(
           `/modify-client?success=true&message=Client updated successfully`,

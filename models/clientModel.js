@@ -39,7 +39,7 @@ class clientModel {
   }
 
   async updateClient(clientId, clientData) {
-    const { email, first_name, last_name, birth_date } = clientData;
+    const { email, first_name, last_name, birthday } = clientData;
     const updates = [];
     const values = [];
 
@@ -55,9 +55,10 @@ class clientModel {
       updates.push("last_name = $3");
       values.push(last_name);
     }
-    if (birth_date && birth_date.trim() !== "") {
+
+    if (birthday) {
       updates.push("birth_date = $4");
-      values.push(birth_date);
+      values.push(birthday);
     }
 
     if (values.length === 0) {
@@ -210,7 +211,7 @@ class clientModel {
     } catch (error) {
       console.error(
         "Error checking if birthday gift is already claimed:",
-        error,
+        error
       );
       throw error;
     }

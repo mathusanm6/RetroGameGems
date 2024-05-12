@@ -9,31 +9,23 @@ class managerController {
     if (req.session.role === "manager") {
       var { email, first_name, last_name, password } = req.body;
 
+      const manager = await this.managerModel.findManagerById(
+        req.session.userId,
+      );
+
       if (!email) {
-        const manager = await this.managerModel.getManagerById(
-          req.session.userId,
-        );
         email = manager.email;
       }
 
       if (!first_name) {
-        const manager = await this.managerModel.getManagerById(
-          req.session.userId,
-        );
         first_name = manager.first_name;
       }
 
       if (!last_name) {
-        const manager = await this.managerModel.getManagerById(
-          req.session.userId,
-        );
         last_name = manager.last_name;
       }
 
       if (!password) {
-        const manager = await this.managerModel.getManagerById(
-          req.session.userId,
-        );
         password = manager.password;
       }
 
