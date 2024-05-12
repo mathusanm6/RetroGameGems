@@ -7,6 +7,9 @@
 3. [Contributeurs](#contributeurs)
 4. [Installation](#installation)
 5. [Utilisation](#utilisation)
+6. [Initialisation de la base de données](#initialisation-de-la-base-de-données)
+7. [Pour voir la base de données postgres](#pour-voir-la-base-de-données-postgres)
+8. [Captures d'écran du projet](#captures-décran-du-projet)
 
 ### Cadre du projet
 
@@ -87,3 +90,22 @@ La date de naissance (`birth_date`) est initialisée à la date courante pour to
 ```bash
 psql -U myuser -d loyalty_card_db
 ```
+
+### Captures d'écran du projet
+
+<table align="center">
+  <tr>
+    <td align="center"><img src="resources/images/screenshots/home-page.jpeg" alt="Home Page" width="300px"/></td>
+    <td align="center"><img src="resources/images/screenshots/login-client.jpeg" alt="Login Client" width="300px"/></td>
+    <td align="center"><img src="resources/images/screenshots/login-manager.jpeg" alt="Login Manager" width="300px"/></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="resources/images/screenshots/dashboard-client.jpeg" alt="Dashboard Client" width="300px"/></td>
+    <td align="center"><img src="resources/images/screenshots/dashboard-client-available-gifts.jpeg" alt="Dashboard Client Available Gifts" width="300px"/></td>
+    <td align="center"><img src="resources/images/screenshots/dashboard-client-shopping-cart.jpeg" alt="Dashboard Client Shopping Cart" width="300px"/></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="3"><img src="resources/images/screenshots/dashboard-manager.png" alt="Dashboard Manager" width="300px"/></td>
+  </tr>
+</table>
+
