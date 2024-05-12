@@ -7,7 +7,7 @@ class managerController {
 
   async modifyManager(req, res) {
     if (req.session.role === "manager") {
-      const { email, first_name, last_name, password } = req.body;
+      var { email, first_name, last_name, password } = req.body;
 
       if (!email) {
         const manager = await this.managerModel.getManagerById(
