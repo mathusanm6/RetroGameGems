@@ -9,7 +9,7 @@ class GiftModel {
     return result.rows[0];
   }
 
-  async getAllGiftsByIDS(giftIds) {
+  async getAllGiftsByClientIDs(giftIds) {
     // Check if the array is empty
     if (giftIds.length === 0) {
       return [];
@@ -22,10 +22,29 @@ class GiftModel {
     return result.rows;
   }
 
-  async getRandomGift() {
-    const query = "SELECT * FROM loyalty_card.gifts ORDER BY random() LIMIT 1";
-    const result = await this.db.query(query);
-    return result.rows[0];
+  async getRandomGiftUserDontHave(clientId) {
+    try {
+      // Get all gifts
+      const all_available_gifts = await this.getAllGifts();
+      
+      // Get all gifts that the user has
+      const user_gifts = await this.getAllGiftsByClientIDs([clientId]);
+      
+      const user_gifts_ids = user_gifts.map((gift) => gift.gift_id);
+      const available_gifts = all_available_gifts.filter(
+        (gift) => !user_gifts_ids.includes(gift.id),
+      );
+
+      if (available_gifts.length === 0) {
+        return null;
+      }
+
+      const randomIndex = Math.floor(Math.random() * available_gifts.length);
+      return available_gifts[randomIndex];
+    }
+    catch (error) {
+      throw new Error(`Error fetching random gift: ${error}`);
+    }
   }
 
   async getAllGifts() {
@@ -101,6 +120,25 @@ class GiftModel {
         "SELECT * FROM loyalty_card.gifts WHERE needed_points <= $1";
       const { rows } = await this.db.query(query, [clientPoints]);
       return rows;
+    } catch (error) {
+      throw new Error(
+        `Error fetching available gifts below client points: ${error}`,
+      );
+    }
+  }
+
+  async getAvailableGiftsBelowPointsUserDoesNotHave(clientId, clientPoints) {
+    try {
+      const availableGifts =
+        await this.getAvailableGiftsBelowPoints(clientPoints);
+
+      const query =
+        "SELECT gift_id FROM loyalty_card.transactions WHERE client_id = $1";
+      const { rows } = await this.db.query(query, [clientId]);
+
+      const giftIdsUserHas = rows.map((row) => row.gift_id);
+
+      return availableGifts.filter((gift) => !giftIdsUserHas.includes(gift.id));
     } catch (error) {
       throw new Error(
         `Error fetching available gifts below client points: ${error}`,

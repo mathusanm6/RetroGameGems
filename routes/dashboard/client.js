@@ -49,7 +49,7 @@ router.get(
       const transactions = await transactionModel.getTransactionsByClientId(
         req.session.userId,
       );
-      const all_gifts = await giftModel.getAllGiftsByIDS(
+      const all_gifts = await giftModel.getAllGiftsByClientIDs(
         transactions.map((t) => t.gift_id),
       );
       prepareGiftImages(all_gifts);
@@ -90,7 +90,13 @@ async function handleBirthday(req) {
   if (alreadyClaimed) return;
 
   const points = await clientModel.addPoints(req.session.userId, 500);
-  const gift = await giftModel.getRandomGift();
+  const gift = await giftModel.getRandomGiftUserDontHave(req.session.userId);
+
+  if (!gift) {
+    console.error("No gift available for birthday");
+    return;
+  }
+
   await transactionModel.addTransaction(req.session.userId, gift.id, true);
 
   req.session.points = points;
@@ -184,9 +190,11 @@ router.get(
       try {
         const clientPoints = req.session.points;
         const cartTotalPrice = req.session.cart?.totalPrice || 0;
-        const gifts = await giftModel.getAvailableGiftsBelowPoints(
-          clientPoints - cartTotalPrice,
-        );
+        const gifts =
+          await giftModel.getAvailableGiftsBelowPointsUserDoesNotHave(
+            req.session.userId,
+            clientPoints - cartTotalPrice,
+          );
         // Sort gifts by needed points
         gifts.sort((a, b) => a.needed_points - b.needed_points);
         res.render("dashboard/client/viewGifts", {
