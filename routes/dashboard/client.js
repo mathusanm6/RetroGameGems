@@ -47,16 +47,22 @@ router.get(
       await handleBirthday(req);
 
       const transactions = await transactionModel.getTransactionsByClientId(
-        req.session.userId,
+        req.session.userId
       );
       const all_gifts = await giftModel.getAllGiftsByIDS(
-        transactions.map((t) => t.gift_id),
+        transactions.map((t) => t.gift_id)
       );
       prepareGiftImages(all_gifts);
       const all_gift_transaction = combineGiftsAndTransactions(
         all_gifts,
-        transactions,
+        transactions
       );
+
+      // Sort all_gift_transaction by transaction_date (recent first)
+      all_gift_transaction.sort((a, b) => {
+        return new Date(b.transaction_date) - new Date(a.transaction_date);
+      });
+      
       renderDashboard(req, res, all_gift_transaction, client);
     } catch (error) {
       console.error("Error handling client dashboard:", error);
@@ -64,7 +70,7 @@ router.get(
         .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error handling client dashboard");
     }
-  },
+  }
 );
 
 async function handleBirthday(req) {
@@ -74,12 +80,12 @@ async function handleBirthday(req) {
   }
 
   const isBirthday = await clientModel.todayIsClientBirthday(
-    req.session.userId,
+    req.session.userId
   );
   if (!isBirthday) return;
 
   const alreadyClaimed = await clientModel.isBirthdayGiftAlreadyClaimed(
-    req.session.userId,
+    req.session.userId
   );
   if (alreadyClaimed) return;
 
@@ -179,8 +185,10 @@ router.get(
         const clientPoints = req.session.points;
         const cartTotalPrice = req.session.cart?.totalPrice || 0;
         const gifts = await giftModel.getAvailableGiftsBelowPoints(
-          clientPoints - cartTotalPrice,
+          clientPoints - cartTotalPrice
         );
+        // Sort gifts by needed points
+        gifts.sort((a, b) => a.needed_points - b.needed_points);
         res.render("dashboard/client/viewGifts", {
           gifts,
           totalPoints: clientPoints,
@@ -195,29 +203,29 @@ router.get(
     } else {
       res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
     }
-  },
+  }
 );
 
 // Cart routes for clients
 router.get(
   "/cart",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.getCart.bind(cartController),
+  cartController.getCart.bind(cartController)
 );
 router.post(
   "/add-to-cart",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.addToCart.bind(cartController),
+  cartController.addToCart.bind(cartController)
 );
 router.post(
   "/remove-from-cart",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.removeFromCart.bind(cartController),
+  cartController.removeFromCart.bind(cartController)
 );
 router.post(
   "/validate-cart",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.validateCart.bind(cartController),
+  cartController.validateCart.bind(cartController)
 );
 
 router.get(
@@ -225,7 +233,7 @@ router.get(
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
   (req, res) => {
     res.render("dashboard/client/confirmation");
-  },
+  }
 );
 
 // Change password route for clients
@@ -234,13 +242,13 @@ router.get(
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
   (req, res) => {
     res.render("dashboard/client/changePassword");
-  },
+  }
 );
 
 router.post(
   "/change-password",
   clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  clientController.changePassword.bind(clientController),
+  clientController.changePassword.bind(clientController)
 );
 
 module.exports = router;
