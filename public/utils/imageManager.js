@@ -19,9 +19,9 @@ const upload = multer({
 
 const resizeAndConvertImage = async (buffer) => {
   return sharp(buffer)
-    .resize(null, 300) // Resize image to 500px height while maintaining aspect ratio
-    .toFormat("jpeg") // Convert image to JPEG
-    .jpeg({ quality: 90 }) // Set JPEG quality to 90%
+    .resize(null, 300) // Resize image to 300px height while maintaining aspect ratio
+    .toFormat("webp") // Convert image to WEBP
+    .webp({ quality: 90 }) // Set WEBP quality to 90%
     .toBuffer(); // Return buffer
 };
 
