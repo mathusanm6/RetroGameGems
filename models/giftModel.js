@@ -31,25 +31,63 @@ class GiftModel {
   async getAllGifts() {
     const query = "SELECT * FROM loyalty_card.gifts";
     const result = await this.db.query(query);
+
+    // Sort gifts by name
+    result.rows.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
+
     return result.rows;
   }
 
-  async addGift(name, description, quantity, needed_points) {
+  async addGift(giftData) {
+    const { name, description, image, quantity, needed_points } = giftData;
     const query =
-      "INSERT INTO loyalty_card.gifts (name, description, quantity, needed_points) VALUES ($1, $2, $3, $4)";
-    await this.db.query(query, [name, description, quantity, needed_points]);
-  }
-
-  async updateGift(giftId, name, description, quantity, needed_points) {
-    const query =
-      "UPDATE loyalty_card.gifts SET name = $1, description = $2, quantity = $3, needed_points = $4 WHERE id = $5";
+      "INSERT INTO loyalty_card.gifts (name, description, image, quantity, needed_points) VALUES ($1, $2, $3, $4, $5)";
     await this.db.query(query, [
       name,
       description,
+      image,
       quantity,
       needed_points,
-      giftId,
     ]);
+  }
+
+  async updateGift(giftId, giftData) {
+    const { name, description, image, quantity, needed_points } = giftData;
+    const updates = [];
+    const values = [];
+
+    if (name && name.trim() !== "") {
+      updates.push("name = $1");
+      values.push(name);
+    }
+    if (description && description.trim() !== "") {
+      updates.push("description = $2");
+      values.push(description);
+    }
+
+    if (image) {
+      updates.push("image = $3");
+      values.push(image);
+    }
+
+    if (quantity) {
+      updates.push("quantity = $4");
+      values.push(quantity);
+    }
+    if (needed_points) {
+      updates.push("needed_points = $5");
+      values.push(needed_points);
+    }
+
+    if (values.length === 0) {
+      throw new Error("No valid fields provided for update.");
+    }
+
+    values.push(giftId);
+    const query = `update loyalty_card.gifts set ${updates.join(", ")} where id = $${values.length}`;
+    await this.db.query(query, values);
   }
 
   async deleteGift(giftId) {
@@ -65,7 +103,7 @@ class GiftModel {
       return rows;
     } catch (error) {
       throw new Error(
-        `Error fetching available gifts below client points: ${error}`,
+        `Error fetching available gifts below client points: ${error}`
       );
     }
   }

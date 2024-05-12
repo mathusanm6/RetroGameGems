@@ -93,6 +93,11 @@ class clientModel {
     const query =
       "SELECT id, email, first_name, last_name, birth_date FROM loyalty_card.clients";
     const result = await this.db.query(query);
+
+    // Sort clients by first name
+    result.rows.sort((a, b) => {
+      return a.first_name.localeCompare(b.first_name);
+    });
     return result.rows;
   }
 
@@ -108,29 +113,6 @@ class clientModel {
       }
     } catch (error) {
       console.error("Error getting points:", error);
-      throw error;
-    }
-  }
-
-  async getAvailableGifts() {
-    const query = "SELECT * FROM loyalty_card.gifts";
-    const result = await this.db.query(query);
-    return result.rows;
-  }
-
-  async getGiftById(giftId) {
-    try {
-      const query = "SELECT * FROM loyalty_card.gifts WHERE id = $1";
-      const result = await this.db.query(query, [giftId]);
-      if (result.rows.length > 0) {
-        const gift = result.rows[0];
-        const availableQuantity = gift.quantity;
-        return { ...gift, availableQuantity };
-      } else {
-        throw new Error("Gift not found.");
-      }
-    } catch (error) {
-      console.error("Error getting gift by ID:", error);
       throw error;
     }
   }

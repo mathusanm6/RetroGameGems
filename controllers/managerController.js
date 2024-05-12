@@ -1,8 +1,9 @@
 const HttpStatus = require("http-status-codes");
 
 class managerController {
-  constructor(managerModel) {
+  constructor(managerModel, giftModel) {
     this.managerModel = managerModel;
+    this.giftModel = giftModel;
   }
 
   async modifyManager(req, res) {
@@ -56,7 +57,7 @@ class managerController {
       const image = req.file ? req.file.filename : null;
 
       try {
-        await this.managerModel.addGift({
+        await this.giftModel.addGift({
           name,
           description,
           image,
@@ -84,12 +85,12 @@ class managerController {
       if (req.file) {
         image = req.file.buffer;
       } else {
-        const gift = await this.managerModel.getGiftById(giftId);
+        const gift = await this.giftModel.getGiftById(giftId);
         image = gift.image;
       }
 
       try {
-        await this.managerModel.updateGift(giftId, {
+        await this.giftModel.updateGift(giftId, {
           name,
           description,
           image,
@@ -115,7 +116,7 @@ class managerController {
       const { giftId } = req.body;
 
       try {
-        await this.managerModel.deleteGift(giftId);
+        await this.giftModel.deleteGift(giftId);
         return res.redirect(
           "/delete-gift?success=true&message=Gift deleted successfully.",
         );

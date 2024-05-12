@@ -13,11 +13,13 @@ const ClientController = require("../../controllers/clientController");
 const ManagerController = require("../../controllers/managerController");
 const UserController = require("../../controllers/userController");
 const pool = require("../../models/db");
+const GiftModel = require("../../models/giftModel");
 
 const clientModel = new ClientModel(pool);
 const managerModel = new ManagerModel(pool);
 const userModel = new UserModel(pool);
-const managerController = new ManagerController(managerModel);
+const giftModel = new GiftModel(pool);
+const managerController = new ManagerController(managerModel, giftModel);
 const userController = new UserController(userModel);
 const clientController = new ClientController(clientModel);
 
@@ -204,7 +206,7 @@ router.post("/add-gift", upload.single("image"), async (req, res) => {
       if (req.file) {
         imageBuffer = await resizeAndConvertImage(req.file.buffer);
       }
-      await managerModel.addGift({
+      await giftModel.addGift({
         name,
         description,
         image: imageBuffer,
@@ -225,7 +227,7 @@ router.post("/add-gift", upload.single("image"), async (req, res) => {
 router.get("/modify-gift", async (req, res) => {
   if (req.session.role === "manager") {
     try {
-      const gifts = await managerModel.getAllGifts();
+      const gifts = await giftModel.getAllGifts();
       res.render("dashboard/manager/modifyGift", { gifts });
     } catch (error) {
       console.error("Error fetching gifts:", error);
@@ -250,7 +252,7 @@ router.post("/modify-gift", upload.single("image"), (req, res) => {
 router.get("/get-gifts", async (req, res) => {
   if (req.session.role === "manager") {
     try {
-      const gifts = await managerModel.getAllGifts();
+      const gifts = await giftModel.getAllGifts();
 
       // Convert bytea image data to Base64 for each gift that has an image
       gifts.forEach((gift) => {
@@ -275,7 +277,7 @@ router.get("/get-gift/:giftId", async (req, res) => {
   if (req.session.role === "manager") {
     try {
       const giftId = req.params.giftId;
-      const gift = await managerModel.getGiftById(giftId);
+      const gift = await giftModel.getGiftById(giftId);
       if (gift) {
         // Convert bytea image data to Base64 if image exists
         if (gift.image) {
@@ -300,7 +302,7 @@ router.get("/get-gift/:giftId", async (req, res) => {
 router.get("/delete-gift", async (req, res) => {
   if (req.session.role === "manager") {
     try {
-      const gifts = await managerModel.getAllGifts();
+      const gifts = await giftModel.getAllGifts();
       res.render("dashboard/manager/deleteGift", { gifts });
     } catch (error) {
       console.error("Error fetching gifts:", error);
