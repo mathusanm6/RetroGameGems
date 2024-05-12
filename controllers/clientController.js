@@ -10,7 +10,8 @@ class clientController {
     const clientId = req.session.userId;
 
     try {
-      const currentPassword = await this.clientModel.getHashedPassword(clientId);
+      const currentPassword =
+        await this.clientModel.getHashedPassword(clientId);
       const validPassword = await this.clientModel.verifyUserPassword(
         oldPassword,
         currentPassword,
@@ -27,7 +28,9 @@ class clientController {
       }
     } catch (error) {
       console.error("Error changing password:", error);
-      res.redirect("/change-password?success=false&message=Failed to change password");
+      res.redirect(
+        "/change-password?success=false&message=Failed to change password",
+      );
     }
   }
 

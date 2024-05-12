@@ -1,10 +1,10 @@
 const express = require("express");
-const ClientModel = require("../models/clientModel");
-const ManagerModel = require("../models/managerModel");
-const UserModel = require("../models/userModel");
-const ClientAuthController = require("../controllers/clientAuthController");
-const ManagerAuthController = require("../controllers/managerAuthController");
-const UserController = require("../controllers/userController");
+const ClientModel = require("../../models/clientModel");
+const ManagerModel = require("../../models/managerModel");
+const UserModel = require("../../models/userModel");
+const ClientAuthController = require("../../controllers/clientAuthController");
+const ManagerAuthController = require("../../controllers/managerAuthController");
+const UserController = require("../../controllers/userController");
 
 module.exports = (db) => {
   const router = express.Router();
