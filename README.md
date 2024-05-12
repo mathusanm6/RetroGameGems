@@ -75,13 +75,13 @@ Pour ajouter un nouvel administrateur, il faut ajouter un enregistrement dans la
 
 Lors de l'initialisation de la base de données, les clients suivants sont ajoutés :
 
-| last_name | first_name | email                  | password   | points | birth_date |
-| --------- | ---------- | ---------------------- | ---------- | ------ | ---------- |
-| Doe       | John       | john.doe@mail.com      | john123    | 0      | CURRENT_DATE |
-| Smith     | Jane       | jane.smith@mail.com    | jane123    | 0      | CURRENT_DATE |
-| Jones     | Alice      | alice.jones@mail.com   | alice123   | 0      | CURRENT_DATE |
-| Brown     | Bob        | bob.brown@mail.com     | bob123     | 0      | CURRENT_DATE |
-| Davis     | Charlie    | charlie.davis@mail.com | charlie123 | 0      | CURRENT_DATE |
+| last_name | first_name | email                  | password   | points | birth_date   |
+| --------- | ---------- | ---------------------- | ---------- | ------ | ------------ |
+| Doe       | John       | john.doe@mail.com      | john123    | 1210   | CURRENT_DATE |
+| Smith     | Jane       | jane.smith@mail.com    | jane123    | 750    | CURRENT_DATE |
+| Jones     | Alice      | alice.jones@mail.com   | alice123   | 500    | CURRENT_DATE |
+| Brown     | Bob        | bob.brown@mail.com     | bob123     | 3140   | CURRENT_DATE |
+| Davis     | Charlie    | charlie.davis@mail.com | charlie123 | 1050   | CURRENT_DATE |
 
 La date de naissance (`birth_date`) est initialisée à la date courante pour tous les clients pour des raisons de démonstration.
 
@@ -108,4 +108,3 @@ psql -U myuser -d loyalty_card_db
     <td align="center" colspan="3"><img src="resources/images/screenshots/dashboard-manager.png" alt="Dashboard Manager" width="300px"/></td>
   </tr>
 </table>
-
