@@ -101,14 +101,14 @@
                         </div>
                         ${imagePreviewHtml}
                         <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Quantity" value="${data.quantity}" min="1" aria-describedby="quantityHelp" required>
+                            <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Quantity" value="${data.quantity}" min="1" max="100" aria-describedby="quantityHelp" required>
                             <label for="quantity">Quantity:</label>
                             <small id="quantityHelp" class="form-text text-muted">
                                 Please enter the quantity (must be 1 or more).
                             </small>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="needed_points" name="needed_points" placeholder="Needed Points" value="${data.needed_points}" min="0">
+                            <input type="number" class="form-control" id="needed_points" name="needed_points" placeholder="Needed Points" value="${data.needed_points}" min="100" max="3000">
                             <label for="needed_points">Needed Points:</label>
                         </div>
                     `;

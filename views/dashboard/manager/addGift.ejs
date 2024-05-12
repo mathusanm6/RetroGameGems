@@ -57,14 +57,14 @@
                         <div class="mb-3">
                             <label for="image" class="form-label">Upload Image:</label>
                             <input type="file" class="form-control" id="image" name="image" accept="image/*"
-                                onchange="previewImage();">
+                                onchange="previewImage();" required>
                             <div class="img-preview mt-2">
                                 <img src="" alt="Image Preview" class="img-fluid" id="imagePreview" draggable="false">
                             </div>
                         </div>
                         <div class="form-floating mb-3">
                             <input type="number" class="form-control" id="quantity" name="quantity"
-                                placeholder="Quantity" min="1" aria-describedby="quantityHelp" required>
+                                placeholder="Quantity" min="1" max="100" aria-describedby="quantityHelp" required>
                             <label for="quantity">Quantity:</label>
                             <small id="quantityHelp" class="form-text text-muted">
                                 Please enter the quantity (must be 1 or more).
@@ -72,7 +72,7 @@
                         </div>
                         <div class="form-floating mb-3">
                             <input type="number" class="form-control" id="needed_points" name="needed_points"
-                                placeholder="Needed Points" min="0" required>
+                                placeholder="Needed Points" min="100" max="3000" required>
                             <label for="needed_points">Needed Points:</label>
                         </div>
                         <div class="row justify-content-center" style="padding-bottom: 40px;">
