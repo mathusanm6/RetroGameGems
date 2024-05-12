@@ -10,8 +10,15 @@ class GiftModel {
   }
 
   async getAllGiftsByIDS(giftIds) {
-    const query = `SELECT * FROM loyalty_card.gifts WHERE id IN (${giftIds.join(",")})`;
-    const result = await this.db.query(query);
+    // Check if the array is empty
+    if (giftIds.length === 0) {
+      return [];
+    }
+
+    const params = giftIds.map((_, index) => `$${index + 1}`).join(", ");
+    const query = `SELECT * FROM loyalty_card.gifts WHERE id IN (${params})`;
+
+    const result = await this.db.query(query, giftIds); // Passing giftIds as parameters
     return result.rows;
   }
 
