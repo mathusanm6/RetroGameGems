@@ -5,41 +5,48 @@
     <!-- Bootstrap 4 Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         .gift-icon {
             color: #dc3545;
         }
 
-        .card-title,
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+
         .points,
         .quantity {
             color: #007bff;
-            font-weight: bold;
+            font-weight: normal;
         }
 
         .card-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
         }
 
         .card {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease;
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .btn-primary {
-            background-color: #0056b3;
-            border-color: #004085;
+            background-color: #0069d9;
+            border-color: #005cbf;
         }
 
         .btn-primary:hover {
-            background-color: #004085;
+            background-color: #005cbf;
+            border-color: #004aad;
         }
 
         .card-img-top {
@@ -50,21 +57,28 @@
 
         .bg-primary .card-title,
         .bg-primary .points {
-            color: #ffffff;
+            color: #f8f9fa;
         }
 
         .card-body {
-            padding: 15px;
+            padding: 10px;
         }
 
         .text-blue {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #007bff;
+            font-size: 1.3rem;
+            font-weight: normal;
+            color: #0056b3;
         }
 
         .text-small {
-            font-size: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .card-header {
+            background-color: #3999ff;
+            color: #c1e0ff;
+            font-size: 1.2rem;
+            font-weight: bold;
         }
     </style>
     <title>Available Gifts</title>
@@ -74,6 +88,10 @@
     <div class="container mt-5">
         <a href="/client-dashboard" class="btn btn-outline-secondary mt-3">
             <i class="fas fa-arrow-left" style="padding-right: 10px;"></i> Back to Dashboard
+        </a>
+        <!-- Cart Button -->
+        <a href="/cart" class="btn btn-outline-success mt-3" style="float: right;">
+            <i class="fas fa-shopping-cart" style="padding-right: 10px;"></i> Go to Cart
         </a>
     </div>
 
@@ -85,15 +103,16 @@
             <div class="card text-blue mb-4">
                 <div class="card-header">Your Points</div>
                 <div class="card-body">
-                    <% if (typeof clientPoints !=='undefined' ) { %>
-                        <p class="card-text points text-small">You have <strong>
-                                <%= clientPoints %>
-                            </strong> points available to spend.</p>
+                    <% if (typeof totalPoints !=='undefined' && typeof usedPoints !=='undefined' ) { %>
+                        <p class="card-text points text-small">You can buy more for <strong>
+                                <%= totalPoints - usedPoints %>
+                            </strong> points.</p>
                         <% } else { %>
                             <p class="card-text points text-small">Unable to display points. Please contact support.</p>
                             <% } %>
                 </div>
             </div>
+
 
             <% if (gifts.length===0) { %>
                 <div class="alert alert-info" role="alert">
