@@ -74,11 +74,13 @@ Lors de l'initialisation de la base de données, les clients suivants sont ajout
 
 | last_name | first_name | email                  | password   | points | birth_date |
 | --------- | ---------- | ---------------------- | ---------- | ------ | ---------- |
-| Doe       | John       | john.doe@mail.com      | john123    | 0      | 1990-01-01 |
-| Smith     | Jane       | jane.smith@mail.com    | jane123    | 0      | 1992-02-02 |
-| Jones     | Alice      | alice.jones@mail.com   | alice123   | 0      | 1988-03-03 |
-| Brown     | Bob        | bob.brown@mail.com     | bob123     | 0      | 1991-04-04 |
-| Davis     | Charlie    | charlie.davis@mail.com | charlie123 | 0      | 1993-05-05 |
+| Doe       | John       | john.doe@mail.com      | john123    | 0      | CURRENT_DATE |
+| Smith     | Jane       | jane.smith@mail.com    | jane123    | 0      | CURRENT_DATE |
+| Jones     | Alice      | alice.jones@mail.com   | alice123   | 0      | CURRENT_DATE |
+| Brown     | Bob        | bob.brown@mail.com     | bob123     | 0      | CURRENT_DATE |
+| Davis     | Charlie    | charlie.davis@mail.com | charlie123 | 0      | CURRENT_DATE |
+
+La date de naissance (`birth_date`) est initialisée à la date courante pour tous les clients pour des raisons de démonstration.
 
 ### Pour voir la base de données postgres
 

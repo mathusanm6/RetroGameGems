@@ -75,7 +75,7 @@ const clients = [
     firstName: "Charlie",
     lastName: "Davis",
     points: 1050,
-    birthDate: "1993-05-05",
+    birthDate: today,
   },
 ];
 
