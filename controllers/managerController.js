@@ -9,6 +9,34 @@ class managerController {
     if (req.session.role === "manager") {
       const { email, first_name, last_name, password } = req.body;
 
+      if (!email) {
+        const manager = await this.managerModel.getManagerById(
+          req.session.userId,
+        );
+        email = manager.email;
+      }
+
+      if (!first_name) {
+        const manager = await this.managerModel.getManagerById(
+          req.session.userId,
+        );
+        first_name = manager.first_name;
+      }
+
+      if (!last_name) {
+        const manager = await this.managerModel.getManagerById(
+          req.session.userId,
+        );
+        last_name = manager.last_name;
+      }
+
+      if (!password) {
+        const manager = await this.managerModel.getManagerById(
+          req.session.userId,
+        );
+        password = manager.password;
+      }
+
       try {
         await this.managerModel.updateManager(req.session.userId, {
           email,

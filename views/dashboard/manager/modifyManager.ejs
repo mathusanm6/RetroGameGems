@@ -26,17 +26,17 @@
             <form action="/modify-manager" method="post">
                 <div class="form-floating mb-3">
                     <input type="email" class="form-control" name="email" id="email" placeholder="Enter new email"
-                        autocomplete="off">
+                        autocomplete="off" value="<%= email%>">
                     <label for="email">Email</label>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" name="first_name" id="first_name"
-                        placeholder="Enter new first name" autocomplete="off">
+                        placeholder="Enter new first name" autocomplete="off" value="<%= first_name%>">
                     <label for="first_name">First Name</label>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" name="last_name" id="last_name"
-                        placeholder="Enter new last name" autocomplete="off">
+                        placeholder="Enter new last name" autocomplete="off" value="<%= last_name%>">
                     <label for="last_name">Last Name</label>
                 </div>
                 <div class="form-floating mb-3">

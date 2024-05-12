@@ -79,9 +79,20 @@ router.post("/modify-client", (req, res) => {
 });
 
 // Modify manager route for managers
-router.get("/modify-manager", (req, res) => {
+router.get("/modify-manager", async (req, res) => {
   if (req.session.role === "manager") {
-    res.render("dashboard/manager/modifyManager");
+    const managerDetails = await managerModel.findManagerById(
+      req.session.userId,
+    );
+    if (managerDetails) {
+      res.render("dashboard/manager/modifyManager", {
+        email: managerDetails.email,
+        first_name: managerDetails.first_name,
+        last_name: managerDetails.last_name,
+      });
+    } else {
+      res.status(404).send("Manager details not found");
+    }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
   }
