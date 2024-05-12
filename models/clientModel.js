@@ -211,7 +211,7 @@ class clientModel {
     } catch (error) {
       console.error(
         "Error checking if birthday gift is already claimed:",
-        error
+        error,
       );
       throw error;
     }
