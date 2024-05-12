@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-// Home route or landing page
+// Home route
 router.get("/", (req, res) => {
   if (req.session.userId) {
     // Redirect based on user role

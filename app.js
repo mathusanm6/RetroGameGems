@@ -47,12 +47,16 @@ const indexRouter = require("./routes/index");
 app.use("/", indexRouter);
 
 // Auth routes
-const authRouter = require("./routes/auth")(dbPool);
+const authRouter = require("./routes/login/login")(dbPool);
 app.use(authRouter);
 
-// Dashboard routes
-const dashboardRouter = require("./routes/dashboard");
-app.use(dashboardRouter);
+// Client dashboard routes
+const clientDashboardRouter = require("./routes/dashboard/client");
+app.use(clientDashboardRouter);
+
+// Manager dashboard routes
+const managerDashboardRouter = require("./routes/dashboard/manager");
+app.use(managerDashboardRouter);
 
 // Redirect to login page if no route is matched unless user is logged in
 // This should be the last route

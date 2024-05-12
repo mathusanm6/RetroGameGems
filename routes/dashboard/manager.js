@@ -4,47 +4,24 @@ const router = express.Router();
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 
-const { resizeAndConvertImage } = require("../public/utils/imageManager");
+const { resizeAndConvertImage } = require("../../public/utils/imageManager");
 
-const ClientModel = require("../models/clientModel");
-const ManagerModel = require("../models/managerModel");
-const UserModel = require("../models/userModel");
-const GiftModel = require("../models/giftModel");
-const TransactionModel = require("../models/transactionModel");
-const ClientController = require("../controllers/clientController");
-const ManagerController = require("../controllers/managerController");
-const UserController = require("../controllers/userController");
-const CartController = require("../controllers/cartController");
-const ClientAuthController = require("../controllers/clientAuthController");
-const pool = require("../models/db");
+const ClientModel = require("../../models/clientModel");
+const ManagerModel = require("../../models/managerModel");
+const UserModel = require("../../models/userModel");
+const ClientController = require("../../controllers/clientController");
+const ManagerController = require("../../controllers/managerController");
+const UserController = require("../../controllers/userController");
+const pool = require("../../models/db");
 
 const clientModel = new ClientModel(pool);
 const managerModel = new ManagerModel(pool);
 const userModel = new UserModel(pool);
-const giftModel = new GiftModel(pool);
-const transactionModel = new TransactionModel(pool);
 const managerController = new ManagerController(managerModel);
 const userController = new UserController(userModel);
-const cartController = new CartController();
 const clientController = new ClientController(clientModel);
-const clientAuthController = new ClientAuthController(clientModel);
 
-function combineGiftsAndTransactions(gifts, transactions) {
-  const giftsById = {};
-  gifts.forEach((gift) => {
-    giftsById[gift.id] = gift;
-  });
-
-  return transactions.map((transaction) => {
-    const gift = giftsById[transaction.gift_id];
-    return {
-      ...transaction,
-      gift,
-    };
-  });
-}
-
-// Dashboard route for managers
+// Manager dashboard route
 router.get("/manager-dashboard", (req, res) => {
   if (req.session.role === "manager") {
     managerModel.findManagerById(req.session.userId).then((manager) => {
@@ -58,108 +35,6 @@ router.get("/manager-dashboard", (req, res) => {
     res.redirect("/manager-login");
   }
 });
-
-// Dashboard route for clients
-router.get(
-  "/client-dashboard",
-  clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  async (req, res) => {
-    if (req.session.role !== "client") {
-      return res.redirect("/client-login");
-    }
-
-    req.session.points = await clientModel.getPoints(req.session.userId);
-    const client = await clientModel.getClientById(req.session.userId);
-    try {
-      await handleBirthday(req);
-
-      const transactions = await transactionModel.getTransactionsByClientId(
-        req.session.userId,
-      );
-      const all_gifts = await giftModel.getAllGiftsByIDS(
-        transactions.map((t) => t.gift_id),
-      );
-      prepareGiftImages(all_gifts);
-      const all_gift_transaction = combineGiftsAndTransactions(
-        all_gifts,
-        transactions,
-      );
-      renderDashboard(req, res, all_gift_transaction, client);
-    } catch (error) {
-      console.error("Error handling client dashboard:", error);
-      res
-        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error handling client dashboard");
-    }
-  },
-);
-
-async function handleBirthday(req) {
-  // Check if the birthday has already been processed during this session
-  if (req.session.birthdayProcessed) {
-    return;
-  }
-
-  const isBirthday = await clientModel.todayIsClientBirthday(
-    req.session.userId,
-  );
-  if (!isBirthday) return;
-
-  const alreadyClaimed = await clientModel.isBirthdayGiftAlreadyClaimed(
-    req.session.userId,
-  );
-  if (alreadyClaimed) return;
-
-  const points = await clientModel.addPoints(req.session.userId, 500);
-  const gift = await giftModel.getRandomGift();
-  await transactionModel.addTransaction(req.session.userId, gift.id, true);
-
-  req.session.points = points;
-  req.session.birthdayGift = {
-    claimed: true,
-    name: gift.name,
-    description: gift.description,
-    image: Buffer.from(gift.image).toString("base64"),
-  };
-
-  // Set a flag to indicate that the birthday has been processed
-  req.session.birthdayProcessed = true;
-}
-
-function prepareGiftImages(gifts) {
-  gifts.forEach((gift) => {
-    if (gift.image) {
-      gift.image = Buffer.from(gift.image).toString("base64");
-    }
-  });
-}
-
-function renderDashboard(req, res, all_gift_transaction, client) {
-  // Initialize birthdayDetails as an empty object or null
-  let birthdayDetails = {};
-
-  // Only populate birthdayDetails if the birthday has not been acknowledged yet
-  if (!req.session.birthdayAcknowledged && req.session.birthdayGift?.claimed) {
-    birthdayDetails = {
-      birthdayGift: true,
-      giftName: req.session.birthdayGift.name,
-      giftDescription: req.session.birthdayGift.description,
-      giftImage: req.session.birthdayGift.image,
-    };
-
-    // Set the session flag to true after displaying the birthday gift for the first time
-    req.session.birthdayAcknowledged = true;
-  }
-
-  res.render("dashboard/client/index", {
-    points: req.session.points,
-    birthdayDetails: birthdayDetails,
-    all_gift_transaction: all_gift_transaction,
-    first_name: client.first_name,
-    last_name: client.last_name,
-    email: client.email,
-  });
-}
 
 // Create user route for managers
 router.get("/create-user", (req, res) => {
@@ -178,6 +53,7 @@ router.post("/create-user", (req, res) => {
   }
 });
 
+// Modify client route for managers
 router.get("/modify-client", async (req, res) => {
   if (req.session.role === "manager") {
     try {
@@ -202,6 +78,7 @@ router.post("/modify-client", (req, res) => {
   }
 });
 
+// Modify manager route for managers
 router.get("/modify-manager", (req, res) => {
   if (req.session.role === "manager") {
     res.render("dashboard/manager/modifyManager");
@@ -218,6 +95,7 @@ router.post("/modify-manager", (req, res) => {
   }
 });
 
+// Delete client route for managers
 router.get("/delete-client", async (req, res) => {
   if (req.session.role === "manager") {
     try {
@@ -242,7 +120,7 @@ router.post("/delete-client", (req, res) => {
   }
 });
 
-// Get all clients route for managers
+// Get akk clients route for managers
 router.get("/get-clients", async (req, res) => {
   if (req.session.role === "manager") {
     try {
@@ -274,41 +152,6 @@ router.get("/get-client/:clientId", async (req, res) => {
       res
         .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error fetching client details");
-    }
-  } else {
-    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
-  }
-});
-
-// Get points route for clients
-router.get("/get-points", async (req, res) => {
-  if (req.session.role === "client") {
-    try {
-      const points = await clientModel.getPoints(req.session.userId);
-      req.session.points = points;
-      res.json({ points: points });
-    } catch (error) {
-      console.error("Error fetching points:", error);
-      res
-        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error fetching points");
-    }
-  } else {
-    res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
-  }
-});
-
-router.get("/get-point/:clientId", async (req, res) => {
-  if (req.session.role === "manager") {
-    try {
-      const clientId = req.params.clientId;
-      const points = await clientModel.getPoints(clientId);
-      res.json({ points: points });
-    } catch (error) {
-      console.error("Error fetching points:", error);
-      res
-        .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error fetching points");
     }
   } else {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
@@ -466,72 +309,5 @@ router.post("/delete-gift", (req, res) => {
     res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
   }
 });
-
-// Get all gifts route for clients
-router.get(
-  "/view-gifts",
-  clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  async (req, res) => {
-    if (req.session.role === "client") {
-      try {
-        const clientPoints = req.session.points;
-        const gifts =
-          await clientModel.getAvailableGiftsBelowPoints(clientPoints);
-        res.render("dashboard/client/viewGifts", { gifts });
-      } catch (error) {
-        console.error("Error fetching gifts:", error);
-        res
-          .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-          .send("Error fetching gifts");
-      }
-    } else {
-      res.status(HttpStatus.StatusCodes.FORBIDDEN).send("Unauthorized access");
-    }
-  },
-);
-
-router.get(
-  "/cart",
-  clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.getCart.bind(cartController),
-);
-router.post(
-  "/add-to-cart",
-  clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.addToCart.bind(cartController),
-);
-router.post(
-  "/remove-from-cart",
-  clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.removeFromCart.bind(cartController),
-);
-router.post(
-  "/validate-cart",
-  clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  cartController.validateCart.bind(cartController),
-);
-
-router.get(
-  "/confirmation",
-  clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  (req, res) => {
-    res.render("dashboard/client/confirmation");
-  },
-);
-
-// Change password route for clients
-router.get(
-  "/change-password",
-  clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  (req, res) => {
-    res.render("dashboard/client/changePassword");
-  },
-);
-
-router.post(
-  "/change-password",
-  clientAuthController.ensureAuthenticated.bind(clientAuthController),
-  clientController.changePassword.bind(clientController),
-);
 
 module.exports = router;

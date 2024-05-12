@@ -119,7 +119,7 @@ class clientModel {
       return rows;
     } catch (error) {
       throw new Error(
-        `Error fetching available gifts below client points: ${error}`
+        `Error fetching available gifts below client points: ${error}`,
       );
     }
   }
@@ -223,7 +223,7 @@ class clientModel {
     } catch (error) {
       console.error(
         "Error checking if birthday gift is already claimed:",
-        error
+        error,
       );
       throw error;
     }

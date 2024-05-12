@@ -13,8 +13,8 @@ const sql = fs.readFileSync(sqlFilePath, { encoding: "UTF-8" });
 const resizeAndConvertImage = async (buffer) => {
   return sharp(buffer)
     .resize(null, 300) // Resize image to 300px height while maintaining aspect ratio
-    .toFormat("jpeg") // Convert image to JPEG
-    .jpeg({ quality: 90 }) // Set JPEG quality to 90%
+    .toFormat("webp") // Convert image to WEBP
+    .webp({ quality: 90 }) // Set WEBP quality to 90%
     .toBuffer(); // Return buffer
 };
 

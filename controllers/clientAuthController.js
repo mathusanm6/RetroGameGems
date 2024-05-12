@@ -48,11 +48,9 @@ class ClientAuthController {
 
   ensureAuthenticated(req, res, next) {
     if (req.session.role === "client" && req.session.userId) {
-      next();
+      return next();
     } else {
-      res
-        .status(HttpStatus.StatusCodes.UNAUTHORIZED)
-        .redirect("/auth/client-login");
+      res.status(HttpStatus.StatusCodes.UNAUTHORIZED).redirect("/client-login");
     }
   }
 }
