@@ -25,7 +25,7 @@ module.exports = (db) => {
     managerAuthController.login(req, res),
   );
 
-  // Specific login routes for client and manager
+  // Client login page
   router.get("/client-login", (req, res) => {
     // Directly render the client login page
     if (req.session.role === "client") {
@@ -42,6 +42,7 @@ module.exports = (db) => {
     }
   });
 
+  // Manager login page
   router.get("/manager-login", (req, res) => {
     // Directly render the manager login page
     if (req.session.role === "manager") {

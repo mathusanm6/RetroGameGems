@@ -1,0 +1,65 @@
+h3 {
+  font-size: large;
+}
+
+.fa {
+  margin-right: 0.5rem;
+
+  /* 8px right margin */
+}
+
+.highlight {
+  padding: 0 5px;
+  background-color: rgba(0, 123, 255, 0.1);
+  border-radius: 4px;
+  font-weight: bold;
+  color: rgb(35, 148, 133);
+  display: inline-block;
+}
+
+.highlight:hover {
+  background-color: rgba(0, 123, 255, 0.2);
+  animation: jiggle 0.5s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes jiggle {
+  0%,
+  100% {
+    transform: translateX(-2px);
+  }
+
+  50% {
+    transform: translateX(2px);
+  }
+}
+
+.point-icon {
+  color: #ffc107;
+}
+
+.gift-icon {
+  color: #dc3545;
+}
+
+.credential-icon {
+  color: #28a745;
+}
+
+.user-icon {
+  margin-right: 10px;
+  color: #17a2b8;
+}
+
+.card-header {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.card-title {
+  color: #17a2b8;
+}
+
+.card-text i {
+  vertical-align: middle;
+}
