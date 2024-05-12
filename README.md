@@ -87,8 +87,3 @@ La date de naissance (`birth_date`) est initialisée à la date courante pour to
 ```bash
 psql -U myuser -d loyalty_card_db
 ```
-
-```sql
-set search_path to loyalty_card;
-\dt -- pour voir les tables
-```
