@@ -177,9 +177,10 @@ router.get(
     if (req.session.role === "client") {
       try {
         const clientPoints = req.session.points;
+        const cartTotalPrice = req.session.cart?.totalPrice || 0;
         const gifts =
-          await clientModel.getAvailableGiftsBelowPoints(clientPoints);
-        res.render("dashboard/client/viewGifts", { gifts });
+          await giftModel.getAvailableGiftsBelowPoints(clientPoints - cartTotalPrice);
+        res.render("dashboard/client/viewGifts", { gifts, clientPoints});
       } catch (error) {
         console.error("Error fetching gifts:", error);
         res

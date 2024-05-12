@@ -111,19 +111,6 @@ class clientModel {
     }
   }
 
-  async getAvailableGiftsBelowPoints(clientPoints) {
-    try {
-      const query =
-        "SELECT * FROM loyalty_card.gifts WHERE needed_points <= $1";
-      const { rows } = await this.db.query(query, [clientPoints]);
-      return rows;
-    } catch (error) {
-      throw new Error(
-        `Error fetching available gifts below client points: ${error}`,
-      );
-    }
-  }
-
   async getAvailableGifts() {
     const query = "SELECT * FROM loyalty_card.gifts";
     const result = await this.db.query(query);

@@ -18,6 +18,13 @@ class CartController {
 
     try {
       const gift = await this.giftModel.getGiftById(giftId);
+
+      // if points are not enough to buy the gift
+      const cartTotalPrice = req.session.cart.totalPrice;
+      if (gift.needed_points * quantity + cartTotalPrice > req.session.points) {
+        return res.redirect("/view-gifts?success=false&message=Not enough points");
+      }
+
       const itemInCart = req.session.cart.items.find(
         (item) => item.giftId === giftId,
       );
