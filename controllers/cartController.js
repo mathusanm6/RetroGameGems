@@ -37,10 +37,10 @@ class CartController {
 
       res.redirect("/cart");
     } catch (error) {
-      console.error("Erreur lors de l'ajout de l'article au panier :", error);
+      console.error("Error adding item to cart:", error);
       res
         .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Impossible d'ajouter l'article au panier");
+        .send("Impossible to add item to cart");
     }
   }
 
@@ -64,12 +64,12 @@ class CartController {
       res.redirect("/cart");
     } catch (error) {
       console.error(
-        "Erreur lors de la suppression de l'article du panier :",
+        "Error removing item from cart:",
         error,
       );
       res
         .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Impossible de supprimer l'article du panier");
+        .send("Impossible to remove item from cart");
     }
   }
 
@@ -116,10 +116,10 @@ class CartController {
 
       res.redirect("/confirmation");
     } catch (error) {
-      console.error("Erreur lors de la validation du panier :", error);
+      console.error("Error validating cart:", error);
       res
         .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Impossible de valider le panier");
+        .send("Impossible to validate cart");
     }
   }
 
@@ -129,7 +129,7 @@ class CartController {
     try {
       await pool.query(query, [clientId, giftId]);
     } catch (error) {
-      console.error("Erreur lors de l'ajout de la transaction :", error);
+      console.error("Error adding transaction:", error);
       throw error;
     }
   }
