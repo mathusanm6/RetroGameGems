@@ -120,7 +120,7 @@ router.post("/delete-client", (req, res) => {
   }
 });
 
-// Get akk clients route for managers
+// Get all clients route for managers
 router.get("/get-clients", async (req, res) => {
   if (req.session.role === "manager") {
     try {

@@ -104,21 +104,21 @@ class CartController {
         return res.redirect("/cart?success=false&message=Not enough points");
       }
 
-      // Déduire les points du client
+      // Deduct points from client
       await this.clientModel.deductPoints(clientId, totalPrice);
       req.session.points -= totalPrice;
 
-      // Réduire la quantité des articles dans la base de données
+      // Reduce quantity of each gift
       for (const item of req.session.cart.items) {
         await this.giftModel.reduceGiftQuantity(item.giftId, item.quantity);
       }
 
-      // Ajouter une transaction pour chaque article
+      // Add transaction for each gift
       for (const item of req.session.cart.items) {
         await this.addTransaction(clientId, item.giftId);
       }
 
-      // Vider le panier
+      // Clear cart
       req.session.cart = { items: [], totalPrice: 0 };
 
       res.redirect("/confirmation");

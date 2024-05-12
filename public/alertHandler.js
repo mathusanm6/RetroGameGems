@@ -28,7 +28,7 @@ $(document).ready(function () {
 
   // Listener for close button clicks in alerts
   $(".alert .btn-close").click(function () {
-    $(this).parent().parent().hide(); // Adjusted the DOM traversal due to the added btn-close class
+    $(this).parent().parent().hide();
   });
 });
 
