@@ -144,7 +144,7 @@
                                             <div class="form-group mb-2">
                                                 <label for="quantity<%= gift.id %>">Quantity:</label>
                                                 <input type="number" id="quantity<%= gift.id %>" name="quantity"
-                                                    value="1" min="1" class="form-control">
+                                                    value="1" min="1" max="<%= gift.quantity %>" class="form-control">
                                             </div>
                                             <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
                                         </form>

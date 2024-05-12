@@ -23,12 +23,12 @@ class CartController {
       const cartTotalPrice = req.session.cart.totalPrice;
       if (gift.needed_points * quantity + cartTotalPrice > req.session.points) {
         return res.redirect(
-          "/view-gifts?success=false&message=Not enough points",
+          "/view-gifts?success=false&message=Not enough points"
         );
       }
 
       const itemInCart = req.session.cart.items.find(
-        (item) => item.giftId === giftId,
+        (item) => item.giftId === giftId
       );
 
       if (itemInCart) {
@@ -62,7 +62,7 @@ class CartController {
 
     try {
       const itemIndex = req.session.cart.items.findIndex(
-        (item) => item.giftId === giftId,
+        (item) => item.giftId === giftId
       );
 
       if (itemIndex !== -1) {
@@ -114,7 +114,9 @@ class CartController {
 
       // Add transaction for each gift
       for (const item of req.session.cart.items) {
-        await this.addTransaction(clientId, item.giftId);
+        for (let i = 0; i < item.quantity; i++) {
+          await this.addTransaction(clientId, item.giftId);
+        }
       }
 
       // Clear cart
