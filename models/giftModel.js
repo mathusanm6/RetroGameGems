@@ -103,7 +103,7 @@ class GiftModel {
       return rows;
     } catch (error) {
       throw new Error(
-        `Error fetching available gifts below client points: ${error}`
+        `Error fetching available gifts below client points: ${error}`,
       );
     }
   }

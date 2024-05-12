@@ -125,15 +125,20 @@ class clientModel {
     const query =
       "UPDATE loyalty_card.clients SET points = points + $1 WHERE id = $2 RETURNING points;";
     try {
-      const client = await this.db.query("SELECT points FROM loyalty_card.clients WHERE id = $1", [clientId]);
+      const client = await this.db.query(
+        "SELECT points FROM loyalty_card.clients WHERE id = $1",
+        [clientId],
+      );
       if (client.rows.length === 0) {
         throw new Error("Client not found.");
       }
-  
+
       // Check if adding points would exceed the maximum safe integer limit
       const currentPoints = client.rows[0].points;
       if (currentPoints > Number.MAX_SAFE_INTEGER - pointsToAdd) {
-        throw new Error("Adding points would exceed the maximum safe integer limit.");
+        throw new Error(
+          "Adding points would exceed the maximum safe integer limit.",
+        );
       }
 
       const result = await this.db.query(query, [pointsToAdd, clientId]);
