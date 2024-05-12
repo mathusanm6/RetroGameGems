@@ -178,9 +178,14 @@ router.get(
       try {
         const clientPoints = req.session.points;
         const cartTotalPrice = req.session.cart?.totalPrice || 0;
-        const gifts =
-          await giftModel.getAvailableGiftsBelowPoints(clientPoints - cartTotalPrice);
-        res.render("dashboard/client/viewGifts", { gifts, totalPoints: clientPoints, usedPoints: cartTotalPrice});
+        const gifts = await giftModel.getAvailableGiftsBelowPoints(
+          clientPoints - cartTotalPrice,
+        );
+        res.render("dashboard/client/viewGifts", {
+          gifts,
+          totalPoints: clientPoints,
+          usedPoints: cartTotalPrice,
+        });
       } catch (error) {
         console.error("Error fetching gifts:", error);
         res

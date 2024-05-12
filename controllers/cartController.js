@@ -22,7 +22,9 @@ class CartController {
       // if points are not enough to buy the gift
       const cartTotalPrice = req.session.cart.totalPrice;
       if (gift.needed_points * quantity + cartTotalPrice > req.session.points) {
-        return res.redirect("/view-gifts?success=false&message=Not enough points");
+        return res.redirect(
+          "/view-gifts?success=false&message=Not enough points",
+        );
       }
 
       const itemInCart = req.session.cart.items.find(
@@ -70,10 +72,7 @@ class CartController {
 
       res.redirect("/cart");
     } catch (error) {
-      console.error(
-        "Error removing item from cart:",
-        error,
-      );
+      console.error("Error removing item from cart:", error);
       res
         .status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Impossible to remove item from cart");
