@@ -93,27 +93,87 @@ psql -U myuser -d loyalty_card_db
 
 ### Captures d'écran du projet
 
-<table align="center">
+<table align="center" style="width:1200px; table-layout: fixed;">
   <tr>
-    <td align="center" colspan="4"><img src="resources/images/screenshots/home-page.jpeg" alt="Home Page" width="1200px"/></td>
+    <td colspan="4">
+      <figure>
+        <img src="resources/images/screenshots/home-page.jpeg" alt="Home Page" width="100%"/>
+        <figcaption style="text-align:center;">Bienvenue sur notre page d'accueil</figcaption>
+      </figure>
+    </td>
   </tr>
   <tr>
-    <td align="center" colspan="2"><img src="resources/images/screenshots/login-client.jpeg" alt="Login Client" width="600px"/></td>
-    <td align="center" colspan="2"><img src="resources/images/screenshots/login-manager.jpeg" alt="Login Manager" width="600px"/></td>
+    <td colspan="2">
+      <figure>
+        <img src="resources/images/screenshots/login-client.jpeg" alt="Login Client" width="100%"/>
+        <figcaption style="text-align:center;">Page de connexion du client</figcaption>
+      </figure>
+    </td>
+    <td colspan="2">
+      <figure>
+        <img src="resources/images/screenshots/login-manager.jpeg" alt="Login Manager" width="100%"/>
+        <figcaption style="text-align:center;">Page de connexion de la gérante</figcaption>
+      </figure>
+    </td>
+  </tr>
+  <tr><td colspan="4" style="height: 30px;"></td></tr> <!-- Spacer Row -->
+  <tr>
+    <td colspan="4">
+      <figure>
+        <img src="resources/images/screenshots/dashboard-client-birthday.jpeg" alt="Dashboard Client Birthday" width="100%"/>
+        <figcaption style="text-align:center;">Tableau de bord du client - Notifications d'anniversaire</figcaption>
+      </figure>
+    </td>
   </tr>
   <tr>
-    <td align="center" colspan="4"><img src="resources/images/screenshots/dashboard-client-birthday.jpeg" alt="Dashboard Client Birthday" width="1200px"/></td>
+    <td colspan="2">
+      <figure>
+        <img src="resources/images/screenshots/dashboard-client-your-transactions.jpeg" alt="Dashboard Client Your Transactions" width="100%"/>
+        <figcaption style="text-align:center;">Vue d'ensemble de vos transactions</figcaption>
+      </figure>
+    </td>
+    <td colspan="2">
+      <figure>
+        <img src="resources/images/screenshots/dashboard-client-available-gifts.jpeg" alt="Dashboard Client Available Gifts" width="100%"/>
+        <figcaption style="text-align:center;">Parcourir les cadeaux disponibles</figcaption>
+      </figure>
+    </td>
   </tr>
   <tr>
-    <td align="center" colspan="2"><img src="resources/images/screenshots/dashboard-client-your-transactions.jpeg" alt="Dashboard Client Your Transactions" width="600px"/></td>
-    <td align="center" colspan="2"><img src="resources/images/screenshots/dashboard-client-available-gifts.jpeg" alt="Dashboard Client Available Gifts" width="600px"/></td>
+    <td colspan="2">
+      <figure>
+        <img src="resources/images/screenshots/dashboard-client-shopping-cart.png" alt="Dashboard Client Shopping Cart" width="100%"/>
+        <figcaption style="text-align:center;">Détails du panier d'achat</figcaption>
+      </figure>
+    </td>
+    <td colspan="2">
+      <figure>
+        <img src="resources/images/screenshots/dashboard-client-order-confirmation.jpeg" alt="Dashboard Client Order Confirmation" width="100%"/>
+        <figcaption style="text-align:center;">Page de confirmation de la commande</figcaption>
+      </figure>
+    </td>
+  </tr>
+  <tr><td colspan="4" style="height: 30px;"></td></tr> <!-- Spacer Row -->
+  <tr>
+    <td colspan="4">
+      <figure>
+        <img src="resources/images/screenshots/dashboard-manager.png" alt="Dashboard Manager" width="100%"/>
+        <figcaption style="text-align:center;">Tableau de bord principal de la gérante</figcaption>
+      </figure>
+    </td>
   </tr>
   <tr>
-    <td align="center" colspan="2"><img src="resources/images/screenshots/dashboard-client-shopping-cart.png" alt="Dashboard Client Shopping Cart" width="600px"/></td>
-    <td align="center" colspan="2"><img src="resources/images/screenshots/dashboard-client-order-confirmation.jpeg" alt="Dashboard Client Order Confirmation" width="600px"/></td>
-  </tr>
-  <tr>
-    <td align="center" colspan="2"><img src="resources/images/screenshots/dashboard-manager.png" alt="Dashboard Manager" width="600px"/></td>
-    <td align="center" colspan="2"><img src="resources/images/screenshots/dashboard-manager-modify-gift.png" alt="Dashboard Manager Modify Gift" width="600px"/></td>
+    <td colspan="2">
+      <figure>
+        <img src="resources/images/screenshots/dashboard-manager-modify-client.png" alt="Dashboard Manager Modify Client" width="100%"/>
+        <figcaption style="text-align:center;">Page de gestion des clients</figcaption>
+      </figure>
+    </td>
+    <td colspan="2">
+      <figure>
+        <img src="resources/images/screenshots/dashboard-manager-modify-gift.png" alt="Dashboard Manager Modify Gift" width="100%"/>
+        <figcaption style="text-align:center;">Page de gestion des cadeaux</figcaption>
+      </figure>
+    </td>
   </tr>
 </table>
