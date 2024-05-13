@@ -15,6 +15,12 @@
 
 Pair project for Semester 6 Web Programming course in 2023-2024 at Université Paris Cité (Campus Grands Moulins). The project is about creating a loyalty card system for a retro video game store. The project is divided into two parts: the client side and the manager side. The client side allows customers to view their transactions, points, and available gifts. The manager side allows the manager to manage clients, gifts, and transactions.
 
+This project is developed using the following technologies:
+
+- Front-end: HTML, CSS, JavaScript, EJS, Bootstrap
+- Back-end: Node.js, Express.js
+- Database: PostgreSQL
+
 ### Contributors
 
 | Nom        | Prénom   |
