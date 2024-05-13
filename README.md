@@ -98,7 +98,7 @@ psql -U myuser -d loyalty_card_db
     <td colspan="4">
       <figure>
         <img src="resources/images/screenshots/home-page.jpeg" alt="Home Page" width="100%"/>
-        <figcaption style="text-align:center;">Bienvenue sur notre page d'accueil</figcaption>
+        <figcaption align="center">Bienvenue sur notre page d'accueil</figcaption>
       </figure>
     </td>
   </tr>
@@ -106,13 +106,13 @@ psql -U myuser -d loyalty_card_db
     <td colspan="2">
       <figure>
         <img src="resources/images/screenshots/login-client.jpeg" alt="Login Client" width="100%"/>
-        <figcaption style="text-align:center;">Page de connexion du client</figcaption>
+        <figcaption align="center">Page de connexion du client</figcaption>
       </figure>
     </td>
     <td colspan="2">
       <figure>
         <img src="resources/images/screenshots/login-manager.jpeg" alt="Login Manager" width="100%"/>
-        <figcaption style="text-align:center;">Page de connexion de la gérante</figcaption>
+        <figcaption align="center">Page de connexion de la gérante</figcaption>
       </figure>
     </td>
   </tr>
@@ -121,7 +121,7 @@ psql -U myuser -d loyalty_card_db
     <td colspan="4">
       <figure>
         <img src="resources/images/screenshots/dashboard-client-birthday.jpeg" alt="Dashboard Client Birthday" width="100%"/>
-        <figcaption style="text-align:center;">Tableau de bord du client - Notifications d'anniversaire</figcaption>
+        <figcaption align="center">Tableau de bord du client - Notifications d'anniversaire</figcaption>
       </figure>
     </td>
   </tr>
@@ -129,13 +129,13 @@ psql -U myuser -d loyalty_card_db
     <td colspan="2">
       <figure>
         <img src="resources/images/screenshots/dashboard-client-your-transactions.jpeg" alt="Dashboard Client Your Transactions" width="100%"/>
-        <figcaption style="text-align:center;">Vue d'ensemble de vos transactions</figcaption>
+        <figcaption align="center">Vue d'ensemble de vos transactions</figcaption>
       </figure>
     </td>
     <td colspan="2">
       <figure>
         <img src="resources/images/screenshots/dashboard-client-available-gifts.jpeg" alt="Dashboard Client Available Gifts" width="100%"/>
-        <figcaption style="text-align:center;">Parcourir les cadeaux disponibles</figcaption>
+        <figcaption align="center">Parcourir les cadeaux disponibles</figcaption>
       </figure>
     </td>
   </tr>
@@ -143,13 +143,13 @@ psql -U myuser -d loyalty_card_db
     <td colspan="2">
       <figure>
         <img src="resources/images/screenshots/dashboard-client-shopping-cart.png" alt="Dashboard Client Shopping Cart" width="100%"/>
-        <figcaption style="text-align:center;">Détails du panier d'achat</figcaption>
+        <figcaption align="center">Détails du panier d'achat</figcaption>
       </figure>
     </td>
     <td colspan="2">
       <figure>
         <img src="resources/images/screenshots/dashboard-client-order-confirmation.jpeg" alt="Dashboard Client Order Confirmation" width="100%"/>
-        <figcaption style="text-align:center;">Page de confirmation de la commande</figcaption>
+        <figcaption align="center">Page de confirmation de la commande</figcaption>
       </figure>
     </td>
   </tr>
@@ -158,7 +158,7 @@ psql -U myuser -d loyalty_card_db
     <td colspan="4">
       <figure>
         <img src="resources/images/screenshots/dashboard-manager.png" alt="Dashboard Manager" width="100%"/>
-        <figcaption style="text-align:center;">Tableau de bord principal de la gérante</figcaption>
+        <figcaption align="center">Tableau de bord principal de la gérante</figcaption>
       </figure>
     </td>
   </tr>
@@ -166,13 +166,13 @@ psql -U myuser -d loyalty_card_db
     <td colspan="2">
       <figure>
         <img src="resources/images/screenshots/dashboard-manager-modify-client.png" alt="Dashboard Manager Modify Client" width="100%"/>
-        <figcaption style="text-align:center;">Page de gestion des clients</figcaption>
+        <figcaption align="center">Page de gestion des clients</figcaption>
       </figure>
     </td>
     <td colspan="2">
       <figure>
         <img src="resources/images/screenshots/dashboard-manager-modify-gift.png" alt="Dashboard Manager Modify Gift" width="100%"/>
-        <figcaption style="text-align:center;">Page de gestion des cadeaux</figcaption>
+        <figcaption align="center">Page de gestion des cadeaux</figcaption>
       </figure>
     </td>
   </tr>
