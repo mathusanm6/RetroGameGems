@@ -21,10 +21,10 @@ Projet en binôme pour le cours de Programmation Web du semestre 6 en 2023-2024 
 
 ### Contributeurs
 
-| Nom        | Prénom   | pseudo    |
-| ---------- | -------- | --------- |
-| RAOUL      | Théo     | @raoul    |
-| SELVAKUMAR | MATHUSAN | @selvakum |
+| Nom        | Prénom   | pseudo    | Numéro d'étudiant |
+| ---------- | -------- | --------- | ----------------- |
+| RAOUL      | Théo     | @raoul    | 71707138          |
+| SELVAKUMAR | MATHUSAN | @selvakum | 22112498          |
 
 ### Installation
 
@@ -95,16 +95,25 @@ psql -U myuser -d loyalty_card_db
 
 <table align="center">
   <tr>
-    <td align="center"><img src="resources/images/screenshots/home-page.jpeg" alt="Home Page" width="300px"/></td>
-    <td align="center"><img src="resources/images/screenshots/login-client.jpeg" alt="Login Client" width="300px"/></td>
-    <td align="center"><img src="resources/images/screenshots/login-manager.jpeg" alt="Login Manager" width="300px"/></td>
+    <td align="center" colspan="4"><img src="resources/images/screenshots/home-page.jpeg" alt="Home Page" width="1200px"/></td>
   </tr>
   <tr>
-    <td align="center"><img src="resources/images/screenshots/dashboard-client.jpeg" alt="Dashboard Client" width="300px"/></td>
-    <td align="center"><img src="resources/images/screenshots/dashboard-client-available-gifts.jpeg" alt="Dashboard Client Available Gifts" width="300px"/></td>
-    <td align="center"><img src="resources/images/screenshots/dashboard-client-shopping-cart.jpeg" alt="Dashboard Client Shopping Cart" width="300px"/></td>
+    <td align="center" colspan="2"><img src="resources/images/screenshots/login-client.jpeg" alt="Login Client" width="600px"/></td>
+    <td align="center" colspan="2"><img src="resources/images/screenshots/login-manager.jpeg" alt="Login Manager" width="600px"/></td>
   </tr>
   <tr>
-    <td align="center" colspan="3"><img src="resources/images/screenshots/dashboard-manager.png" alt="Dashboard Manager" width="300px"/></td>
+    <td align="center" colspan="4"><img src="resources/images/screenshots/dashboard-client-birthday.jpeg" alt="Dashboard Client Birthday" width="1200px"/></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2"><img src="resources/images/screenshots/dashboard-client-your-transactions.jpeg" alt="Dashboard Client Your Transactions" width="600px"/></td>
+    <td align="center" colspan="2"><img src="resources/images/screenshots/dashboard-client-available-gifts.jpeg" alt="Dashboard Client Available Gifts" width="600px"/></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2"><img src="resources/images/screenshots/dashboard-client-shopping-cart.png" alt="Dashboard Client Shopping Cart" width="600px"/></td>
+    <td align="center" colspan="2"><img src="resources/images/screenshots/dashboard-client-order-confirmation.jpeg" alt="Dashboard Client Order Confirmation" width="600px"/></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2"><img src="resources/images/screenshots/dashboard-manager.png" alt="Dashboard Manager" width="600px"/></td>
+    <td align="center" colspan="2"><img src="resources/images/screenshots/dashboard-manager-modify-gift.png" alt="Dashboard Manager Modify Gift" width="600px"/></td>
   </tr>
 </table>
