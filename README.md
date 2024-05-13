@@ -40,9 +40,9 @@ This project is developed using the following technologies:
 
 ### Demo and screenshots
 
-#### Demo
+<video controls src="resources/videos/RetroGameGems.mp4" title="Demo" width="100%"></video>
 
-[Demo](/resources/videos/RetroGameGems.mov)
+<br>
 
 <table align="center" style="width:1200px; table-layout: fixed;">
   <tr>
