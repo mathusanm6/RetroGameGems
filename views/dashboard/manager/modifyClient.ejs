@@ -29,7 +29,6 @@
                 <div class="mb-3">
                     <label for="clientId" class="form-label">Select a Chrononaut:</label>
                     <select id="clientId" name="clientId" class="form-select" onchange="loadClientData(this.value)">
-                        <option value="">Select a Chrononaut</option>
                         <% clients.forEach(function(client) { %>
                             <option value="<%= client.id %>">
                                 <%= client.first_name %>
@@ -115,6 +114,15 @@
         }
 
         window.loadClientData = loadClientData;
+
+        // Load client data for the selected client on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            var selectElement = document.getElementById('clientId');
+            if (selectElement && selectElement.value) {
+                loadClientData(selectElement.value);
+            }
+        });
+        
     </script>
 
 </body>

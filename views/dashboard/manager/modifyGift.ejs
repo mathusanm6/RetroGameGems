@@ -42,7 +42,6 @@
                 <div class="mb-3">
                     <label for="giftId" class="form-label">Select a Retro Gift:</label>
                     <select name="giftId" id="giftId" class="form-select" onchange="loadGiftData(this.value)">
-                        <option value="">Select a Retro Gift</option>
                         <% gifts.forEach(function(gift) { %>
                             <option value="<%= gift.id %>">
                                 <%= gift.name %> - <%= gift.needed_points %> points - <%= gift.quantity %> available
@@ -123,6 +122,14 @@
                     document.getElementById('giftDataForm').innerHTML = 'Failed to load data.';
                 });
         }
+
+        // Load gift data for the selected gift on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            var selectElement = document.getElementById('giftId');
+            if (selectElement && selectElement.value) {
+                loadGiftData(selectElement.value);
+            }
+        });
 
         function previewImage() {
             const file = document.getElementById('image').files[0];

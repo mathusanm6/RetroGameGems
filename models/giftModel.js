@@ -26,10 +26,10 @@ class GiftModel {
     try {
       // Get all gifts
       const all_available_gifts = await this.getAllGifts();
-      
+
       // Get all gifts that the user has
       const user_gifts = await this.getAllGiftsByClientIDs([clientId]);
-      
+
       const user_gifts_ids = user_gifts.map((gift) => gift.gift_id);
       const available_gifts = all_available_gifts.filter(
         (gift) => !user_gifts_ids.includes(gift.id),
@@ -41,8 +41,7 @@ class GiftModel {
 
       const randomIndex = Math.floor(Math.random() * available_gifts.length);
       return available_gifts[randomIndex];
-    }
-    catch (error) {
+    } catch (error) {
       throw new Error(`Error fetching random gift: ${error}`);
     }
   }

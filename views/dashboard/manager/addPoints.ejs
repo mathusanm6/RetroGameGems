@@ -26,7 +26,6 @@
                 <div class="mb-3">
                     <label for="clientId" class="form-label">Select a Chrononaut:</label>
                     <select name="clientId" id="clientId" class="form-select">
-                        <option value="">Select a Chrononaut</option>
                         <% clients.forEach(function(client) { %>
                             <option value="<%= client.id %>">
                                 <%= client.first_name %>

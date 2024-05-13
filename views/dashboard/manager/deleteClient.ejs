@@ -26,7 +26,6 @@
             <form action="/delete-client" method="post">
                 <div class="mb-3">
                     <select id="clientId" name="clientId" class="form-select" aria-label="Select a Client">
-                        <option value="">Select a Client</option>
                         <% clients.forEach(function(client) { %>
                             <option value="<%= client.id %>">
                                 <%= client.first_name %>

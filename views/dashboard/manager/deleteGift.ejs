@@ -26,7 +26,6 @@
                 <div class="mb-3">
                     <label for="giftId" class="form-label">Select a Retro Gift to Delete:</label>
                     <select id="giftId" name="giftId" class="form-select">
-                        <option value="">Select a Retro Gift</option>
                         <% gifts.forEach(function(gift) { %>
                             <option value="<%= gift.id %>">
                                 <%= gift.name %> - <%= gift.needed_points %> points - <%= gift.quantity %> available
