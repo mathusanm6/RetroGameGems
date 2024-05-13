@@ -5,7 +5,7 @@
 1. [Project context](#project-context)
 2. [Contributors](#contributors)
 3. [My contributions](#my-contributions)
-4. [Screenshots](#screenshots)
+4. [Demo and screenshots](#demo-and-screenshots)
 5. [Installation](#installation)
 6. [Usage](#usage)
 7. [Initialisation of the database](#initialisation-of-the-database)
@@ -38,7 +38,11 @@ This project is developed using the following technologies:
 - [x] Client dashboard (Front-end and ~~Back-end~~)
 - [x] Manager dashboard (Front-end and Back-end)
 
-### Screenshots
+### Demo and screenshots
+
+#### Demo
+
+[Demo](/resources/videos/RetroGameGems.mov)
 
 <table align="center" style="width:1200px; table-layout: fixed;">
   <tr>
